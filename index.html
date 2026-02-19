@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitra Fruit - Premium Dried Fruits & Beverages</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <a href="#" class="logo">Vitra Fruit</a>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#shop">Shop Now</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#dried-fruits">Dried Fruits</a></li>
+                            <li><a href="#beverages">Beverages</a></li>
+                            <li><a href="#gift-boxes">Gift Boxes</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#cart" class="cart-icon">🛒 <span id="cartCount">0</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Banner -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Premium Dried Fruits & Beverages</h1>
+            <p>Natural, Healthy, Delicious</p>
+            <a href="#shop" class="btn btn-primary">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Product Categories -->
+    <section class="categories" id="shop">
+        <div class="container">
+            <div class="category-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="dried-fruits">
+                        <img src="images/category 1 .png" alt="Dried Fruits">
+                        <h3>Dried Fruits</h3>
+                    </button>
+                    <button class="tab-btn" data-tab="beverages">
+                        <img src="images/beverages-icon.png" alt="Beverages" onerror="this.style.display='none'">
+                        <h3>Beverages</h3>
+                    </button>
+                    <button class="tab-btn" data-tab="gift-boxes">
+                        <img src="images/gift-icon.png" alt="Gift Boxes" onerror="this.style.display='none'">
+                        <h3>Gift Boxes</h3>
+                    </button>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="dried-fruits">
+                        <h2>Dried Fruits</h2>
+                        <h4>Natural & Nutritious</h4>
+                        <p>All our dried fruits are naturally air-dried with no added preservatives or sulphur. Perfect for snacking, baking, or adding to your favorite recipes.</p>
+                        <a href="#products" class="btn btn-secondary">Shop Dried Fruits</a>
+                    </div>
+                    <div class="tab-pane" id="beverages">
+                        <h2>Beverages</h2>
+                        <h4>Refreshing & Pure</h4>
+                        <p>Our premium beverages are crafted from the finest natural ingredients. From fruit juices to specialty drinks, each bottle delivers pure refreshment.</p>
+                        <a href="#products" class="btn btn-secondary">Shop Beverages</a>
+                    </div>
+                    <div class="tab-pane" id="gift-boxes">
+                        <h2>Gift Boxes</h2>
+                        <h4>Perfect for Any Occasion</h4>
+                        <p>Curated gift boxes featuring our best dried fruits and beverages. Beautifully packaged and ready to delight your loved ones.</p>
+                        <a href="#products" class="btn btn-secondary">Shop Gift Boxes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured-products" id="products">
+        <div class="container">
+            <h2>Featured Products</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About Vitra Fruit</h2>
+            <div class="about-content">
+                <p>Vitra Fruit is dedicated to providing premium quality dried fruits and beverages. We source the finest ingredients and use traditional methods to preserve natural flavors and nutrients.</p>
+                <p>Our products are 100% natural, contain no added preservatives, and are perfect for health-conscious consumers who refuse to compromise on taste.</p>
+                <p>From our family to yours, we bring you the best nature has to offer.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <input type="tel" placeholder="Phone Number">
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <p>📧 Email: info@vitrafruit.com</p>
+                    <p>📞 Phone: +27 123 456 789</p>
+                    <p>📍 Location: South Africa</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Vitra Fruit</h4>
+                    <p>Premium dried fruits and beverages for a healthy lifestyle.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#shipping">Shipping Info</a></li>
+                        <li><a href="#returns">Returns</a></li>
+                        <li><a href="#terms">Terms & Conditions</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Vitra Fruit. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
