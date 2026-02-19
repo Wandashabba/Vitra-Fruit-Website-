@@ -217,6 +217,16 @@ body {
     max-width: 100%;
     height: auto;
     display: block;
+    margin: 0 auto;
+}
+
+.tab-btn:first-child {
+    min-height: 120px;
+}
+
+.tab-btn:first-child img {
+    width: 100%;
+    object-fit: contain;
 }
 
 .tab-btn h3 {
