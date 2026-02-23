@@ -6,6 +6,7 @@ import logoAvif from "../assets/images/logo.avif";
 
 function Navbar({ cartCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobileShopOpen, setIsMobileShopOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeHref, setActiveHref] = useState("#home");
   const lastScrollY = useRef(0);
@@ -18,6 +19,29 @@ function Navbar({ cartCount = 0 }) {
         .filter((href) => href.startsWith("#") && href !== "#cart"),
     [allLinks]
   );
+  const shopDropdownItems = useMemo(
+    () => [
+      { label: "Dehydrated Fruits", categoryId: "beverages", href: "/dehydrated-fruits.html" },
+      { label: "Fruit Powder", categoryId: "dried-fruits" },
+      { label: "Fruit Strips", categoryId: "gift-boxes" }
+    ],
+    []
+  );
+
+  const selectCategory = (categoryId) => {
+    window.dispatchEvent(
+      new CustomEvent("vitra:select-category", { detail: { categoryId } })
+    );
+    setActiveHref("#shop");
+  };
+
+  const navigateToShop = (categoryId) => {
+    selectCategory(categoryId);
+    const shopSection = document.querySelector("#shop");
+    if (shopSection) {
+      shopSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,7 +116,61 @@ function Navbar({ cartCount = 0 }) {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setIsMobileShopOpen(false);
+    }
+  }, [isOpen]);
+
   const renderLink = (link, keyPrefix, isMobile = false) => {
+    if (link.label === "Shop Now") {
+      const isActive = activeHref === "#shop";
+
+      return (
+        <li key={`${keyPrefix}-${link.label}`} className="nav-item nav-dropdown">
+          <button
+            className={`nav-link nav-link-dropdown ${isActive ? "active" : ""}`}
+            type="button"
+            onClick={() => {
+              if (isMobile) {
+                setIsMobileShopOpen((current) => !current);
+              }
+            }}
+            aria-expanded={isMobile ? isMobileShopOpen : undefined}
+            aria-haspopup="true"
+          >
+            <span>{link.label}</span>
+            <span className="nav-caret" aria-hidden="true">▾</span>
+          </button>
+          <ul className={`nav-dropdown-menu ${isMobile && isMobileShopOpen ? "is-open" : ""}`}>
+            {shopDropdownItems.map((item) => (
+              <li key={item.categoryId}>
+                <a
+                  className="nav-dropdown-link"
+                  href={item.href || "#shop"}
+                  onClick={(event) => {
+                    if (item.href) {
+                      if (isMobile) {
+                        setIsOpen(false);
+                      }
+                      return;
+                    }
+                    event.preventDefault();
+                    navigateToShop(item.categoryId);
+                    if (isMobile) {
+                      setIsOpen(false);
+                    }
+                  }}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    }
+
     const isCart = link.label.toLowerCase() === "cart";
     const isActive = !isCart && activeHref === link.href;
 
