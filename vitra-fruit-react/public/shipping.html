@@ -7,10 +7,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared-navbar.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Manrope', sans-serif; background: #f6f7ff; color: #1f2850; min-height: 100vh; display: grid; place-items: center; padding: 20px; }
-    .card { width: min(94vw, 720px); background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 12px 24px rgba(17, 25, 60, 0.12); }
+    body { font-family: 'Manrope', sans-serif; background: #f6f7ff; color: #1f2850; min-height: 100vh; }
+    .page { padding: 20px; }
+    .card { width: min(94vw, 720px); margin: 26px auto; background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 12px 24px rgba(17, 25, 60, 0.12); }
     h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 12px; text-align: center; }
     p { color: #54618a; line-height: 1.7; margin-bottom: 10px; text-align: center; }
     .back { display: inline-block; margin-top: 16px; text-decoration: none; color: #fff; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); border-radius: 999px; padding: 12px 22px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 700; }
@@ -18,11 +20,47 @@
   </style>
 </head>
 <body>
-  <main class="card">
-    <h1>Shipping Costs</h1>
-    <p>Shipping rates depend on your delivery location and order size.</p>
-    <p>For an exact quote, please contact us before checkout.</p>
-    <div class="wrap"><a class="back" href="/contact.html">Request Shipping Quote</a></div>
+  <header class="nav-wrap" data-site-nav>
+    <nav class="site-navbar" aria-label="Main navigation">
+      <div class="site-nav-inner">
+        <a class="navbar-logo" href="/">
+          <picture>
+            <source srcset="/images/logo.avif" type="image/avif" />
+            <source srcset="/images/logo.webp" type="image/webp" />
+            <img src="/images/logo.jpg" alt="Vitra Fruit logo" />
+          </picture>
+        </a>
+
+        <button class="site-nav-hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <span></span><span></span><span></span>
+        </button>
+
+        <ul class="site-nav-menu" data-menu>
+          <li><a class="site-nav-link" data-match="home" href="/">Home</a></li>
+          <li class="site-nav-dropdown" data-shop-item>
+            <button class="site-nav-button" type="button" data-shop-toggle aria-haspopup="true" aria-expanded="false">Shop Now <span aria-hidden="true">▾</span></button>
+            <ul class="site-nav-dropdown-menu">
+              <li><a href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
+              <li><a href="/#shop">Fruit Powder</a></li>
+              <li><a href="/#shop">Fruit Strips</a></li>
+            </ul>
+          </li>
+          <li><a class="site-nav-link" data-match="contact" href="/contact.html">Contact</a></li>
+          <li><a class="site-nav-link" data-match="account" href="/account.html">Cart</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <h1>Shipping Costs</h1>
+      <p>Shipping rates depend on your delivery location and order size.</p>
+      <p>For an exact quote, please contact us before checkout.</p>
+      <div class="wrap"><a class="back" href="/contact.html">Request Shipping Quote</a></div>
+    </section>
   </main>
+
+  <script src="/shared-navbar.js"></script>
 </body>
 </html>

@@ -1,30 +1,46 @@
-import React, { useState } from 'react';
-import category1Png from '../assets/images/category1.png';
-import category2Png from '../assets/images/category2.png';
-import category3Png from '../assets/images/category3.png';
-import category1Webp from '../assets/images/category1.webp';
-import category2Webp from '../assets/images/category2.webp';
-import category3Webp from '../assets/images/category3.webp';
-import category1Avif from '../assets/images/category1.avif';
-import category2Avif from '../assets/images/category2.avif';
-import category3Avif from '../assets/images/category3.avif';
+import React, { useEffect, useState } from 'react';
+import category4Png from '../assets/images/category4.png';
+import category5Png from '../assets/images/category5.png';
+import category6Png from '../assets/images/category6.png';
+import category4Webp from '../assets/images/category4.webp';
+import category5Webp from '../assets/images/category5.webp';
+import category6Webp from '../assets/images/category6.webp';
+import category4Avif from '../assets/images/category4.avif';
+import category5Avif from '../assets/images/category5.avif';
+import category6Avif from '../assets/images/category6.avif';
 
 function Categories() {
   const [activeTab, setActiveTab] = useState('dried-fruits');
+  const getCategoryCtaHref = (category) =>
+    category.title === 'Dehydrated Fruits' ? '/dehydrated-fruits.html' : '#products';
   const tabImages = {
-    'dried-fruits': { png: category1Png, webp: category1Webp, avif: category1Avif, alt: 'Dehydrated fruits category' },
-    beverages: { png: category2Png, webp: category2Webp, avif: category2Avif, alt: 'Beverages category' },
-    'gift-boxes': { png: category3Png, webp: category3Webp, avif: category3Avif, alt: 'Gift boxes category' }
+    'dried-fruits': { png: category5Png, webp: category5Webp, avif: category5Avif, alt: 'Dehydrated fruits category' },
+    beverages: { png: category4Png, webp: category4Webp, avif: category4Avif, alt: 'Beverages category' },
+    'gift-boxes': { png: category6Png, webp: category6Webp, avif: category6Avif, alt: 'Gift boxes category' }
   };
 
   const categories = [
-    { id: 'dried-fruits', title: 'Dehydrated Fruits', subtitle: 'Fruity Flavours', 
+    { id: 'dried-fruits', title: 'Fruit Powder', subtitle: 'Fruity Flavours', 
+      desc: 'Our fruit powders are made from carefully dehydrated fruit and finely milled to lock in natural taste and aroma. Perfect for smoothies, baking, desserts, cocktails, and everyday flavour boosts.' },
+    { id: 'beverages', title: 'Dehydrated Fruits', subtitle: 'Fruity Flavours',
       desc: 'All our dried fruits are naturally air-dried with no added preservatives or sulphur. Perfect for snacking, baking, or adding to your favorite recipes.' },
-    { id: 'beverages', title: 'Beverages', subtitle: 'Refreshing & Pure',
-      desc: 'Our premium beverages are crafted from the finest natural ingredients. From fruit juices to specialty drinks, each bottle delivers pure refreshment.' },
-    { id: 'gift-boxes', title: 'Gift Boxes', subtitle: 'Perfect for Any Occasion',
-      desc: 'Curated gift boxes featuring our best dried fruits and beverages. Beautifully packaged and ready to delight your loved ones.' }
+    { id: 'gift-boxes', title: 'Fruit Strips', subtitle: 'Dried Fruits',
+      desc: 'Our fruit strips are made from naturally dried fruit with vibrant flavour and a satisfying chewy texture. Perfect for healthy snacking, lunchboxes, travel, and on-the-go energy.' }
   ];
+
+  useEffect(() => {
+    const validCategoryIds = ['dried-fruits', 'beverages', 'gift-boxes'];
+
+    const handleCategorySelect = (event) => {
+      const categoryId = event.detail?.categoryId;
+      if (validCategoryIds.includes(categoryId)) {
+        setActiveTab(categoryId);
+      }
+    };
+
+    window.addEventListener('vitra:select-category', handleCategorySelect);
+    return () => window.removeEventListener('vitra:select-category', handleCategorySelect);
+  }, []);
 
   return (
     <section className="categories" id="shop">
@@ -54,7 +70,7 @@ function Categories() {
                       <source srcSet={imageSet.avif} type="image/avif" />
                       <source srcSet={imageSet.webp} type="image/webp" />
                       <img
-                        className={`tab-btn-image ${cat.id === 'dried-fruits' ? 'tab-btn-image-fit' : ''}`}
+                        className={`tab-btn-image ${cat.id === 'dried-fruits' ? 'tab-btn-image-fit' : ''} ${cat.id === 'gift-boxes' ? 'tab-btn-image-gift' : ''}`}
                         src={imageSet.png}
                         alt={imageSet.alt}
                         loading="lazy"
@@ -84,7 +100,7 @@ function Categories() {
                 <h2>{cat.title}</h2>
                 <h4>{cat.subtitle}</h4>
                 <p>{cat.desc}</p>
-                <a href="#products" className="btn btn-secondary">Shop {cat.title}</a>
+                <a href={getCategoryCtaHref(cat)} className="btn btn-secondary">Shop {cat.title}</a>
               </div>
             );
           })}
