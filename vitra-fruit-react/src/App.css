@@ -991,7 +991,7 @@ textarea:focus-visible {
 
 .footer {
   background:
-    linear-gradient(135deg, rgba(85, 51, 255, 0.32), rgba(85, 51, 255, 0.14)),
+    linear-gradient(135deg, rgba(85, 51, 255, 0.18), rgba(85, 51, 255, 0.08)),
     var(--footer-bg);
   background-size: cover;
   background-position: center;

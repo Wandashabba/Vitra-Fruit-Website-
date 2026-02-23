@@ -321,11 +321,23 @@
       background: #ffffff;
     }
     .products-title {
-      text-align: center;
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      font-size: clamp(1.6rem, 2.8vw, 2.25rem);
       color: #1f2850;
-      margin-bottom: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      line-height: 1.1;
+    }
+    .products-kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #6a7397;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
+      text-align: center;
     }
     .product-grid {
       display: grid;
@@ -711,6 +723,7 @@
 
     .footer {
       background:
+        linear-gradient(135deg, rgba(85, 51, 255, 0.18), rgba(85, 51, 255, 0.08)),
         image-set(
           url('/images/footer-960.avif') type('image/avif') 1x,
           url('/images/footer.avif') type('image/avif') 2x,
@@ -843,7 +856,8 @@
 
   <section class="products-strip">
     <div class="container">
-      <h2 class="products-title">Dehydrated Fruit Products</h2>
+      <p class="products-kicker">Shop</p>
+      <h1 class="products-title">Dehydrated Fruit Products</h1>
       <div class="product-grid">
         <article class="product-card">
           <img src="/images/pineapple-1.png" alt="Dehydrated Pineapple product" loading="lazy" decoding="async" />
