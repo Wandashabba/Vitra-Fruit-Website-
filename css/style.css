@@ -409,6 +409,109 @@ body {
     font-size: 1.1rem;
 }
 
+/* Payment Strip */
+.payment-strip {
+    position: relative;
+    padding: 34px 0;
+    background: #fff;
+    border-top: none;
+    border-bottom: none;
+}
+
+.payment-strip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255, 176, 78, 0.08), rgba(255, 255, 255, 0) 40%, rgba(255, 176, 78, 0.06));
+}
+
+.payment-strip-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+}
+
+.payment-strip-head {
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 0 20px;
+}
+
+.payment-strip-eyebrow {
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    font-weight: 800;
+    color: #a55f00;
+}
+
+.payment-strip-viewport {
+    width: 100%;
+    overflow: hidden;
+}
+
+.payment-strip-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: paymentFlowRight 60s linear infinite;
+}
+
+.payment-logo-card {
+    min-height: 78px;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 14px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.payment-logo {
+    height: 34px;
+    max-width: 142px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.payment-logo-card:hover,
+.payment-logo-card:focus-within {
+    transform: translateY(-3px);
+    opacity: 1;
+}
+
+.payment-logo-card:hover .payment-logo,
+.payment-logo-card:focus-within .payment-logo {
+    transform: scale(1.08);
+    filter: saturate(1.15);
+}
+
+@keyframes paymentFlowRight {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-16.6667%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .payment-strip-track {
+        animation: none;
+        transform: none;
+    }
+}
+
 /* Footer */
 .footer {
     background: var(--dark-color);
@@ -472,6 +575,29 @@ body {
 
     .nav-menu.active {
         display: flex;
+    }
+
+    .payment-strip {
+        padding: 24px 0;
+    }
+
+    .payment-strip-inner {
+        width: 100%;
+    }
+
+    .payment-strip-track {
+        gap: 6px;
+        padding: 0;
+    }
+
+    .payment-logo-card {
+        min-height: 64px;
+        padding: 10px;
+    }
+
+    .payment-logo {
+        height: 28px;
+        max-width: 112px;
     }
 
     .dropdown-menu {
