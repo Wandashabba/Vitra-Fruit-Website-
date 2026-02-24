@@ -366,35 +366,6 @@
       margin-bottom: 0.85rem;
       transition: transform 0.28s ease, filter 0.28s ease;
     }
-    .product-flip {
-      position: relative;
-      width: 100%;
-      height: 260px;
-      margin-bottom: 0.85rem;
-      perspective: 1200px;
-    }
-    .product-flip-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.58s ease;
-      transform-style: preserve-3d;
-    }
-    .product-card:hover .product-flip-inner {
-      transform: rotateY(180deg);
-    }
-    .product-flip-face {
-      position: absolute;
-      inset: 0;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-    }
-    .product-flip-face img {
-      margin-bottom: 0;
-    }
-    .product-flip-back {
-      transform: rotateY(180deg);
-    }
     .product-card:hover {
       transform: translateY(-4px);
     }
@@ -426,8 +397,7 @@
       display: inline-flex;
       justify-content: center;
       min-width: 170px;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-      color: #fff;
+      color: var(--nav-ink);
       border-radius: 999px;
       text-transform: uppercase;
       letter-spacing: 0.12em;
@@ -435,13 +405,17 @@
       padding: 11px 22px;
       text-decoration: none;
       font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 10px 20px rgba(238, 90, 111, 0.28);
-      transition: transform 0.22s ease, background 0.22s ease;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 12px 22px rgba(11, 13, 32, 0.2);
+      backdrop-filter: blur(10px);
+      transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
     }
     .btn-buy:hover {
       transform: translateY(-2px);
-      background: linear-gradient(135deg, #ee5a6f, #ff6b6b);
+      background: rgba(255, 255, 255, 0.24);
+      border-color: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 14px 24px rgba(11, 13, 32, 0.28);
     }
     @media (max-width: 700px) {
       .product-grid {
@@ -575,7 +549,7 @@
     }
     .tab-buttons {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0.8rem;
       align-items: stretch;
     }
@@ -598,7 +572,7 @@
     }
     .tab-btn-image {
       width: 100%;
-      height: 220px;
+      height: 180px;
       object-fit: cover;
       object-position: center center;
       border-radius: 10px;
@@ -609,13 +583,13 @@
     .tab-btn-image-fit {
       object-fit: contain;
       background: #fff;
-      padding: 4px;
-      transform: scale(1.05);
+      padding: 3px;
+      transform: scale(1.02);
     }
     .tab-btn-image-gift {
       object-fit: contain;
       background: #fff;
-      padding: 6px;
+      padding: 4px;
       transform: scale(0.99);
     }
     .tab-btn:hover .tab-btn-image,
@@ -805,8 +779,9 @@
             </button>
             <ul class="nav-dropdown-menu">
               <li><a class="nav-dropdown-link active" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
-              <li><a class="nav-dropdown-link" href="/#shop">Fruit Powder</a></li>
-              <li><a class="nav-dropdown-link" href="/#shop">Fruit Strips</a></li>
+              <li><a class="nav-dropdown-link" href="/shakers.html">Shakers</a></li>
+              <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+              <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
             </ul>
           </li>
         </ul>
@@ -842,8 +817,9 @@
               </button>
               <ul id="mobileShopDropdown" class="nav-dropdown-menu">
                 <li><a class="nav-dropdown-link active" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
-                <li><a class="nav-dropdown-link" href="/#shop">Fruit Powder</a></li>
-                <li><a class="nav-dropdown-link" href="/#shop">Fruit Strips</a></li>
+                <li><a class="nav-dropdown-link" href="/shakers.html">Shakers</a></li>
+                <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+                <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
@@ -860,23 +836,14 @@
       <h1 class="products-title">Dehydrated Fruit Products</h1>
       <div class="product-grid">
         <article class="product-card">
-          <img src="/images/pineapple-1.png" alt="Dehydrated Pineapple product" loading="lazy" decoding="async" />
-          <h3 class="product-name"><span>Dehydrated</span><span>Pineapple</span></h3>
+          <img src="/images/lemon-1.png" alt="Dehydrated Lemon plastic packaging" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated Lemon</span><span>Plastic</span></h3>
           <p class="product-price">R100-R150</p>
           <a class="btn-buy" href="/contact.html">Buy Now</a>
         </article>
         <article class="product-card">
-          <div class="product-flip">
-            <div class="product-flip-inner">
-              <div class="product-flip-face product-flip-front">
-                <img class="lemon-image" src="/images/lemon-1.png" alt="Dehydrated Lemon product" loading="lazy" decoding="async" />
-              </div>
-              <div class="product-flip-face product-flip-back">
-                <img class="lemon-image" src="/images/lemon-bottle.png" alt="Dehydrated Lemon bottle packaging" loading="lazy" decoding="async" />
-              </div>
-            </div>
-          </div>
-          <h3 class="product-name"><span>Dehydrated</span><span>Lemon</span></h3>
+          <img src="/images/lemon-bottle.png" alt="Dehydrated Lemon bottle packaging" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated Lemon</span><span>Bottle</span></h3>
           <p class="product-price">R100-R150</p>
           <a class="btn-buy" href="/contact.html">Buy Now</a>
         </article>
@@ -889,6 +856,30 @@
         <article class="product-card">
           <img src="/images/orange-1.png" alt="Dehydrated Orange product" loading="lazy" decoding="async" />
           <h3 class="product-name"><span>Dehydrated</span><span>Orange</span></h3>
+          <p class="product-price">R100-R150</p>
+          <a class="btn-buy" href="/contact.html">Buy Now</a>
+        </article>
+        <article class="product-card">
+          <img src="/images/Grapefruit.png" alt="Dehydrated Grapefruit product" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated</span><span>Grapefruit</span></h3>
+          <p class="product-price">R100-R150</p>
+          <a class="btn-buy" href="/contact.html">Buy Now</a>
+        </article>
+        <article class="product-card">
+          <img src="/images/Orange.png" alt="Dehydrated Orange product" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated</span><span>Orange</span></h3>
+          <p class="product-price">R100-R150</p>
+          <a class="btn-buy" href="/contact.html">Buy Now</a>
+        </article>
+        <article class="product-card">
+          <img src="/images/Lime.png" alt="Dehydrated Lime product" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated</span><span>Lime</span></h3>
+          <p class="product-price">R100-R150</p>
+          <a class="btn-buy" href="/contact.html">Buy Now</a>
+        </article>
+        <article class="product-card">
+          <img src="/images/Hibiscus.png" alt="Dehydrated Hibiscus product" loading="lazy" decoding="async" />
+          <h3 class="product-name"><span>Dehydrated</span><span>Hibiscus</span></h3>
           <p class="product-price">R100-R150</p>
           <a class="btn-buy" href="/contact.html">Buy Now</a>
         </article>
@@ -924,25 +915,36 @@
               <img class="tab-btn-image tab-btn-image-gift" src="/images/category6.png" alt="Gift boxes category" loading="lazy" decoding="async" />
             </picture>
           </button>
+          <button id="tab-vegetable-powders" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-vegetable-powders" data-category-tab="vegetable-powders" tabindex="-1">
+            <picture>
+              <img class="tab-btn-image tab-btn-image-fit" src="/images/category7.png" alt="Vegetable powders category" loading="lazy" decoding="async" />
+            </picture>
+          </button>
         </div>
         <div class="tab-content">
           <div id="panel-dried-fruits" class="tab-pane active" role="tabpanel" aria-labelledby="tab-dried-fruits">
-            <h2>Fruit Powder</h2>
-            <h4>Fruity Flavours</h4>
-            <p>Our fruit powders are made from carefully dehydrated fruit and finely milled to lock in natural taste and aroma. Perfect for smoothies, baking, desserts, cocktails, and everyday flavour boosts.</p>
-            <a href="/#shop" class="btn btn-secondary">Shop Fruit Powder</a>
+            <h2>Shakers</h2>
+            <h4>Citrus Flavours</h4>
+            <p>Our Shakers are made from carefully dehydrated fruit and finely milled to lock in natural taste and aroma. Perfect for smoothies, baking, desserts, cocktails, and everyday flavour boosts.</p>
+            <a href="/shakers.html" class="btn btn-secondary">Shop Shakers</a>
           </div>
           <div id="panel-beverages" class="tab-pane" role="tabpanel" aria-labelledby="tab-beverages" hidden>
             <h2>Dehydrated Fruits</h2>
-            <h4>Fruity Flavours</h4>
-            <p>All our dried fruits are naturally air-dried with no added preservatives or sulphur. Perfect for snacking, baking, or adding to your favorite recipes.</p>
+            <h4>Citrus Flavours</h4>
+            <p>All our Dehydrated Fruits are naturally air-dried with no added preservatives and additives. Perfect for snacking, baking, or adding to your favorite recipes.</p>
             <a href="/dehydrated-fruits.html" class="btn btn-secondary">Shop Dehydrated Fruits</a>
           </div>
           <div id="panel-gift-boxes" class="tab-pane" role="tabpanel" aria-labelledby="tab-gift-boxes" hidden>
             <h2>Fruit Strips</h2>
-            <h4>Dried Fruits</h4>
-            <p>Our fruit strips are made from naturally dried fruit with vibrant flavour and a satisfying chewy texture. Perfect for healthy snacking, lunchboxes, travel, and on-the-go energy.</p>
-            <a href="/#shop" class="btn btn-secondary">Shop Fruit Strips</a>
+            <h4>Dehydrated fruits</h4>
+            <p>Our fruit strips are made from dehydrated fruit with vibrant flavour and a satisfying chewy texture. Perfect for healthy snacking, lunchboxes, travel, and on-the-go energy.</p>
+            <a href="/fruit-strips.html" class="btn btn-secondary">Shop Fruit Strips</a>
+          </div>
+          <div id="panel-vegetable-powders" class="tab-pane" role="tabpanel" aria-labelledby="tab-vegetable-powders" hidden>
+            <h2>Vegetable Powders</h2>
+            <h4>Garden Fresh</h4>
+            <p>Our vegetable powders are made from carefully dehydrated vegetables and finely milled to preserve flavour and nutrition. Perfect for soups, sauces, smoothies, and everyday cooking.</p>
+            <a href="/vegetable-powders.html" class="btn btn-secondary">Shop Vegetable Powders</a>
           </div>
         </div>
       </div>

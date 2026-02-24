@@ -8,13 +8,27 @@ function Products() {
     <section className="featured-products" id="products">
       <div className="container">
         <p className="featured-kicker featured-kicker-top">Our Story</p>
-        <div className="featured-products-content about-layout">
-          <div className="about-text">
-            <h2>About Us</h2>
+        <div className="featured-products-content founder-layout">
+          <div className="founder-text">
+            <h2>A Message from Our Founder</h2>
             <p className="featured-copy">
-              Vitra Fruit is a proudly South African, black female-owned business founded in Cape Town, with roots from Pretoria.
-              Inspired by the idea of preserving the natural goodness of citrus fruits beyond their seasons, we specialise in
-              producing high-quality dried fruits that are both healthy and versatile.
+              Long before sustainability became a global conversation, I understood that preservation protects dignity and extending shelf life protects families and reducing waste protects resources.
+            </p>
+            <p className="featured-copy">
+              Years later, that foundation became VitraFruits. What was once a sun-drying in rural homesteads has evolved into a modern agro-processing business but the principles remain the same:
+            </p>
+            <p className="featured-copy">
+              VitraFruits is deeply personal to me because it reflects how I was raised. It reflects resilience, responsibility and the belief that food carries effort, labour, land, and rain. We honour all of that by ensuring it is not wasted.
+            </p>
+            <p className="featured-copy">
+              Today, we transform fresh produce into premium dehydrated fruits, powders, crisps, and functional ingredients. But behind every product is a philosophy rooted in lived experience.
+            </p>
+            <p className="featured-copy">
+              Reducing food waste is not a marketing message for VitraFruits. It is my story.
+            </p>
+            <p className="founder-signoff">
+              Mary Manchadi Mahuma
+              <span>FOUNDER</span>
             </p>
           </div>
           <figure className="about-owner-image">

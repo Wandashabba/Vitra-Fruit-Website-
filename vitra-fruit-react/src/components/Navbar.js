@@ -22,8 +22,9 @@ function Navbar({ cartCount = 0 }) {
   const shopDropdownItems = useMemo(
     () => [
       { label: "Dehydrated Fruits", categoryId: "beverages", href: "/dehydrated-fruits.html" },
-      { label: "Fruit Powder", categoryId: "dried-fruits" },
-      { label: "Fruit Strips", categoryId: "gift-boxes" }
+      { label: "Shakers", categoryId: "shakers", href: "/shakers.html" },
+      { label: "Fruit strips", categoryId: "fruit-strips", href: "/fruit-strips.html" },
+      { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "/vegetable-powders.html" }
     ],
     []
   );
