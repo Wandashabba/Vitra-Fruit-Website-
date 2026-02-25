@@ -1,6 +1,8 @@
 import React from 'react';
 
 function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="footer">
       <div className="container">
@@ -15,7 +17,7 @@ function Footer() {
             </ul>
             <a
               className="footer-social-link"
-              href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D"
               target="_blank"
               rel="noreferrer"
               aria-label="Vitra Fruit Instagram"
@@ -28,7 +30,7 @@ function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2025 Vitra Fruit. All Rights Reserved. Developed by Wanda Shabangu</p>
+          <p>&copy; {currentYear} Vitra Fruit. All Rights Reserved. Developed by Wanda Shabangu</p>
         </div>
       </div>
     </footer>
