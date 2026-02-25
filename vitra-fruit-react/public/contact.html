@@ -1,58 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact Us | Vitra Fruit</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared-navbar.css">
+  <meta name="description" content="Contact Vitra Fruit by email, phone, WhatsApp, or visit us in Cape Town." />
+  <link rel="canonical" href="https://vitrafruit.com/contact.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Contact Us | Vitra Fruit" />
+  <meta property="og:description" content="Get in touch with Vitra Fruit via email, phone, WhatsApp, or our Cape Town address." />
+  <meta property="og:image" content="https://vitrafruit.com/images/social-preview.jpg" />
+  <meta property="og:url" content="https://vitrafruit.com/contact.html" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Contact Us | Vitra Fruit" />
+  <meta name="twitter:description" content="Get in touch with Vitra Fruit via email, phone, WhatsApp, or our Cape Town address." />
+  <meta name="twitter:image" content="https://vitrafruit.com/images/social-preview.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --nav-ink: #111111;
+      --nav-accent: #f6b25f;
+    }
     body {
-      min-height: 100vh;
       font-family: 'Manrope', sans-serif;
-      color: #1f2850;
-      background: linear-gradient(145deg, rgba(85, 51, 255, 0.12), rgba(23, 162, 184, 0.1));
+      color: #1c2550;
+      background: #ffffff;
+      min-height: 100vh;
     }
-    .page {
-      padding: 28px 18px;
-    }
-    .card {
-      width: min(95vw, 720px);
+    .container {
+      max-width: 1200px;
       margin: 0 auto;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 20px;
-      padding: 30px 24px 24px;
-      box-shadow: 0 14px 36px rgba(16, 26, 60, 0.16);
+      padding: 0 20px;
     }
-    h1 {
+
+    #wrapper-navbar {
+      background: transparent;
+      position: sticky;
+      top: 0;
+      z-index: 1400;
+      padding: 14px 16px 0;
+      transition: transform 0.32s ease, opacity 0.32s ease;
+      will-change: transform, opacity;
+    }
+    #wrapper-navbar.is-hidden {
+      transform: translateY(-135%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .navbar {
+      padding: 1rem 0;
+      border-radius: 24px;
+      position: relative;
+      overflow: visible;
+      border: 1px solid rgba(255, 255, 255, 0.48);
+      background: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 18px 30px rgba(11, 13, 32, 0.22);
+      backdrop-filter: blur(14px);
+    }
+    .navbar::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: 23px;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.2));
+    }
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: clamp(0.55rem, 1.4vw, 1.2rem);
+      position: relative;
+      z-index: 1;
+    }
+    .navbar-menu {
+      display: none;
+      list-style: none;
+      gap: 0.35rem;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      flex: 1;
+    }
+    .navbar-left { order: 1; justify-content: flex-end; padding-right: 0.35rem; }
+    .navbar-right { order: 3; justify-content: flex-start; padding-left: 0.35rem; }
+    .navbar-logo { display: flex; align-items: center; order: 2; margin: 0 clamp(0.15rem, 0.9vw, 0.7rem); flex-shrink: 0; }
+    .navbar-logo img {
+      height: 68px;
+      width: auto;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      box-shadow: 0 8px 22px rgba(11, 13, 32, 0.38), 0 0 0 3px rgba(255, 255, 255, 0.07);
+      transition: all 0.3s;
+    }
+    .navbar-logo img:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 26px rgba(11, 13, 32, 0.5), 0 0 0 3px rgba(246, 178, 95, 0.17);
+    }
+    .nav-item { margin: 0; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: 12px;
+    }
+    .nav-link {
+      text-decoration: none;
+      color: var(--nav-ink);
+      font-weight: 600;
+      font-size: 0.83rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      padding: 0.65rem 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      position: relative;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .nav-link-dropdown {
+      box-shadow: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .nav-link-dropdown:focus,
+    .nav-link-dropdown:focus-visible {
+      outline: none;
+      box-shadow: none;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 24px;
+      height: 2px;
+      transform: translateX(-50%) scaleX(0);
+      background: linear-gradient(90deg, #ffe3b5, var(--nav-accent));
+      transition: transform 0.28s ease;
+    }
+    .nav-link:hover,
+    .nav-link.active {
+      color: #111111;
+      border-color: rgba(255, 255, 255, 0.22);
+      background: rgba(255, 255, 255, 0.09);
+    }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+    .nav-caret {
+      font-size: 0.72rem;
+      line-height: 1;
+      transform: translateY(1px);
+      transition: transform 0.25s ease;
+    }
+    .nav-dropdown-menu {
+      list-style: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      min-width: 220px;
+      margin: 0;
+      padding: 0.4rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      box-shadow: 0 14px 30px rgba(12, 16, 38, 0.18);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+      z-index: 25;
+    }
+    .nav-dropdown-link {
+      display: block;
+      padding: 0.6rem 0.75rem;
+      color: #1a2042;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      background: rgba(246, 178, 95, 0.18);
+      color: #111;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown:focus-within .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .nav-dropdown:hover .nav-caret,
+    .nav-dropdown:focus-within .nav-caret {
+      transform: translateY(1px) rotate(180deg);
+    }
+
+    .navbar-toggler {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 11px;
+      padding: 0.55rem;
+      cursor: pointer;
+      z-index: 1001;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+    .navbar-toggler-icon {
+      width: 22px;
+      height: 16px;
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .toggler-line {
+      width: 22px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+    .navbar-toggler.is-open { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.35); }
+    .navbar-toggler.is-open .navbar-toggler-icon { position: relative; justify-content: center; }
+    .navbar-toggler.is-open .toggler-line:nth-child(1), .navbar-toggler.is-open .toggler-line:nth-child(3) { position: absolute; left: 0; }
+    .navbar-toggler.is-open .toggler-line:nth-child(1) { transform: rotate(45deg); }
+    .navbar-toggler.is-open .toggler-line:nth-child(2) { opacity: 0; }
+    .navbar-toggler.is-open .toggler-line:nth-child(3) { transform: rotate(-45deg); }
+
+    .mobile-nav {
+      display: block;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 0;
+      right: 0;
+      border-radius: 18px;
+      background: linear-gradient(155deg, rgba(18, 22, 49, 0.97), rgba(52, 29, 97, 0.96));
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(10, 13, 31, 0.4);
+      padding: 0.7rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      max-height: 0;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      transform: translateY(-8px) scale(0.985);
+      transform-origin: top center;
+      pointer-events: none;
+      transition: max-height 0.38s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+    }
+    .mobile-nav.is-open {
+      max-height: 560px;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .mobile-nav .navbar-nav {
+      list-style: none;
+      padding: 0.2rem;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .mobile-nav .nav-link {
+      color: #fff;
+      width: 100%;
+      justify-content: space-between;
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .mobile-nav .nav-link.active {
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+    .mobile-nav .nav-link::after { display: none; }
+    .mobile-nav .nav-dropdown::after { display: none; }
+    .mobile-nav .nav-dropdown-menu {
+      position: static;
+      min-width: 100%;
+      margin-top: 0.25rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      max-height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+    }
+    .mobile-nav .nav-dropdown-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      max-height: 220px;
+      pointer-events: auto;
+    }
+    .mobile-nav .nav-dropdown-link {
+      color: #fff;
+      border-radius: 10px;
+      font-size: 0.74rem;
+    }
+    .mobile-nav .nav-dropdown-link:hover,
+    .mobile-nav .nav-dropdown-link:focus-visible,
+    .mobile-nav .nav-dropdown-link.active {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+    }
+
+    @media (min-width: 1100px) {
+      .navbar-menu { display: flex; }
+      .navbar-toggler { display: none; }
+    }
+
+    .contact-section {
+      padding: 40px 20px 60px;
+      background: #fff;
+    }
+    .contact-shell {
+      max-width: 1140px;
+      margin: 0 auto;
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: visible;
+    }
+    .contact-head {
+      padding: 8px 0 22px;
+      border-bottom: 1px solid rgba(31, 40, 80, 0.1);
+      margin-bottom: 22px;
+    }
+    .contact-top-image {
+      margin: 0 0 22px;
+      border-bottom: 1px solid rgba(31, 40, 80, 0.1);
+      padding-bottom: 22px;
+    }
+    .contact-top-image img {
+      width: 100%;
+      height: clamp(190px, 26vw, 280px);
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+    .contact-head h1 {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin-bottom: 8px;
-      text-align: center;
+      font-size: clamp(1.8rem, 3.3vw, 2.5rem);
+      color: #1f2850;
+      margin-bottom: 0.45rem;
     }
-    .lead {
-      text-align: center;
-      color: #5a678e;
-      margin-bottom: 18px;
-      line-height: 1.6;
+    .contact-head p {
+      color: #4f5d88;
       font-size: 0.98rem;
+      line-height: 1.65;
+      max-width: 72ch;
+      margin: 0;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.15fr);
+      gap: 30px;
+      align-items: start;
+    }
+    .contact-details {
+      padding: 0 30px 0 0;
+      background: transparent;
+      border-right: 1px solid rgba(31, 40, 80, 0.12);
+    }
+    .detail-block {
+      margin-bottom: 1.15rem;
+    }
+    .detail-block:last-child {
+      margin-bottom: 0;
+    }
+    .detail-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6a7397;
+      font-weight: 800;
+      margin-bottom: 0.28rem;
+    }
+    .detail-value,
+    .detail-value a {
+      color: #1f2850;
+      text-decoration: none;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+    .detail-value a:hover {
+      text-decoration: underline;
+    }
+    .contact-form-wrap {
+      padding: 0;
     }
     form {
       display: grid;
-      gap: 12px;
+      gap: 14px;
+      max-width: 100%;
     }
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
     }
+    .field {
+      display: grid;
+      gap: 0.35rem;
+    }
+    .field label {
+      font-size: 0.74rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #5f6a94;
+      font-weight: 700;
+    }
     input, textarea {
       width: 100%;
       border: 1px solid #d4daf2;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 12px 13px;
       font: inherit;
       color: #1f2850;
@@ -77,14 +467,14 @@
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
-      margin-top: 2px;
+      justify-content: flex-start;
+      margin-top: 4px;
     }
     button, .back {
       border: 0;
       text-decoration: none;
       cursor: pointer;
-      border-radius: 999px;
+      border-radius: 10px;
       padding: 12px 22px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
@@ -104,22 +494,157 @@
     button:hover, .back:hover { transform: translateY(-2px); }
     .status {
       margin-top: 8px;
-      text-align: center;
       font-size: 0.92rem;
       min-height: 1.4em;
     }
     .status.success { color: #237942; }
     .status.error { color: #b02f45; }
-    @media (max-width: 640px) {
-      .row { grid-template-columns: 1fr; }
-      .card { padding: 24px 16px 20px; }
+
+    .map-wrap {
+      border-top: 1px solid rgba(31, 40, 80, 0.1);
+      padding-top: 22px;
+      margin-top: 14px;
+    }
+    .map-wrap iframe {
+      width: 100%;
+      height: 360px;
+      border: 0;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .footer {
+      background:
+        linear-gradient(135deg, rgba(85, 51, 255, 0.18), rgba(85, 51, 255, 0.08)),
+        image-set(
+          url('/images/footer-960.avif') type('image/avif') 1x,
+          url('/images/footer.avif') type('image/avif') 2x,
+          url('/images/footer-960.webp') type('image/webp') 1x,
+          url('/images/footer.webp') type('image/webp') 2x
+        );
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      padding: 2.2rem 20px 0.9rem;
+      font-family: 'Manrope', sans-serif;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.4rem;
+      text-align: center;
+    }
+    .footer-col h4 {
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .footer-col ul li {
+      margin-bottom: 0.4rem;
+    }
+    .footer-col a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+    .footer-col a:hover {
+      color: #ffd8a6;
+    }
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .footer-social-link svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.22);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 1040px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .contact-details {
+        border-right: none;
+        border-bottom: 1px solid rgba(31, 40, 80, 0.1);
+        padding: 0 0 16px;
+      }
+      .contact-form-wrap {
+        padding: 0;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .contact-section {
+        padding: 28px 16px 42px;
+      }
+      .contact-head {
+        padding: 4px 0 16px;
+      }
+      .contact-details,
+      .contact-form-wrap {
+        padding-left: 0;
+        padding-right: 0;
+      }
+      .row {
+        grid-template-columns: 1fr;
+      }
+      .actions {
+        justify-content: center;
+      }
+      .map-wrap iframe {
+        height: 300px;
+      }
+      .contact-top-image img {
+        height: 190px;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="nav-wrap" data-site-nav>
-    <nav class="site-navbar" aria-label="Main navigation">
-      <div class="site-nav-inner">
+  <div id="wrapper-navbar">
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="container navbar-container">
+        <ul class="navbar-menu navbar-left">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item nav-dropdown">
+            <button class="nav-link nav-link-dropdown" type="button" aria-haspopup="true">
+              <span>Shop Now</span>
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="nav-dropdown-menu">
+              <li><a class="nav-dropdown-link" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
+              <li><a class="nav-dropdown-link" href="/shakers.html">Shakers</a></li>
+              <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+              <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
+            </ul>
+          </li>
+        </ul>
+
         <a class="navbar-logo" href="/">
           <picture>
             <source srcset="/images/logo.avif" type="image/avif" />
@@ -128,61 +653,215 @@
           </picture>
         </a>
 
-        <button class="site-nav-hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
-          <span></span><span></span><span></span>
+        <ul class="navbar-menu navbar-right">
+          <li class="nav-item"><a class="nav-link active" href="/contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+        </ul>
+
+        <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+            <span class="toggler-line"></span>
+            <span class="toggler-line"></span>
+            <span class="toggler-line"></span>
+          </span>
         </button>
 
-        <ul class="site-nav-menu" data-menu>
-          <li><a class="site-nav-link" data-match="home" href="/">Home</a></li>
-          <li class="site-nav-dropdown" data-shop-item>
-            <button class="site-nav-button" type="button" data-shop-toggle aria-haspopup="true" aria-expanded="false">Shop Now <span aria-hidden="true">▾</span></button>
-            <ul class="site-nav-dropdown-menu">
-              <li><a href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
-              <li><a href="/shakers.html">Shakers</a></li>
-              <li><a href="/fruit-strips.html">Fruit strips</a></li>
-              <li><a href="/vegetable-powders.html">Vegetable Powders</a></li>
-            </ul>
-          </li>
-          <li><a class="site-nav-link" data-match="contact" href="/contact.html">Contact</a></li>
-          <li><a class="site-nav-link" data-match="account" href="/account.html">Cart</a></li>
-        </ul>
+        <div id="mobileNav" class="mobile-nav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item nav-dropdown" id="mobileShopItem">
+              <button id="mobileShopToggle" class="nav-link nav-link-dropdown" type="button" aria-expanded="false" aria-haspopup="true">
+                <span>Shop Now</span>
+                <span class="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <ul id="mobileShopDropdown" class="nav-dropdown-menu">
+                <li><a class="nav-dropdown-link" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
+                <li><a class="nav-dropdown-link" href="/shakers.html">Shakers</a></li>
+                <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+                <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link active" href="/contact.html">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
-  </header>
+  </div>
 
-  <main class="page">
-    <section class="card">
-      <h1>Contact Us</h1>
-      <p class="lead">Send us a message and we will get back to you as soon as possible.</p>
+  <main class="contact-section">
+    <section class="contact-shell">
+      <div class="contact-top-image" aria-label="Contact feature image">
+        <img src="/images/picture1.jpeg" alt="Vitra Fruit product showcase" loading="lazy" />
+      </div>
 
-      <form id="contactForm" novalidate>
-        <div class="row">
-          <input type="text" name="name" placeholder="Your Name" required>
-          <input type="email" name="email" placeholder="Your Email" required>
-        </div>
-        <input type="tel" name="phone" placeholder="Phone Number">
-        <textarea name="message" placeholder="Your Message" required></textarea>
+      <div class="contact-head">
+        <h1>Contact us</h1>
+        <p>We would love to hear from you, get in touch and let’s make something great.</p>
+      </div>
 
-        <input class="hidden-field" type="text" name="_honey" tabindex="-1" autocomplete="off">
-        <input type="hidden" name="_subject" value="New Vitra Fruit Contact Submission">
-        <input type="hidden" name="_template" value="table">
+      <div class="contact-grid">
+        <aside class="contact-details" aria-label="Contact details">
+          <div class="detail-block">
+            <p class="detail-label">Email</p>
+            <p class="detail-value"><a href="mailto:vitrafruits@gmail.com">vitrafruits@gmail.com</a></p>
+          </div>
+          <div class="detail-block">
+            <p class="detail-label">Phone / WhatsApp</p>
+            <p class="detail-value"><a href="tel:+27679414223">+27 67 941 4223</a></p>
+          </div>
+          <div class="detail-block">
+            <p class="detail-label">Address</p>
+            <p class="detail-value">Dorchester Drive, Cape Town,<br />7441</p>
+          </div>
+          <div class="detail-block">
+            <p class="detail-label">Instagram</p>
+            <p class="detail-value"><a href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank" rel="noreferrer">@vitrafruits</a></p>
+          </div>
+        </aside>
 
-        <div class="actions">
-          <button type="submit" id="submitBtn">Send Message</button>
-          <a class="back" href="/">Back to Home</a>
-        </div>
-        <p id="formStatus" class="status" role="status" aria-live="polite"></p>
-      </form>
+        <section class="contact-form-wrap" aria-label="Contact form">
+          <form id="contactForm" novalidate>
+            <div class="row">
+              <div class="field">
+                <label for="fullName">Full Name</label>
+                <input id="fullName" type="text" name="name" placeholder="Full Name" required />
+              </div>
+              <div class="field">
+                <label for="emailAddress">Email Address</label>
+                <input id="emailAddress" type="email" name="email" placeholder="Email Address" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="phoneNumber">Phone Number</label>
+              <input id="phoneNumber" type="tel" name="phone" placeholder="Phone Number" />
+            </div>
+
+            <div class="field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Message" required></textarea>
+            </div>
+
+            <input class="hidden-field" type="text" name="_honey" tabindex="-1" autocomplete="off" />
+            <input type="hidden" name="_subject" value="New Vitra Fruit Contact Submission" />
+            <input type="hidden" name="_template" value="table" />
+
+            <div class="actions">
+              <button type="submit" id="submitBtn">Send Message</button>
+              <a class="back" href="/">Back to Home</a>
+            </div>
+            <p id="formStatus" class="status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </div>
+
+      <section class="map-wrap" aria-label="Map location">
+        <iframe
+          title="Vitra Fruit location"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Dorchester%20Drive%2C%20Cape%20Town%2C%207441&output=embed">
+        </iframe>
+      </section>
     </section>
   </main>
 
-  <script src="/shared-navbar.js"></script>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-col">
+          <h4>Customer Service</h4>
+          <ul>
+            <li><a href="/account.html">My account</a></li>
+            <li><a href="/contact.html">Contact Us</a></li>
+            <li><a href="/shipping.html">Shipping Costs</a></li>
+            <li><a href="/terms.html">Terms and Conditions</a></li>
+          </ul>
+          <a
+            class="footer-social-link"
+            href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Vitra Fruit Instagram"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
+            </svg>
+            <span>@vitrafruits</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span data-current-year></span> Vitra Fruit. All Rights Reserved. Developed by Wanda Shabangu</p>
+      </div>
+    </div>
+  </footer>
+
   <script>
     (function () {
+      const yearNode = document.querySelector('[data-current-year]');
+      if (yearNode) {
+        yearNode.textContent = String(new Date().getFullYear());
+      }
+
+      const wrapper = document.getElementById('wrapper-navbar');
+      const toggler = document.getElementById('navToggler');
+      const mobileNav = document.getElementById('mobileNav');
+      const mobileShopToggle = document.getElementById('mobileShopToggle');
+      const mobileShopDropdown = document.getElementById('mobileShopDropdown');
+
+      let isOpen = false;
+      let lastScrollY = window.scrollY;
+
+      const closeMobile = () => {
+        isOpen = false;
+        toggler.classList.remove('is-open');
+        toggler.setAttribute('aria-expanded', 'false');
+        mobileNav.classList.remove('is-open');
+        mobileShopToggle.setAttribute('aria-expanded', 'false');
+        mobileShopDropdown.classList.remove('is-open');
+      };
+
+      toggler.addEventListener('click', function () {
+        isOpen = !isOpen;
+        toggler.classList.toggle('is-open', isOpen);
+        toggler.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        mobileNav.classList.toggle('is-open', isOpen);
+        if (!isOpen) {
+          mobileShopToggle.setAttribute('aria-expanded', 'false');
+          mobileShopDropdown.classList.remove('is-open');
+        }
+      });
+
+      mobileShopToggle.addEventListener('click', function () {
+        const isDropdownOpen = mobileShopDropdown.classList.toggle('is-open');
+        mobileShopToggle.setAttribute('aria-expanded', isDropdownOpen ? 'true' : 'false');
+      });
+
+      document.addEventListener('click', function (event) {
+        const nav = wrapper.querySelector('.navbar');
+        if (!nav.contains(event.target)) {
+          closeMobile();
+        }
+      });
+
+      window.addEventListener('scroll', function () {
+        const currentY = window.scrollY;
+        if (currentY <= 20) {
+          wrapper.classList.remove('is-hidden');
+        } else if (currentY > lastScrollY && currentY > 90 && !isOpen) {
+          wrapper.classList.add('is-hidden');
+        } else if (currentY < lastScrollY) {
+          wrapper.classList.remove('is-hidden');
+        }
+        lastScrollY = currentY;
+      }, { passive: true });
+
       const form = document.getElementById('contactForm');
       const submitBtn = document.getElementById('submitBtn');
       const status = document.getElementById('formStatus');
-      const endpoint = 'https://formsubmit.co/ajax/info@vitrafruit.com';
+      const endpoint = 'https://formsubmit.co/ajax/vitrafruits@gmail.com';
 
       form.addEventListener('submit', async function (event) {
         event.preventDefault();

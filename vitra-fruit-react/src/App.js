@@ -9,6 +9,16 @@ import AboutSection from './components/AboutSection';
 import Footer from './components/Footer';
 
 function App() {
+  const paymentLogos = [
+    { src: '/images/visa logo.webp', alt: 'Visa logo' },
+    { src: '/images/mastercard logo.jpeg', alt: 'Mastercard logo' },
+    { src: '/images/maestro logo.png', alt: 'Maestro logo' },
+    { src: '/images/samsung pay.png', alt: 'Samsung Pay logo' },
+    { src: '/images/snapscan logo.png', alt: 'SnapScan logo' },
+    { src: '/images/Zapper logo.webp', alt: 'Zapper logo' }
+  ];
+  const marqueeLogos = [...paymentLogos, ...paymentLogos, ...paymentLogos];
+
   return (
     <div className="App">
       <a className="skip-link" href="#main-content">Skip to main content</a>
@@ -27,42 +37,19 @@ function App() {
           </div>
           <div className="payment-strip-viewport">
             <ul className="payment-strip-track">
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="Visa logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="Mastercard logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="Maestro logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="Samsung Pay logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="SnapScan logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="Zapper logo" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/visa logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/mastercard logo.jpeg" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/maestro logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/samsung pay.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/snapscan logo.png" alt="" aria-hidden="true" className="payment-logo" /></li>
-              <li className="payment-logo-card"><img src="/images/Zapper logo.webp" alt="" aria-hidden="true" className="payment-logo" /></li>
+              {marqueeLogos.map((logo, index) => {
+                const isDecorativeDuplicate = index >= paymentLogos.length;
+                return (
+                  <li key={`${logo.alt}-${index}`} className="payment-logo-card">
+                    <img
+                      src={logo.src}
+                      alt={isDecorativeDuplicate ? '' : logo.alt}
+                      aria-hidden={isDecorativeDuplicate ? 'true' : undefined}
+                      className="payment-logo"
+                    />
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
