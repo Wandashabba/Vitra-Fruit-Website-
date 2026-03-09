@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import Categories from './components/Categories';
 import Products from './components/Products';
 import Contact from './components/Contact';
 import AboutSection from './components/AboutSection';
@@ -25,7 +24,6 @@ function App() {
       <Navbar cartCount={0} />
       <main id="main-content">
         <Hero />
-        <Categories />
         <Products />
         <Contact />
         <AboutSection />

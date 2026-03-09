@@ -4,6 +4,9 @@ import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
 
 function Products() {
+  const welcomeOfferLead = 'Welcome to our store, first time purchasers get';
+  const welcomeOfferHighlight = '10% off first purchase';
+  const welcomeOfferTail = 'on our products.';
   const favouriteProducts = [
     {
       name: 'Pear slices',
@@ -30,9 +33,64 @@ function Products() {
       imageAlt: 'Hibiscus flavour inspiration'
     }
   ];
+  const welcomeOfferItems = Array.from({ length: 6 }, (_, index) => index);
+  const welcomeOfferMarquee = [...welcomeOfferItems, ...welcomeOfferItems];
 
   return (
     <>
+      <section className="favourite-products" id="shop" aria-labelledby="favourite-products-heading">
+        <div className="container">
+          <div className="favourite-products-section">
+            <div className="favourite-products-head">
+              <div className="favourite-products-title-block">
+                <p className="featured-kicker">Handpicked Flavours</p>
+                <h2 id="favourite-products-heading">Our Crowd Pleasers</h2>
+              </div>
+            </div>
+            <div className="favourite-products-grid" role="list" aria-label="Favourite products">
+              {favouriteProducts.map((product, index) => (
+                <figure key={product.name} className={`favourite-product-item favourite-product-item-${index + 1}`} role="listitem">
+                  <div className="favourite-product-visual">
+                    <img
+                      src={product.imageSrc}
+                      alt={product.imageAlt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <figcaption>
+                    <strong>{product.name}</strong>
+                    {product.price ? <span className="favourite-product-price">{product.price}</span> : null}
+                    <a href={product.href} className="btn favourite-buy-btn" aria-label={`Buy ${product.name} now`}>
+                      Buy now
+                    </a>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="welcome-strip" aria-label="Welcome offer">
+        <div className="welcome-strip-viewport">
+          <ul className="welcome-strip-track">
+            {welcomeOfferMarquee.map((_, index) => {
+              const isDecorativeDuplicate = index >= welcomeOfferItems.length;
+              return (
+                <li
+                  key={`welcome-offer-${index}`}
+                  className="welcome-strip-item"
+                  aria-hidden={isDecorativeDuplicate ? 'true' : undefined}
+                >
+                  {welcomeOfferLead}{' '}
+                  <span className="welcome-strip-highlight">{welcomeOfferHighlight}</span>{' '}
+                  {welcomeOfferTail}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
       <section className="featured-products" id="products">
         <div className="container">
           <p className="featured-kicker featured-kicker-top">Our Story</p>
@@ -71,37 +129,6 @@ function Products() {
                 />
               </picture>
             </figure>
-          </div>
-        </div>
-      </section>
-      <section className="favourite-products" aria-labelledby="favourite-products-heading">
-        <div className="container">
-          <div className="favourite-products-section">
-            <p className="featured-kicker">Handpicked Flavours</p>
-            <h2 id="favourite-products-heading">Our Favourite Products</h2>
-            <p className="favourite-products-intro">
-              Three flavour notes our customers keep coming back to for character, freshness and everyday versatility.
-            </p>
-            <div className="favourite-products-grid" role="list" aria-label="Favourite products">
-              {favouriteProducts.map((product) => (
-                <figure key={product.name} className="favourite-product-item" role="listitem">
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <figcaption>
-                    <strong>{product.name}</strong>
-                    <span>{product.note}</span>
-                    {product.price ? <span className="favourite-product-price">{product.price}</span> : null}
-                    <a href={product.href} className="btn favourite-buy-btn" aria-label={`Buy ${product.name} now`}>
-                      Buy now
-                    </a>
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
           </div>
         </div>
       </section>
