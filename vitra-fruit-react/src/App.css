@@ -188,13 +188,19 @@ textarea:focus-visible {
 }
 
 .navbar-toggler {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(17, 17, 17, 0.22);
   border-radius: 11px;
   padding: 0.55rem;
   cursor: pointer;
   z-index: 1001;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  box-shadow: 0 10px 22px rgba(12, 18, 40, 0.12);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar-toggler:focus-visible {
+  outline: 2px solid rgba(246, 178, 95, 0.75);
+  outline-offset: 4px;
 }
 
 @media (min-width: 1100px) {
@@ -214,14 +220,15 @@ textarea:focus-visible {
 .toggler-line {
   width: 22px;
   height: 2px;
-  background: #fff;
+  background: #111;
   border-radius: 2px;
   transition: transform 0.28s ease, opacity 0.28s ease;
 }
 
 .navbar-toggler.is-open {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(17, 17, 17, 0.3);
+  box-shadow: 0 14px 28px rgba(12, 18, 40, 0.16);
 }
 
 .navbar-toggler.is-open .navbar-toggler-icon {
@@ -414,11 +421,11 @@ textarea:focus-visible {
   left: 0;
   right: 0;
   border-radius: 18px;
-  background: linear-gradient(155deg, rgba(18, 22, 49, 0.97), rgba(52, 29, 97, 0.96));
-  backdrop-filter: blur(12px);
-  box-shadow: 0 20px 40px rgba(10, 13, 31, 0.4);
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 40px rgba(10, 13, 31, 0.22);
   padding: 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   max-height: 0;
   opacity: 0;
   visibility: hidden;
@@ -427,6 +434,20 @@ textarea:focus-visible {
   transform-origin: top center;
   pointer-events: none;
   transition: max-height 0.38s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+}
+
+.mobile-nav::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 17px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.14) 40%,
+    rgba(255, 255, 255, 0.24)
+  );
 }
 
 .mobile-nav.is-open {
@@ -444,22 +465,31 @@ textarea:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  position: relative;
+  z-index: 1;
 }
 
 .mobile-nav .nav-link {
-  color: #ffffff;
+  color: var(--nav-ink);
   width: 100%;
   justify-content: space-between;
   padding: 0.85rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.mobile-nav .nav-link:hover,
+.mobile-nav .nav-link:focus-visible {
+  background: rgba(246, 178, 95, 0.16);
+  border-color: rgba(246, 178, 95, 0.3);
+  color: var(--nav-ink);
 }
 
 .mobile-nav .nav-link.active {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
+  border-color: rgba(246, 178, 95, 0.35);
+  background: rgba(246, 178, 95, 0.18);
+  color: var(--nav-ink);
 }
 
 .mobile-nav .nav-link::after {
@@ -474,8 +504,8 @@ textarea:focus-visible {
   position: static;
   min-width: 100%;
   margin-top: 0.25rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(17, 17, 17, 0.08);
   box-shadow: none;
   opacity: 0;
   visibility: hidden;
@@ -495,15 +525,16 @@ textarea:focus-visible {
 }
 
 .mobile-nav .nav-dropdown-link {
-  color: #fff;
+  color: #111;
   border-radius: 10px;
   font-size: 0.74rem;
 }
 
 .mobile-nav .nav-dropdown-link:hover,
-.mobile-nav .nav-dropdown-link:focus-visible {
-  background: rgba(255, 255, 255, 0.14);
-  color: #fff;
+.mobile-nav .nav-dropdown-link:focus-visible,
+.mobile-nav .nav-dropdown-link.active {
+  background: rgba(246, 178, 95, 0.18);
+  color: #111;
 }
 
 .hero {
@@ -1320,7 +1351,7 @@ textarea:focus-visible {
   position: relative;
   z-index: 4;
   padding: 12px 0;
-  background: #ffffff;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfe 100%);
   border-top: 1px solid rgba(31, 40, 80, 0.08);
   border-bottom: none;
 }
@@ -1355,12 +1386,12 @@ textarea:focus-visible {
 
 .welcome-strip-item {
   white-space: nowrap;
-  font-size: 0.9rem;
-  font-family: 'Playfair Display', serif;
+  font-size: 0.82rem;
+  font-family: 'Manrope', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: 800;
-  color: #c57922;
+  letter-spacing: 0.18em;
+  font-weight: 900;
+  color: #111111;
   line-height: 1.2;
 }
 
@@ -1379,7 +1410,7 @@ textarea:focus-visible {
 .welcome-strip-item::after {
   content: "•";
   margin-left: 1.5rem;
-  color: rgba(215, 150, 69, 0.9);
+  color: rgba(17, 17, 17, 0.35);
 }
 
 @keyframes welcomeFlow {
@@ -1716,8 +1747,8 @@ textarea:focus-visible {
   }
 
   .welcome-strip-item {
-    font-size: 0.75rem;
-    letter-spacing: 0.07em;
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
   }
 
   .welcome-strip-highlight {

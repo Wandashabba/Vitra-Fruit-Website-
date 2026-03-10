@@ -21,10 +21,11 @@ function Navbar({ cartCount = 0 }) {
   );
   const shopDropdownItems = useMemo(
     () => [
-      { label: "Dehydrated Fruits", categoryId: "beverages", href: "/dehydrated-fruits.html" },
-      { label: "Shakers", categoryId: "dried-fruits", href: "/shakers.html" },
-      { label: "Fruit strips", categoryId: "gift-boxes", href: "/fruit-strips.html" },
-      { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "/vegetable-powders.html" }
+      { label: "Citrus", categoryId: "citrus", href: "/citrus.html" },
+      { label: "Tropical", categoryId: "tropical" },
+      { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "/vegetable-powders.html" },
+      { label: "Fruit Bites", categoryId: "fruit-bites", href: "/fruit-strips.html" },
+      { label: "Lifestyle", categoryId: "lifestyle", href: "#about" }
     ],
     []
   );

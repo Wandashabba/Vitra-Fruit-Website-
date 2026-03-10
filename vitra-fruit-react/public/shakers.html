@@ -217,13 +217,18 @@
     }
 
     .navbar-toggler {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(17, 17, 17, 0.22);
       border-radius: 11px;
       padding: 0.55rem;
       cursor: pointer;
       z-index: 1001;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
+      box-shadow: 0 10px 22px rgba(12, 18, 40, 0.12);
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .navbar-toggler:focus-visible {
+      outline: 2px solid rgba(246, 178, 95, 0.75);
+      outline-offset: 4px;
     }
     .navbar-toggler-icon {
       width: 22px;
@@ -235,11 +240,11 @@
     .toggler-line {
       width: 22px;
       height: 2px;
-      background: #fff;
+      background: #111;
       border-radius: 2px;
       transition: transform 0.28s ease, opacity 0.28s ease;
     }
-    .navbar-toggler.is-open { background: rgba(255, 255, 255, 0.16); border-color: rgba(255, 255, 255, 0.35); }
+    .navbar-toggler.is-open { background: rgba(255, 255, 255, 0.92); border-color: rgba(17, 17, 17, 0.3); box-shadow: 0 14px 28px rgba(12, 18, 40, 0.16); }
     .navbar-toggler.is-open .navbar-toggler-icon { position: relative; justify-content: center; }
     .navbar-toggler.is-open .toggler-line:nth-child(1), .navbar-toggler.is-open .toggler-line:nth-child(3) { position: absolute; left: 0; }
     .navbar-toggler.is-open .toggler-line:nth-child(1) { transform: rotate(45deg); }
@@ -253,11 +258,11 @@
       left: 0;
       right: 0;
       border-radius: 18px;
-      background: linear-gradient(155deg, rgba(18, 22, 49, 0.97), rgba(52, 29, 97, 0.96));
-      backdrop-filter: blur(12px);
-      box-shadow: 0 20px 40px rgba(10, 13, 31, 0.4);
+      background: rgba(255, 255, 255, 0.84);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 40px rgba(10, 13, 31, 0.22);
       padding: 0.7rem;
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.55);
       max-height: 0;
       opacity: 0;
       visibility: hidden;
@@ -266,6 +271,14 @@
       transform-origin: top center;
       pointer-events: none;
       transition: max-height 0.38s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+    }
+    .mobile-nav::before {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: 17px;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.14) 40%, rgba(255, 255, 255, 0.24));
     }
     .mobile-nav.is-open {
       max-height: 560px;
@@ -281,20 +294,28 @@
       display: flex;
       flex-direction: column;
       gap: 0.25rem;
+      position: relative;
+      z-index: 1;
     }
     .mobile-nav .nav-link {
-      color: #fff;
+      color: #111;
       width: 100%;
       justify-content: space-between;
       padding: 0.85rem 1rem;
       border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      background: rgba(255, 255, 255, 0.55);
+    }
+    .mobile-nav .nav-link:hover,
+    .mobile-nav .nav-link:focus-visible {
+      background: rgba(246, 178, 95, 0.16);
+      border-color: rgba(246, 178, 95, 0.3);
+      color: #111;
     }
     .mobile-nav .nav-link.active {
-      border-color: rgba(255, 255, 255, 0.28);
-      background: rgba(255, 255, 255, 0.14);
-      color: #fff;
+      border-color: rgba(246, 178, 95, 0.35);
+      background: rgba(246, 178, 95, 0.18);
+      color: #111;
     }
     .mobile-nav .nav-link::after { display: none; }
     .mobile-nav .nav-dropdown::after { display: none; }
@@ -302,8 +323,8 @@
       position: static;
       min-width: 100%;
       margin-top: 0.25rem;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(17, 17, 17, 0.08);
       box-shadow: none;
       opacity: 0;
       visibility: hidden;
@@ -321,15 +342,15 @@
       pointer-events: auto;
     }
     .mobile-nav .nav-dropdown-link {
-      color: #fff;
+      color: #111;
       border-radius: 10px;
       font-size: 0.74rem;
     }
     .mobile-nav .nav-dropdown-link:hover,
     .mobile-nav .nav-dropdown-link:focus-visible,
     .mobile-nav .nav-dropdown-link.active {
-      background: rgba(255, 255, 255, 0.14);
-      color: #fff;
+      background: rgba(246, 178, 95, 0.18);
+      color: #111;
     }
 
     @media (min-width: 1100px) {
@@ -687,10 +708,11 @@
               <span class="nav-caret" aria-hidden="true">▾</span>
             </button>
             <ul class="nav-dropdown-menu">
-              <li><a class="nav-dropdown-link" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
-              <li><a class="nav-dropdown-link active" href="/shakers.html">Shakers</a></li>
-              <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+              <li><a class="nav-dropdown-link" href="/citrus.html">Citrus</a></li>
+              <li><a class="nav-dropdown-link" href="/fruit-strips.html">Tropical</a></li>
               <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
+              <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit Bites</a></li>
+              <li><a class="nav-dropdown-link" href="/#about">Lifestyle</a></li>
             </ul>
           </li>
         </ul>
@@ -725,10 +747,11 @@
                 <span class="nav-caret" aria-hidden="true">▾</span>
               </button>
               <ul id="mobileShopDropdown" class="nav-dropdown-menu">
-                <li><a class="nav-dropdown-link" href="/dehydrated-fruits.html">Dehydrated Fruits</a></li>
-                <li><a class="nav-dropdown-link active" href="/shakers.html">Shakers</a></li>
-                <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit strips</a></li>
+                <li><a class="nav-dropdown-link" href="/citrus.html">Citrus</a></li>
+                <li><a class="nav-dropdown-link" href="/fruit-strips.html">Tropical</a></li>
                 <li><a class="nav-dropdown-link" href="/vegetable-powders.html">Vegetable Powders</a></li>
+                <li><a class="nav-dropdown-link" href="/fruit-strips.html">Fruit Bites</a></li>
+                <li><a class="nav-dropdown-link" href="/#about">Lifestyle</a></li>
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
