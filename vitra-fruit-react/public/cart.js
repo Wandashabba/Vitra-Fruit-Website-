@@ -227,16 +227,12 @@
 
       const name = `${item.name}${item.size ? ` - ${item.size}` : ''}`;
       const imgSrc = item.image || '/images/logo.jpg';
-      const webpSrc = imgSrc.replace(/\.(png|jpe?g)$/i, '.webp');
-      const canWebp = imgSrc && webpSrc !== imgSrc;
-      const pictureOpen = canWebp ? `<picture><source type="image/webp" srcset="${webpSrc}" />` : '';
-      const pictureClose = canWebp ? '</picture>' : '';
 
       const row = document.createElement('div');
       row.className = 'order-row';
       row.innerHTML = `
         <span class="order-product">
-          ${pictureOpen}<img class="order-thumb" src="${imgSrc}" alt="${name}" loading="lazy" decoding="async" width="38" height="38" />${pictureClose}
+          <img class="order-thumb" src="${imgSrc}" alt="${name}" loading="eager" decoding="async" width="38" height="38" />
           ${name} × ${item.quantity}
         </span>
         <span>${formatPrice(lineTotal)} (incl. VAT)</span>
