@@ -1,10 +1,11 @@
 import React from 'react';
 
+const galleryImages = [1, 2, 3, 4, 5].map((imageNumber) => ({
+  src: `/images/picture${imageNumber}.jpeg`,
+  alt: `Vitra Fruit gallery image ${imageNumber}`
+}));
+
 function Contact() {
-  const galleryImages = [1, 2, 3, 4, 5].map((imageNumber) => ({
-    src: `/images/picture${imageNumber}.jpeg`,
-    alt: `Vitra Fruit gallery image ${imageNumber}`
-  }));
 
   return (
     <section className="contact" id="contact">
