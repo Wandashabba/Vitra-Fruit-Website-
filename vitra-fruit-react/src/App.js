@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -18,11 +18,38 @@ const paymentLogos = [
 
 function App() {
   const marqueeLogos = [...paymentLogos, ...paymentLogos, ...paymentLogos];
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const readCartCount = () => {
+      try {
+        const raw = localStorage.getItem('vitra_cart');
+        const items = raw ? JSON.parse(raw) : [];
+        const total = Array.isArray(items)
+          ? items.reduce((sum, item) => sum + (item?.quantity || 0), 0)
+          : 0;
+        setCartCount(total);
+      } catch (err) {
+        setCartCount(0);
+      }
+    };
+
+    readCartCount();
+
+    const handleStorage = (event) => {
+      if (!event || event.key === 'vitra_cart') {
+        readCartCount();
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   return (
     <div className="App">
       <a className="skip-link" href="#main-content">Skip to main content</a>
-      <Navbar cartCount={0} />
+      <Navbar cartCount={cartCount} />
       <main id="main-content">
         <Hero />
         <Products />

@@ -184,7 +184,7 @@ function Navbar({ cartCount = 0 }) {
           onClick={isMobile ? () => setIsOpen(false) : undefined}
         >
           <span>{link.label}</span>
-          {isCart && <span className="nav-count">{cartCount}</span>}
+          {isCart && cartCount > 0 && <span className="nav-count">{cartCount}</span>}
         </a>
       </li>
     );

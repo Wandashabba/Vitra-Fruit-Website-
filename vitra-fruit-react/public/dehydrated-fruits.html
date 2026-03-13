@@ -130,6 +130,23 @@
       cursor: pointer;
       font-family: inherit;
     }
+    .cart-link {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .nav-count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      background: linear-gradient(135deg, #ffd9a6, var(--nav-accent));
+      color: #24162f;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
+    }
     .nav-link-dropdown {
       box-shadow: none;
       appearance: none;
@@ -729,7 +746,7 @@
 
         <ul class="navbar-menu navbar-right">
           <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="/cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
         </ul>
 
         <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
@@ -757,7 +774,7 @@
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="/contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+            <li class="nav-item"><a class="nav-link cart-link" href="/cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
           </ul>
         </div>
       </div>
@@ -916,5 +933,6 @@
     </div>
   </footer>
   <script src="/shop-pages.js"></script>
+  <script src="/cart.js"></script>
 </body>
 </html>

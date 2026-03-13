@@ -5,6 +5,6 @@ export const navLinks = {
   ],
   right: [
     { label: 'Contact', href: '/contact.html' },
-    { label: 'Cart', href: '/account.html' }
+    { label: 'Cart', href: '/cart.html' }
   ]
 };
