@@ -51,7 +51,7 @@
 
         <ul class="navbar-menu navbar-right">
           <li class="nav-item"><a class="nav-link active" href="/contact.html">Contact</a></li>
-          <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="/cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
         </ul>
 
         <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link active" href="/contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link" href="/account.html">Cart</a></li>
+            <li class="nav-item"><a class="nav-link cart-link" href="/cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
           </ul>
         </div>
       </div>
@@ -89,16 +89,7 @@
   <main class="contact-section">
     <section class="contact-shell">
       <div class="contact-top-image" aria-label="Contact feature image">
-        <img
-          src="/images/picture1-1600.jpeg"
-          srcset="/images/picture1-960.jpeg 960w, /images/picture1-1600.jpeg 1600w"
-          sizes="(max-width: 1140px) 100vw, 1140px"
-          alt="Vitra Fruit product showcase"
-          loading="eager"
-          fetchpriority="high"
-          width="1600"
-          height="1067"
-        />
+        <img src="/images/picture1-1600.jpeg" srcset="/images/picture1-960.jpeg 960w, /images/picture1-1600.jpeg 1600w" sizes="(max-width: 1140px) 100vw, 1140px" alt="Vitra Fruit product showcase" loading="eager" fetchpriority="high" />
       </div>
 
       <div class="contact-head">
@@ -210,5 +201,6 @@
 
   <script src="/shop-pages.js"></script>
   <script src="/contact-page.js"></script>
+  <script src="/cart.js"></script>
 </body>
 </html>

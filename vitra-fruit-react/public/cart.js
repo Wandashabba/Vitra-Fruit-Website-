@@ -196,7 +196,61 @@
     render();
   }
 
+  function renderCheckoutSummary() {
+    const itemsEl = document.querySelector('[data-checkout-items]');
+    if (!itemsEl) {
+      return;
+    }
+
+    const subtotalEl = document.querySelector('[data-checkout-subtotal]');
+    const totalEl = document.querySelector('[data-checkout-total]');
+    const vatRate = loadVatRate();
+    const cart = loadCart();
+
+    itemsEl.innerHTML = '';
+
+    if (!cart.length) {
+      const emptyRow = document.createElement('div');
+      emptyRow.className = 'order-row';
+      emptyRow.innerHTML = '<span>Your cart is empty.</span><span>—</span>';
+      itemsEl.appendChild(emptyRow);
+      if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
+      if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
+      return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach((item) => {
+      const lineTotal = item.price * item.quantity;
+      subtotal += lineTotal;
+
+      const name = `${item.name}${item.size ? ` - ${item.size}` : ''}`;
+      const imgSrc = item.image || '/images/logo.jpg';
+      const webpSrc = imgSrc.replace(/\.(png|jpe?g)$/i, '.webp');
+      const canWebp = imgSrc && webpSrc !== imgSrc;
+      const pictureOpen = canWebp ? `<picture><source type="image/webp" srcset="${webpSrc}" />` : '';
+      const pictureClose = canWebp ? '</picture>' : '';
+
+      const row = document.createElement('div');
+      row.className = 'order-row';
+      row.innerHTML = `
+        <span class="order-product">
+          ${pictureOpen}<img class="order-thumb" src="${imgSrc}" alt="${name}" loading="lazy" decoding="async" width="38" height="38" />${pictureClose}
+          ${name} × ${item.quantity}
+        </span>
+        <span>${formatPrice(lineTotal)} (incl. VAT)</span>
+      `;
+      itemsEl.appendChild(row);
+    });
+
+    const vat = subtotal - subtotal / (1 + vatRate);
+    if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
+    if (totalEl) totalEl.textContent = `${formatPrice(subtotal)} (includes ${formatPrice(vat)} VAT)`;
+  }
+
   updateCount();
   attachAddToCart();
   renderCart();
+  renderCheckoutSummary();
 })();

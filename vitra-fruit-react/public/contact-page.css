@@ -89,11 +89,11 @@
       top: 100%;
       height: 12px;
     }
-    .nav-link {
-      text-decoration: none;
-      color: var(--nav-ink);
-      font-weight: 600;
-      font-size: 0.83rem;
+.nav-link {
+  text-decoration: none;
+  color: var(--nav-ink);
+  font-weight: 600;
+  font-size: 0.83rem;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       transition: all 0.3s;
@@ -106,8 +106,27 @@
       border: 1px solid transparent;
       background: transparent;
       cursor: pointer;
-      font-family: inherit;
-    }
+  font-family: inherit;
+}
+
+.cart-link {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  background: linear-gradient(135deg, #ffd9a6, var(--nav-accent));
+  color: #24162f;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
+}
     .nav-link-dropdown {
       box-shadow: none;
       appearance: none;
