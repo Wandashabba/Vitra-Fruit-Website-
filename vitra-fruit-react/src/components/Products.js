@@ -3,36 +3,39 @@ import aboutUsJpg from '../assets/images/about-us.jpg';
 import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
 
+const favouriteProducts = [
+  {
+    name: 'Pear slices',
+    note: 'Sweet and mellow',
+    price: 'R60-R360',
+    href: '#shop',
+    imageSrc: '/images/pear.png',
+    imageAlt: 'Fresh pear flavour inspiration'
+  },
+  {
+    name: 'Pineapple slices',
+    note: 'Bright tropical lift',
+    price: 'R80-R480',
+    href: '#shop',
+    imageSrc: '/images/Pineapple 1.png',
+    imageAlt: 'Pineapple flavour inspiration'
+  },
+  {
+    name: 'Hibiscus Flower',
+    note: 'Floral and vibrant',
+    price: 'R60',
+    href: '#shop',
+    imageSrc: '/images/Hibiscus.png',
+    imageAlt: 'Hibiscus flavour inspiration'
+  }
+];
+
+const welcomeOfferLead = 'Welcome to our store, first time purchasers get';
+const welcomeOfferHighlight = '10% off first purchase';
+const welcomeOfferTail = 'on our products.';
+
 function Products() {
-  const welcomeOfferLead = 'Welcome to our store, first time purchasers get';
-  const welcomeOfferHighlight = '10% off first purchase';
-  const welcomeOfferTail = 'on our products.';
-  const favouriteProducts = [
-    {
-      name: 'Pear slices',
-      note: 'Sweet and mellow',
-      price: 'R60-R360',
-      href: '#shop',
-      imageSrc: '/images/pear.png',
-      imageAlt: 'Fresh pear flavour inspiration'
-    },
-    {
-      name: 'Pipeapple slices',
-      note: 'Bright tropical lift',
-      price: 'R80-R480',
-      href: '#shop',
-      imageSrc: '/images/Pineapple 1.png',
-      imageAlt: 'Pineapple flavour inspiration'
-    },
-    {
-      name: 'Hibiscus Flower',
-      note: 'Floral and vibrant',
-      price: 'R60',
-      href: '#shop',
-      imageSrc: '/images/Hibiscus.png',
-      imageAlt: 'Hibiscus flavour inspiration'
-    }
-  ];
+
   const welcomeOfferItems = Array.from({ length: 6 }, (_, index) => index);
   const welcomeOfferMarquee = [...welcomeOfferItems, ...welcomeOfferItems];
 

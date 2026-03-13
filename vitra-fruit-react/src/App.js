@@ -7,15 +7,16 @@ import Contact from './components/Contact';
 import AboutSection from './components/AboutSection';
 import Footer from './components/Footer';
 
+const paymentLogos = [
+  { src: '/images/visa logo.webp', alt: 'Visa logo' },
+  { src: '/images/mastercard logo.jpeg', alt: 'Mastercard logo' },
+  { src: '/images/maestro logo.png', alt: 'Maestro logo' },
+  { src: '/images/samsung pay.png', alt: 'Samsung Pay logo' },
+  { src: '/images/snapscan logo.png', alt: 'SnapScan logo' },
+  { src: '/images/Zapper logo.webp', alt: 'Zapper logo' }
+];
+
 function App() {
-  const paymentLogos = [
-    { src: '/images/visa logo.webp', alt: 'Visa logo' },
-    { src: '/images/mastercard logo.jpeg', alt: 'Mastercard logo' },
-    { src: '/images/maestro logo.png', alt: 'Maestro logo' },
-    { src: '/images/samsung pay.png', alt: 'Samsung Pay logo' },
-    { src: '/images/snapscan logo.png', alt: 'SnapScan logo' },
-    { src: '/images/Zapper logo.webp', alt: 'Zapper logo' }
-  ];
   const marqueeLogos = [...paymentLogos, ...paymentLogos, ...paymentLogos];
 
   return (

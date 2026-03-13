@@ -1,9 +1,10 @@
 import React from 'react';
 
+const heroTitle = 'All natural dehydrated fruits.';
+const heroSubtitle = 'Crafted for cocktails, baking, snacking & indulging.';
+const heroTitleWords = ['All', 'natural', 'dehydrated', 'fruits.'];
+
 function Hero() {
-  const heroTitle = 'All natural dehydrated fruits.';
-  const heroSubtitle = 'Crafted for cocktails, baking, snacking & indulging.';
-  const heroTitleWords = ['All', 'natural', 'dehydrated', 'fruits.'];
 
   const handleShopClick = (event) => {
     event.preventDefault();

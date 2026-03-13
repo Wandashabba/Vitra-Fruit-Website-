@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import { navLinks } from "../data/siteContent";
 import logoJpg from "../assets/images/logo.jpg";
 import logoWebp from "../assets/images/logo.webp";
