@@ -33,9 +33,9 @@ const favouriteProducts = [
   }
 ];
 
-const welcomeOfferLead = 'Welcome to our store, first time purchasers get';
-const welcomeOfferHighlight = '10% off first purchase';
-const welcomeOfferTail = 'on our products.';
+const welcomeOfferLead = 'Enjoy';
+const welcomeOfferHighlight = '10% off';
+const welcomeOfferTail = 'your first purchase.';
 
 function Products() {
 

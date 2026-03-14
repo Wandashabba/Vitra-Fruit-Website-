@@ -1041,6 +1041,14 @@
     }
     .payment-title {
       font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .payment-logo {
+      height: 22px;
+      width: auto;
+      display: block;
     }
     .payment-logos {
       display: flex;
@@ -1198,7 +1206,15 @@
 
         <ul class="navbar-menu navbar-right">
           <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">
+              <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a></li>
         </ul>
 
         <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
@@ -1227,7 +1243,15 @@
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">
+              <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a></li>
         </ul>
       </div>
     </nav>
@@ -1334,9 +1358,13 @@
           </div>
 
           <div class="payment-box">
-            <div class="payment-title">PayFast PayFast</div>
+            <div class="payment-title">
+              <img class="payment-logo" src="/images/payfastlogo.png" alt="PayFast" />
+              <span>PayFast</span>
+            </div>
             <p>Pay securely with your credit card, debit card, Zapper or SnapScan.</p>
             <div class="payment-logos" aria-hidden="true">
+              <img src="/images/payfastlogo.png" alt="" />
               <img src="/images/visa logo.webp" alt="" />
               <img src="/images/mastercard logo.jpeg" alt="" />
               <img src="/images/maestro logo.png" alt="" />

@@ -145,6 +145,11 @@ body.is-ready {
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(255, 255, 255, 0.2);
     }
+    .nav-cart-icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
     .nav-count {
       min-width: 20px;
       height: 20px;

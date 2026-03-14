@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import './nav-unified.css';
 
 * {
@@ -14,6 +15,7 @@ html {
 :root {
   --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
   --font-display: 'Marcellus', 'Georgia', serif;
+  --font-bestyling: 'Bebas Neue', 'Marcellus', serif;
   --primary-color: #5533ff;
   --secondary-color: #17a2b8;
   --text-color: #333;
@@ -995,6 +997,10 @@ textarea:focus-visible {
 .welcome-strip-viewport {
   width: 100%;
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 .welcome-strip-track {
@@ -1005,18 +1011,20 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  animation: welcomeFlow 92s linear infinite;
+  animation: welcomeFlow 26s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .welcome-strip-item {
   white-space: nowrap;
-  font-size: 0.82rem;
-  font-family: var(--font-body);
+  font-size: 0.96rem;
+  font-family: var(--font-bestyling);
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-weight: 900;
+  letter-spacing: 0.26em;
+  font-weight: 700;
   color: #111111;
   line-height: 1.2;
+  text-shadow: 0 6px 14px rgba(17, 17, 17, 0.18);
 }
 
 .welcome-strip-highlight {
@@ -1026,9 +1034,9 @@ textarea:focus-visible {
   border-radius: 999px;
   background: #ffb347;
   color: #2d1700;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  box-shadow: 0 8px 18px rgba(255, 179, 71, 0.34);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  box-shadow: 0 10px 22px rgba(255, 179, 71, 0.38);
 }
 
 .welcome-strip-item::after {
