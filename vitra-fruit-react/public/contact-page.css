@@ -1,20 +1,10 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
+      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
+      --font-display: 'Marcellus', 'Georgia', serif;
       --nav-ink: #111111;
       --nav-accent: #f6b25f;
     }
-    body {
-      font-family: 'Manrope', sans-serif;
-      color: #1c2550;
-      background: #ffffff;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
     #wrapper-navbar {
       background: transparent;
       position: sticky;
@@ -115,9 +105,8 @@
     }
     .nav-link-dropdown:focus,
     .nav-link-dropdown:focus-visible {
-      outline: 2px solid rgba(246, 178, 95, 0.95);
-      outline-offset: 2px;
-      box-shadow: 0 0 0 3px rgba(246, 178, 95, 0.2);
+      outline: none;
+      box-shadow: none;
     }
     .nav-link::after {
       content: '';
@@ -139,6 +128,23 @@
     .nav-link:hover::after,
     .nav-link.active::after {
       transform: translateX(-50%) scaleX(1);
+    }
+    .cart-link {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .nav-count {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      background: linear-gradient(135deg, #ffd9a6, var(--nav-accent));
+      color: #24162f;
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
     }
     .nav-caret {
       font-size: 0.72rem;
@@ -336,8 +342,27 @@
       .navbar-menu { display: flex; }
       .navbar-toggler { display: none; }
     }
+    body {
+      font-family: 'Manrope', sans-serif;
+      color: #1c2550;
+      background: #f6f7ff;
+      min-height: 100vh;
+    }
+    .navbar,
+    .navbar-menu,
+    .nav-link,
+    .nav-link-dropdown,
+    .nav-dropdown-link,
+    .mobile-nav {
+      font-family: var(--font-body);
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-    .contact-section {
+.contact-section {
       padding: 44px 20px 66px;
       background: #fff;
     }

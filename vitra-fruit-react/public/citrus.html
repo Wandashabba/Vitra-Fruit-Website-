@@ -552,6 +552,7 @@
     .products-strip {
       padding: 22px 20px 16px;
       --section-bg: #dbdde1;
+      --wheel-bg: #dbdde1;
       background: #dbdde1;
     }
     .products-strip .product-grid {
@@ -569,8 +570,10 @@
       width: 100%;
       height: 320px;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: center;
+      box-sizing: border-box;
+      padding-bottom: 52px;
     }
     .products-strip .product-card img {
       --img-scale: 1;
@@ -580,7 +583,7 @@
       max-width: 100%;
       max-height: 100%;
       object-fit: contain;
-      object-position: center;
+      object-position: center bottom;
       padding: 0;
       background: var(--wheel-bg, transparent);
       border-radius: 0;
@@ -589,6 +592,16 @@
       -webkit-mask-image: none;
       mask-image: none;
       filter: none;
+    }
+    .products-strip .wheel-card-orange img,
+    .products-strip .wheel-card-grapefruit img {
+      --img-scale: 1.06;
+      --img-scale-hover: 1.08;
+      mix-blend-mode: multiply;
+    }
+    .products-strip .wheel-card-orange img,
+    .products-strip .wheel-card-grapefruit img {
+      mix-blend-mode: multiply;
     }
     .products-strip .product-card:hover img {
       transform: scale(var(--img-scale-hover));
@@ -674,12 +687,16 @@
       .products-strip .product-grid {
         grid-template-columns: minmax(0, 320px);
       }
+      .products-strip .product-card {
+        max-width: 320px;
+      }
       .products-strip .product-card img {
         height: 100%;
         padding: 0;
       }
       .products-strip .bottle-media {
-        height: 360px;
+        height: clamp(340px, 82vw, 420px);
+        padding-bottom: 72px;
       }
     }
     @media (max-width: 820px) {
@@ -698,12 +715,24 @@
         justify-content: center;
         width: 100%;
         margin: 0 auto;
+        height: clamp(360px, 92vw, 560px);
       }
       .category-hero-video {
-        width: min(560px, 92vw);
+        width: 100%;
+        height: 100%;
         margin: 0 auto;
+        object-position: 50% 45%;
+        transform: scale(1.08);
         -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
         mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
+      }
+    }
+    @media (max-width: 500px) {
+      .category-hero-media {
+        height: clamp(380px, 104vw, 620px);
+      }
+      .category-hero-video {
+        transform: scale(1.14);
       }
     }
 
@@ -889,6 +918,11 @@
       background: #ffffff;
       border-top: none;
     }
+    .promo-signup::before,
+    .promo-signup + .footer::before {
+      content: none;
+    }
+
     .promo-signup-inner {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -1344,6 +1378,7 @@
       background: rgba(0, 0, 0, 0.04);
     }
   </style>
+  <link rel="stylesheet" href="nav-unified.css" />
 </head>
 <body>
   <div id="wrapper-navbar">
@@ -1421,7 +1456,7 @@
         <div class="category-hero-media" aria-hidden="true">
           <video
             class="category-hero-video"
-            src="/images/Citrus.mp4"
+            src="/images/CitrusCompressed.mp4"
             autoplay
             muted
             loop
@@ -1465,7 +1500,7 @@
         </select>
       </div>
       <div class="product-grid">
-        <article class="product-card bottle-card" data-citrus-types="wheels slides powders">
+        <article class="product-card bottle-card wheel-card wheel-card-lemon" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
             <img src="/images/LemonWheel.png" alt="Dehydrated Lemon wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="lemon-wheel.html">Shop Now</a>
@@ -1475,7 +1510,7 @@
             <p class="bottle-from">From R150</p>
           </div>
         </article>
-        <article class="product-card bottle-card" data-citrus-types="wheels slides powders">
+        <article class="product-card bottle-card wheel-card wheel-card-grapefruit" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
             <img src="/images/GrapeWheel.png" alt="Dehydrated Grapefruit wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="grapefruit-wheel.html">Shop Now</a>
@@ -1485,7 +1520,7 @@
             <p class="bottle-from">From R150</p>
           </div>
         </article>
-        <article class="product-card bottle-card" data-citrus-types="wheels slides powders">
+        <article class="product-card bottle-card wheel-card wheel-card-lime" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
             <img src="/images/Limewheel.png" alt="Dehydrated Lime wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="lime-wheel.html">Shop Now</a>
@@ -1495,7 +1530,7 @@
             <p class="bottle-from">From R150</p>
           </div>
         </article>
-        <article class="product-card bottle-card" data-citrus-types="wheels slides powders">
+        <article class="product-card bottle-card wheel-card wheel-card-orange" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
             <img src="/images/Orangewheel.png" alt="Dehydrated Orange wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="orange-wheel.html">Shop Now</a>
