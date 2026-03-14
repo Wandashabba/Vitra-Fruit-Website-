@@ -9,3 +9,9 @@ root.render(
     <App />
   </React.StrictMode>
 );
+
+if (document.body) {
+  requestAnimationFrame(() => {
+    document.body.classList.add('is-ready');
+  });
+}

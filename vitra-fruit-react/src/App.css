@@ -19,12 +19,7 @@ html {
   --text-color: #333;
   --border-color: #ddd;
   --favourite-bg: #d8d9d6;
-  --hero-bg: image-set(
-    url('./assets/images/hero1-960.avif') type('image/avif') 1x,
-    url('./assets/images/hero1.avif') type('image/avif') 2x,
-    url('./assets/images/hero1-960.webp') type('image/webp') 1x,
-    url('./assets/images/hero1.webp') type('image/webp') 2x
-  );
+  --hero-bg: none;
   --banner-bio-bg: image-set(
     url('./assets/images/banner-bio-960.avif') type('image/avif') 1x,
     url('./assets/images/banner-bio.avif') type('image/avif') 2x,

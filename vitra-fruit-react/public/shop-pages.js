@@ -1,4 +1,14 @@
 (function () {
+  const revealPage = () => {
+    if (document.body) {
+      document.body.classList.add('is-ready');
+    }
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', revealPage, { once: true });
+  } else {
+    revealPage();
+  }
   const wrapper = document.getElementById('wrapper-navbar');
   const toggler = document.getElementById('navToggler');
   const mobileNav = document.getElementById('mobileNav');
