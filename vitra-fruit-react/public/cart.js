@@ -196,7 +196,67 @@
     render();
   }
 
+  function renderCheckout() {
+    const itemsWrap = document.querySelector('[data-checkout-items]');
+    if (!itemsWrap) {
+      return;
+    }
+
+    const subtotalEl = document.querySelector('[data-checkout-subtotal]');
+    const totalEl = document.querySelector('[data-checkout-total]');
+    const cart = loadCart();
+    const vatRate = loadVatRate();
+
+    itemsWrap.innerHTML = '';
+
+    if (!cart.length) {
+      if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
+      if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
+      return;
+    }
+
+    let subtotal = 0;
+
+    cart.forEach((item) => {
+      const row = document.createElement('div');
+      row.className = 'order-row';
+
+      const title = document.createElement('span');
+      title.className = 'order-product';
+
+      if (item.image) {
+        const img = document.createElement('img');
+        img.className = 'order-thumb';
+        img.src = item.image;
+        img.alt = item.name || 'Product';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        title.appendChild(img);
+      }
+
+      const name = document.createElement('span');
+      const sizeLabel = item.size ? ` - ${item.size}` : '';
+      const qtyLabel = item.quantity > 1 ? ` × ${item.quantity}` : '';
+      name.textContent = `${item.name || 'Product'}${sizeLabel}${qtyLabel}`;
+      title.appendChild(name);
+
+      const price = document.createElement('span');
+      price.textContent = formatPrice(item.price * item.quantity);
+
+      row.appendChild(title);
+      row.appendChild(price);
+      itemsWrap.appendChild(row);
+
+      subtotal += item.price * item.quantity;
+    });
+
+    const vat = subtotal - subtotal / (1 + vatRate);
+    if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
+    if (totalEl) totalEl.textContent = `${formatPrice(subtotal)} (includes ${formatPrice(vat)} VAT)`;
+  }
+
   updateCount();
   attachAddToCart();
   renderCart();
+  renderCheckout();
 })();
