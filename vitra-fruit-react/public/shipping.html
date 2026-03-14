@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/shared-navbar.css">
+  <link rel="stylesheet" href="shared-navbar.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: var(--font-body); background: #f6f7ff; color: #1f2850; min-height: 100vh; }
@@ -95,7 +95,7 @@
   <header class="nav-wrap" data-site-nav>
     <nav class="site-navbar" aria-label="Main navigation">
       <div class="site-nav-inner">
-        <a class="navbar-logo" href="/">
+        <a class="navbar-logo" href="index.html">
           <picture>
             <source srcset="/images/logo.avif" type="image/avif" />
             <source srcset="/images/logo.webp" type="image/webp" />
@@ -108,19 +108,19 @@
         </button>
 
         <ul class="site-nav-menu" data-menu>
-          <li><a class="site-nav-link" data-match="home" href="/">Home</a></li>
+          <li><a class="site-nav-link" data-match="home" href="index.html">Home</a></li>
           <li class="site-nav-dropdown" data-shop-item>
             <button class="site-nav-button" type="button" data-shop-toggle aria-haspopup="true" aria-expanded="false">Shop Now <span aria-hidden="true">▾</span></button>
             <ul class="site-nav-dropdown-menu">
-              <li><a href="/citrus.html">Citrus</a></li>
-              <li><a href="/fruit-strips.html">Tropical</a></li>
-              <li><a href="/vegetable-powders.html">Vegetable Powders</a></li>
-              <li><a href="/fruit-strips.html">Fruit Bites</a></li>
-              <li><a href="/#about">Lifestyle</a></li>
+              <li><a href="citrus.html">Citrus</a></li>
+              <li><a href="fruit-strips.html">Tropical</a></li>
+              <li><a href="vegetable-powders.html">Vegetable Powders</a></li>
+              <li><a href="fruit-strips.html">Fruit Bites</a></li>
+              <li><a href="index.html#about">Lifestyle</a></li>
             </ul>
           </li>
-          <li><a class="site-nav-link" data-match="contact" href="/contact.html">Contact</a></li>
-          <li><a class="site-nav-link cart-link" data-match="account" href="/cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          <li><a class="site-nav-link" data-match="contact" href="contact.html">Contact</a></li>
+          <li><a class="site-nav-link cart-link" data-match="account" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
         </ul>
       </div>
     </nav>
@@ -131,11 +131,11 @@
       <h1>Shipping Costs</h1>
       <p>Shipping rates depend on your delivery location and order size.</p>
       <p>For an exact quote, please contact us before checkout.</p>
-      <div class="wrap"><a class="back" href="/contact.html">Request Shipping Quote</a></div>
+      <div class="wrap"><a class="back" href="contact.html">Request Shipping Quote</a></div>
     </section>
   </main>
 
-  <script src="/shared-navbar.js"></script>
-  <script src="/cart.js"></script>
+  <script src="shared-navbar.js"></script>
+  <script src="cart.js"></script>
 </body>
 </html>

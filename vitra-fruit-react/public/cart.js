@@ -132,54 +132,22 @@
       cart.forEach((item) => {
         const itemLimit = Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY));
         const row = document.createElement('tr');
-        
-        const td1 = document.createElement('td');
-        const removeBtn = document.createElement('button');
-        removeBtn.className = 'cart-remove';
-        removeBtn.type = 'button';
-        removeBtn.setAttribute('data-remove', item.id);
-        removeBtn.setAttribute('aria-label', 'Remove item');
-        removeBtn.textContent = '×';
-        td1.appendChild(removeBtn);
-        
-        const td2 = document.createElement('td');
-        const img = document.createElement('img');
-        img.className = 'cart-thumb';
-        img.src = item.image;
-        img.alt = item.name;
-        img.loading = 'lazy';
-        img.decoding = 'async';
-        td2.appendChild(img);
-        
-        const td3 = document.createElement('td');
-        const productDiv = document.createElement('div');
-        productDiv.className = 'cart-product';
-        productDiv.textContent = item.name + (item.size ? ` - ${item.size}` : '');
-        td3.appendChild(productDiv);
-        
-        const td4 = document.createElement('td');
-        td4.textContent = formatPrice(item.price);
-        
-        const td5 = document.createElement('td');
-        const qtyInput = document.createElement('input');
-        qtyInput.className = 'cart-qty';
-        qtyInput.type = 'number';
-        qtyInput.min = '1';
-        qtyInput.max = String(itemLimit);
-        qtyInput.value = String(item.quantity);
-        qtyInput.setAttribute('data-qty', item.id);
-        td5.appendChild(qtyInput);
-        
-        const td6 = document.createElement('td');
-        td6.textContent = formatPrice(item.price * item.quantity) + ' (incl. VAT)';
-        
-        row.appendChild(td1);
-        row.appendChild(td2);
-        row.appendChild(td3);
-        row.appendChild(td4);
-        row.appendChild(td5);
-        row.appendChild(td6);
-        
+        row.innerHTML = `
+          <td>
+            <button class="cart-remove" type="button" data-remove="${item.id}" aria-label="Remove item">×</button>
+          </td>
+          <td>
+            <img class="cart-thumb" src="${item.image}" alt="${item.name}" loading="lazy" decoding="async" />
+          </td>
+          <td>
+            <div class="cart-product">${item.name}${item.size ? ` - ${item.size}` : ''}</div>
+          </td>
+          <td>${formatPrice(item.price)}</td>
+          <td>
+            <input class="cart-qty" type="number" min="1" max="${itemLimit}" value="${item.quantity}" data-qty="${item.id}" />
+          </td>
+          <td>${formatPrice(item.price * item.quantity)} (incl. VAT)</td>
+        `;
         tableBody.appendChild(row);
         subtotal += item.price * item.quantity;
       });
@@ -228,24 +196,20 @@
     render();
   }
 
-  function renderCheckoutSummary() {
-    const itemsEl = document.querySelector('[data-checkout-items]');
-    if (!itemsEl) {
+  function renderCheckout() {
+    const itemsWrap = document.querySelector('[data-checkout-items]');
+    if (!itemsWrap) {
       return;
     }
 
     const subtotalEl = document.querySelector('[data-checkout-subtotal]');
     const totalEl = document.querySelector('[data-checkout-total]');
-    const vatRate = loadVatRate();
     const cart = loadCart();
+    const vatRate = loadVatRate();
 
-    itemsEl.innerHTML = '';
+    itemsWrap.innerHTML = '';
 
     if (!cart.length) {
-      const emptyRow = document.createElement('div');
-      emptyRow.className = 'order-row';
-      emptyRow.innerHTML = '<span>Your cart is empty.</span><span>—</span>';
-      itemsEl.appendChild(emptyRow);
       if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
       if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
       return;
@@ -254,37 +218,36 @@
     let subtotal = 0;
 
     cart.forEach((item) => {
-      const lineTotal = item.price * item.quantity;
-      subtotal += lineTotal;
-
-      const name = `${item.name}${item.size ? ` - ${item.size}` : ''}`;
-      const imgSrc = item.image || '/images/logo.jpg';
-
       const row = document.createElement('div');
       row.className = 'order-row';
-      
-      const productSpan = document.createElement('span');
-      productSpan.className = 'order-product';
-      
-      const img = document.createElement('img');
-      img.className = 'order-thumb';
-      img.src = imgSrc;
-      img.alt = name;
-      img.loading = 'eager';
-      img.decoding = 'async';
-      img.width = 38;
-      img.height = 38;
-      
-      productSpan.appendChild(img);
-      productSpan.appendChild(document.createTextNode(` ${name} × ${item.quantity}`));
-      
-      const priceSpan = document.createElement('span');
-      priceSpan.textContent = formatPrice(lineTotal) + ' (incl. VAT)';
-      
-      row.appendChild(productSpan);
-      row.appendChild(priceSpan);
-      
-      itemsEl.appendChild(row);
+
+      const title = document.createElement('span');
+      title.className = 'order-product';
+
+      if (item.image) {
+        const img = document.createElement('img');
+        img.className = 'order-thumb';
+        img.src = item.image;
+        img.alt = item.name || 'Product';
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        title.appendChild(img);
+      }
+
+      const name = document.createElement('span');
+      const sizeLabel = item.size ? ` - ${item.size}` : '';
+      const qtyLabel = item.quantity > 1 ? ` × ${item.quantity}` : '';
+      name.textContent = `${item.name || 'Product'}${sizeLabel}${qtyLabel}`;
+      title.appendChild(name);
+
+      const price = document.createElement('span');
+      price.textContent = formatPrice(item.price * item.quantity);
+
+      row.appendChild(title);
+      row.appendChild(price);
+      itemsWrap.appendChild(row);
+
+      subtotal += item.price * item.quantity;
     });
 
     const vat = subtotal - subtotal / (1 + vatRate);
@@ -295,5 +258,5 @@
   updateCount();
   attachAddToCart();
   renderCart();
-  renderCheckoutSummary();
+  renderCheckout();
 })();
