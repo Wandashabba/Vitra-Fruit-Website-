@@ -27,9 +27,7 @@ function Hero() {
         preload="auto"
         aria-hidden="true"
       >
-        <source src="/images/HeroVideo.mp4" type="video/mp4" media="(min-width: 768px)" />
-        <source src="/images/HeroVideo1.mp4" type="video/mp4" media="(max-width: 767px)" />
-        <source src="/images/HeroVideo.mp4" type="video/mp4" />
+        <source src="/images/HeroVideoCompressed1.mp4" type="video/mp4" />
       </video>
       <div className="hero-content">
         <p className="hero-kicker">Vitra Fruit Collection</p>
