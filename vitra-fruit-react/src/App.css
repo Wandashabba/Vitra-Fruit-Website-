@@ -1413,7 +1413,7 @@ textarea:focus-visible {
 
 .favourite-product-item figcaption .favourite-product-price {
   margin: 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(0.9rem, 1.25vw, 1.05rem);
   font-weight: 700;
   letter-spacing: 0.05em;
