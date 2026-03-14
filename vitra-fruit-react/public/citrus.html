@@ -17,13 +17,14 @@
   <meta name="twitter:image" content="https://vitrafruit.com/images/placeholder.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shop-products.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
       --font-display: 'Marcellus', 'Georgia', serif;
+      --font-bestyling: 'Bebas Neue', 'Marcellus', serif;
       --nav-ink: #111111;
       --nav-accent: #f6b25f;
     }
@@ -492,7 +493,7 @@
     }
     .products-filter-row {
       display: flex;
-      justify-content: flex-start;
+      justify-content: flex-end;
       position: relative;
       margin: 0 auto 1.1rem;
       gap: 12px;
@@ -531,6 +532,71 @@
       text-transform: uppercase;
       color: #f6b25f;
       font-weight: 800;
+    }
+    .products-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px 18px;
+      flex-wrap: wrap;
+      margin: 0 auto 1.1rem;
+      width: 100%;
+    }
+    .products-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .products-toolbar-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(31, 40, 80, 0.7);
+      font-weight: 800;
+    }
+    .products-toolbar-select-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .products-toolbar-select-wrap::after {
+      content: "▾";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(31, 40, 80, 0.72);
+      pointer-events: none;
+      font-size: 0.85rem;
+    }
+    .products-toolbar-select {
+      appearance: none;
+      -webkit-appearance: none;
+      font-family: var(--font-body);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      color: #1f2850;
+      padding: 10px 40px 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(31, 40, 80, 0.14);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.78));
+      box-shadow: 0 10px 22px rgba(16, 24, 56, 0.08);
+      cursor: pointer;
+    }
+    .products-toolbar-select:focus-visible {
+      outline: 2px solid rgba(246, 178, 95, 0.65);
+      outline-offset: 3px;
+    }
+    .products-toolbar-count {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(31, 40, 80, 0.62);
+      margin-left: 6px;
     }
     .products-filter-select:focus-visible {
       outline: 2px solid rgba(246, 178, 95, 0.65);
@@ -684,6 +750,19 @@
       }
     }
     @media (max-width: 700px) {
+      .products-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 10px;
+      }
+      .products-toolbar-group {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .products-toolbar-count {
+        margin-left: auto;
+      }
       .products-strip .product-grid {
         grid-template-columns: minmax(0, 320px);
       }
@@ -1036,6 +1115,10 @@
     .welcome-strip-viewport {
       width: 100%;
       overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
     }
     .welcome-strip-track {
       list-style: none;
@@ -1045,18 +1128,19 @@
       display: flex;
       align-items: center;
       gap: 1.5rem;
-      animation: welcomeFlow 92s linear infinite;
+      animation: welcomeFlow 26s ease-in-out infinite alternate;
+      will-change: transform;
     }
     .welcome-strip-item {
       white-space: nowrap;
-      font-size: 0.82rem;
-      font-family: var(--font-body);
+      font-size: 0.96rem;
+      font-family: var(--font-bestyling);
       text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-weight: 900;
+      letter-spacing: 0.26em;
+      font-weight: 700;
       color: #111111;
       line-height: 1.2;
-      text-shadow: none;
+      text-shadow: 0 6px 14px rgba(17, 17, 17, 0.18);
     }
     .welcome-strip-highlight {
       display: inline-block;
@@ -1065,9 +1149,9 @@
       border-radius: 999px;
       background: #ffb347;
       color: #2d1700;
-      font-weight: 900;
-      letter-spacing: 0.06em;
-      box-shadow: 0 8px 18px rgba(255, 179, 71, 0.34);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      box-shadow: 0 10px 22px rgba(255, 179, 71, 0.38);
     }
     .welcome-strip-item::after {
       content: "•";
@@ -1411,7 +1495,15 @@
 
         <ul class="navbar-menu navbar-right">
           <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">
+              <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a></li>
         </ul>
 
         <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
@@ -1439,7 +1531,15 @@
               </ul>
             </li>
             <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-            <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+            <li class="nav-item"><a class="nav-link cart-link" href="cart.html">
+              <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a></li>
           </ul>
         </div>
       </div>
@@ -1471,33 +1571,50 @@
   <section class="welcome-strip" aria-label="Welcome offer">
     <div class="welcome-strip-viewport">
       <ul class="welcome-strip-track">
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
 
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
-        <li class="welcome-strip-item" aria-hidden="true">Welcome to our store, first time purchasers get <span class="welcome-strip-highlight">10% off first purchase</span> on our products.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
+        <li class="welcome-strip-item" aria-hidden="true">Enjoy <span class="welcome-strip-highlight">10% off</span> your first purchase.</li>
       </ul>
     </div>
   </section>
 
   <section class="products-strip">
     <div class="container">
-      <div class="products-filter-row">
-        <span class="products-filter-label" aria-hidden="true">Category</span>
-        <label class="sr-only" for="citrusTypeSelect">Category</label>
-        <select id="citrusTypeSelect" class="products-filter-select">
-          <option value="wheels" selected>Wheels</option>
-          <option value="slides">Slides</option>
-          <option value="powders">Powders</option>
-        </select>
+      <div class="products-toolbar" aria-label="Product filters and sorting">
+        <div class="products-toolbar-group">
+          <span class="products-toolbar-label">Sort by:</span>
+          <label class="sr-only" for="sortSelect">Sort by</label>
+          <span class="products-toolbar-select-wrap">
+            <select id="sortSelect" class="products-toolbar-select">
+              <option value="best" selected>Best selling</option>
+              <option value="new">Newest</option>
+              <option value="price-asc">Price, low to high</option>
+              <option value="price-desc">Price, high to low</option>
+            </select>
+          </span>
+          <span id="productsCount" class="products-toolbar-count">4 products</span>
+        </div>
+        <div class="products-toolbar-group">
+          <span class="products-toolbar-label">Category:</span>
+          <label class="sr-only" for="citrusTypeSelect">Category</label>
+          <span class="products-toolbar-select-wrap">
+            <select id="citrusTypeSelect" class="products-toolbar-select">
+              <option value="wheels" selected>Wheels</option>
+              <option value="slides">Slides</option>
+              <option value="powders">Powders</option>
+            </select>
+          </span>
+        </div>
       </div>
       <div class="product-grid">
         <article class="product-card bottle-card wheel-card wheel-card-lemon" data-citrus-types="wheels slides powders">
@@ -1694,6 +1811,7 @@
 
       const cards = Array.from(document.querySelectorAll('[data-citrus-types]'));
       if (!cards.length) return;
+      const countEl = document.getElementById('productsCount');
 
       function applyFilter() {
         const active = select.value;
@@ -1703,6 +1821,10 @@
           card.hidden = !show;
           card.setAttribute('aria-hidden', show ? 'false' : 'true');
         });
+        if (countEl) {
+          const visibleCount = cards.filter((card) => !card.hidden).length;
+          countEl.textContent = `${visibleCount} product${visibleCount === 1 ? '' : 's'}`;
+        }
       }
 
       select.addEventListener('change', applyFilter);

@@ -195,6 +195,11 @@
       background: rgba(255, 255, 255, 0.08);
       border-color: rgba(255, 255, 255, 0.2);
     }
+    .nav-cart-icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
     .nav-count {
       min-width: 20px;
       height: 20px;
@@ -531,6 +536,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      gap: 0.55rem;
       padding: 0.9rem 1.6rem;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.5);
@@ -544,6 +550,11 @@
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+    .btn-cart-icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
     .btn-cart:hover {
       transform: translateY(-1px);
       box-shadow: 0 18px 34px rgba(8, 12, 28, 0.26);
@@ -551,22 +562,22 @@
     .cart-toast {
       position: fixed;
       left: 50%;
-      right: auto;
-      bottom: calc(18px + env(safe-area-inset-bottom));
-      padding: 0.85rem 1.4rem;
-      border-radius: 999px;
-      background: rgba(16, 20, 44, 0.92);
-      color: #fef7ec;
+      top: calc(72px + env(safe-area-inset-top));
+      padding: 0.75rem 1.1rem;
+      border-radius: 14px;
+      background: #b9f0d0;
+      color: #0f2e20;
       font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      font-size: 0.72rem;
-      box-shadow: 0 18px 32px rgba(8, 12, 28, 0.32);
+      letter-spacing: 0.02em;
+      font-size: 0.78rem;
+      box-shadow: 0 18px 32px rgba(8, 12, 28, 0.2);
       opacity: 0;
-      transform: translate(-50%, 12px);
-      max-width: min(92vw, 360px);
-      width: max-content;
-      text-align: center;
+      transform: translate(-50%, -8px);
+      max-width: min(92vw, 440px);
+      width: min(92vw, 440px);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
       pointer-events: none;
       visibility: hidden;
       transition: opacity 0.22s ease, transform 0.22s ease;
@@ -576,6 +587,37 @@
       opacity: 1;
       visibility: visible;
       transform: translate(-50%, 0);
+      pointer-events: auto;
+    }
+    .cart-toast-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: #0f2e20;
+      color: #b9f0d0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      flex: 0 0 auto;
+    }
+    .cart-toast-text {
+      white-space: normal;
+    }
+    .cart-toast-close {
+      margin-left: auto;
+      border: none;
+      background: transparent;
+      color: #0f2e20;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 0.15rem;
+    }
+    .cart-toast-close:focus-visible {
+      outline: 2px solid rgba(15, 46, 32, 0.4);
+      outline-offset: 3px;
+      border-radius: 6px;
     }
 
     .related {
@@ -1029,7 +1071,17 @@
 
         <ul class="navbar-menu navbar-right">
           <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          <li class="nav-item">
+            <a class="nav-link cart-link" href="cart.html">
+              <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a>
+          </li>
         </ul>
 
         <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
@@ -1058,7 +1110,17 @@
             </ul>
           </li>
           <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
-          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+            <li class="nav-item">
+              <a class="nav-link cart-link" href="cart.html">
+                <svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                  <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+                </svg>
+                <span>Cart</span>
+                <span class="nav-count" data-cart-count>0</span>
+              </a>
+            </li>
         </ul>
       </div>
     </nav>
@@ -1099,7 +1161,14 @@
             <label for="quantityInput">Quantity</label>
             <div class="actions">
               <input class="qty" id="quantityInput" type="number" name="quantity" min="1" max="100" value="1" />
-              <button class="btn-cart" type="button" data-add-to-cart data-product="Dehydrated Orange Wheel" data-image="/images/Orangewheel.png" data-size-select="#sizeSelect" data-price-select="#priceSelect" data-qty-input="#quantityInput" data-max-qty="100">Add to cart</button>
+              <button class="btn-cart" type="button" data-add-to-cart data-product="Dehydrated Orange Wheel" data-image="/images/Orangewheel.png" data-size-select="#sizeSelect" data-price-select="#priceSelect" data-qty-input="#quantityInput" data-max-qty="100">
+                <svg class="btn-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                  <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                  <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+                </svg>
+                <span>Add to cart</span>
+              </button>
             </div>
           </div>
         </div>
@@ -1200,7 +1269,11 @@
     </div>
   </footer>
 
-  <div class="cart-toast" id="cartToast" role="status" aria-live="polite">Something has been added to cart</div>
+  <div class="cart-toast" id="cartToast" role="status" aria-live="polite">
+    <span class="cart-toast-icon" aria-hidden="true">✓</span>
+    <span class="cart-toast-text">Added to cart</span>
+    <button class="cart-toast-close" type="button" aria-label="Dismiss notification" data-toast-close>×</button>
+  </div>
 
   <script>
     (function () {
@@ -1246,23 +1319,38 @@
       const addButtons = document.querySelectorAll('[data-add-to-cart]');
       if (!toast || !addButtons.length) return;
 
+      const toastText = toast.querySelector('.cart-toast-text');
+      const closeBtn = toast.querySelector('[data-toast-close]');
       let toastTimer;
       let lastTrigger = 0;
-      const showToast = function () {
+      const showToast = function (label) {
         const now = Date.now();
         if (now - lastTrigger < 500) return;
         lastTrigger = now;
+        if (toastText) {
+          const safeLabel = label || 'Item';
+          toastText.textContent = `${safeLabel} has been added to cart`;
+        }
         toast.classList.add('is-visible');
         window.clearTimeout(toastTimer);
         toastTimer = window.setTimeout(function () {
           toast.classList.remove('is-visible');
-        }, 1800);
+        }, 2200);
       };
 
       addButtons.forEach(function (button) {
-        button.addEventListener('click', showToast);
-        button.addEventListener('touchend', showToast);
+        const handleToast = function () {
+          const label = button.getAttribute('data-product') || 'Item';
+          showToast(label);
+        };
+        button.addEventListener('click', handleToast);
+        button.addEventListener('touchend', handleToast);
       });
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function () {
+          toast.classList.remove('is-visible');
+        });
+      }
     })();
   </script>
 

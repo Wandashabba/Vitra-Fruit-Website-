@@ -183,6 +183,20 @@ function Navbar({ cartCount = 0 }) {
           href={link.href}
           onClick={isMobile ? () => setIsOpen(false) : undefined}
         >
+          {isCart && (
+            <svg className="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+              <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+            </svg>
+          )}
           <span>{link.label}</span>
           {isCart && cartCount > 0 && <span className="nav-count">{cartCount}</span>}
         </a>
