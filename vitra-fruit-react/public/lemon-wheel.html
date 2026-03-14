@@ -17,10 +17,12 @@
   <meta name="twitter:image" content="https://vitrafruit.com/images/LemonWheel.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
+      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
+      --font-display: 'Marcellus', 'Georgia', serif;
       --nav-ink: #111111;
       --nav-accent: #f6b25f;
       --page-bg: #dbdde1;
@@ -28,7 +30,7 @@
       --panel-border: rgba(17, 17, 17, 0.12);
     }
     body {
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       color: #1c2550;
       background: var(--page-bg);
       min-height: 100vh;
@@ -433,7 +435,7 @@
     }
 
     .product-page {
-      padding: clamp(2px, 1.5vw, 10px) 0 clamp(4px, 1.5vw, 8px);
+      padding: clamp(0px, 0.6vw, 4px) 0 clamp(0px, 0.6vw, 4px);
       --section-bg: var(--page-bg);
     }
     .product-shell {
@@ -467,7 +469,7 @@
       max-width: 520px;
     }
     .product-info h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(2rem, 3vw, 2.6rem);
       color: #1f2850;
       margin-bottom: 0.35rem;
@@ -503,7 +505,7 @@
       padding: 0.8rem 1rem;
       border-radius: 999px;
       border: 1px solid rgba(31, 40, 80, 0.18);
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       font-weight: 600;
       font-size: 0.95rem;
       background: rgba(255, 255, 255, 0.86);
@@ -548,8 +550,9 @@
     }
     .cart-toast {
       position: fixed;
-      right: clamp(18px, 3vw, 32px);
-      bottom: clamp(18px, 3vw, 32px);
+      left: 50%;
+      right: auto;
+      bottom: calc(18px + env(safe-area-inset-bottom));
       padding: 0.85rem 1.4rem;
       border-radius: 999px;
       background: rgba(16, 20, 44, 0.92);
@@ -560,22 +563,27 @@
       font-size: 0.72rem;
       box-shadow: 0 18px 32px rgba(8, 12, 28, 0.32);
       opacity: 0;
-      transform: translateY(12px);
+      transform: translate(-50%, 12px);
+      max-width: min(92vw, 360px);
+      width: max-content;
+      text-align: center;
       pointer-events: none;
+      visibility: hidden;
       transition: opacity 0.22s ease, transform 0.22s ease;
-      z-index: 1600;
+      z-index: 3000;
     }
     .cart-toast.is-visible {
       opacity: 1;
-      transform: translateY(0);
+      visibility: visible;
+      transform: translate(-50%, 0);
     }
 
     .related {
-      padding: clamp(28px, 6vw, 56px) 0 clamp(28px, 6vw, 60px);
+      padding: clamp(20px, 4vw, 40px) 0 clamp(20px, 4vw, 44px);
       --section-bg: var(--page-bg);
     }
     .related-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(1.6rem, 2.6vw, 2.1rem);
       color: #1f2850;
       text-align: center;
@@ -607,7 +615,7 @@
       display: block;
     }
     .related-name {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.02rem;
       color: #1f2850;
       letter-spacing: 0.02em;
@@ -631,7 +639,7 @@
       color: #2d1700;
       border: 1px solid rgba(255, 244, 224, 0.82);
       box-shadow: 0 14px 26px rgba(8, 12, 28, 0.18);
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       font-weight: 800;
       letter-spacing: 0.14em;
       text-transform: uppercase;
@@ -672,10 +680,16 @@
     }
 
     .contact {
-      padding: 56px 0;
+      padding: 36px 0;
       text-align: center;
-      --section-bg: #fdfdff;
-      background: linear-gradient(180deg, #fdfdff 0%, #f8faff 100%);
+      --section-bg: rgba(255, 255, 255, 0.78);
+      background-color: #fdfdff;
+      background-image:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08)),
+        url('/images/backgroundlemon.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       border-top: none;
       border-bottom: none;
     }
@@ -749,7 +763,7 @@
       margin: 0;
       max-width: 60ch;
       color: #111111;
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       font-size: 0.98rem;
       line-height: 1.55;
       font-weight: 650;
@@ -787,7 +801,7 @@
       border-radius: 999px;
       border: 0;
       background: transparent;
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       font-size: 0.95rem;
       font-weight: 650;
       color: #111111;
@@ -855,7 +869,7 @@
       background-repeat: no-repeat;
       color: #fff;
       padding: 2.2rem 20px 0.9rem;
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
     }
     .footer-content {
       display: flex;
@@ -867,7 +881,7 @@
     .footer-col h4 {
       margin-bottom: 0.8rem;
       color: #ffffff;
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.3rem;
       font-weight: 700;
     }
@@ -909,6 +923,78 @@
       border-top: 1px solid rgba(255,255,255,0.22);
       font-size: 0.82rem;
       letter-spacing: 0.02em;
+    }
+
+    /* Nav color override */
+    .nav-link,
+    .nav-link-dropdown,
+    .nav-dropdown-link {
+      color: #000000;
+      font-weight: 700;
+    }
+    .nav-link,
+    .nav-link-dropdown {
+      cursor: pointer;
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
     }
   </style>
 </head>
@@ -1157,16 +1243,25 @@
   <script>
     (function () {
       const toast = document.getElementById('cartToast');
-      const addButton = document.querySelector('[data-add-to-cart]');
-      if (!toast || !addButton) return;
+      const addButtons = document.querySelectorAll('[data-add-to-cart]');
+      if (!toast || !addButtons.length) return;
 
       let toastTimer;
-      addButton.addEventListener('click', function () {
+      let lastTrigger = 0;
+      const showToast = function () {
+        const now = Date.now();
+        if (now - lastTrigger < 500) return;
+        lastTrigger = now;
         toast.classList.add('is-visible');
         window.clearTimeout(toastTimer);
         toastTimer = window.setTimeout(function () {
           toast.classList.remove('is-visible');
         }, 1800);
+      };
+
+      addButtons.forEach(function (button) {
+        button.addEventListener('click', showToast);
+        button.addEventListener('touchend', showToast);
       });
     })();
   </script>

@@ -2,6 +2,9 @@ import React from 'react';
 import aboutUsJpg from '../assets/images/about-us.jpg';
 import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
+import hibiscusVideo from '../assets/images/homepageHivideo-matted-480.mp4';
+import orangeHomeVideo from '../assets/images/OrangeHome-matted-480.mp4';
+import pearSlicesVideo from '../assets/images/PearslicesVideo-matted-480.mp4';
 
 const favouriteProducts = [
   {
@@ -10,15 +13,17 @@ const favouriteProducts = [
     price: 'R60-R360',
     href: '#shop',
     imageSrc: '/images/pear.png',
-    imageAlt: 'Fresh pear flavour inspiration'
+    imageAlt: 'Fresh pear flavour inspiration',
+    videoSrc: pearSlicesVideo
   },
   {
-    name: 'Pineapple slices',
-    note: 'Bright tropical lift',
+    name: 'Orange wheel',
+    note: 'Citrus brightness',
     price: 'R80-R480',
     href: '#shop',
-    imageSrc: '/images/Pineapple 1.png',
-    imageAlt: 'Pineapple flavour inspiration'
+    imageSrc: '/images/orange-wheel.png',
+    imageAlt: 'Orange wheel flavour inspiration',
+    videoSrc: orangeHomeVideo
   },
   {
     name: 'Hibiscus Flower',
@@ -26,7 +31,8 @@ const favouriteProducts = [
     price: 'R60',
     href: '#shop',
     imageSrc: '/images/Hibiscus.png',
-    imageAlt: 'Hibiscus flavour inspiration'
+    imageAlt: 'Hibiscus flavour inspiration',
+    videoSrc: hibiscusVideo
   }
 ];
 
@@ -41,25 +47,46 @@ function Products() {
 
   return (
     <>
-      <section className="favourite-products" id="shop" aria-labelledby="favourite-products-heading">
+      <section
+        className="favourite-products"
+        id="shop"
+        aria-labelledby="favourite-products-heading"
+        style={{ backgroundColor: '#f5f5f5' }}
+      >
         <div className="container">
-          <div className="favourite-products-section">
+          <div className="favourite-products-section" style={{ backgroundColor: '#f5f5f5' }}>
             <div className="favourite-products-head">
               <div className="favourite-products-title-block">
                 <p className="featured-kicker">Handpicked Flavours</p>
                 <h2 id="favourite-products-heading">Our Crowd Pleasers</h2>
               </div>
             </div>
-            <div className="favourite-products-grid" role="list" aria-label="Favourite products">
+            <div className="favourite-products-grid" role="list" aria-label="Favourite products" style={{ backgroundColor: '#f5f5f5' }}>
               {favouriteProducts.map((product, index) => (
-                <figure key={product.name} className={`favourite-product-item favourite-product-item-${index + 1}`} role="listitem">
+                <figure
+                  key={product.name}
+                  className={`favourite-product-item favourite-product-item-${index + 1}${product.videoSrc ? ' has-video' : ''}`}
+                  role="listitem"
+                >
                   <div className="favourite-product-visual">
-                    <img
-                      src={product.imageSrc}
-                      alt={product.imageAlt}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    {product.videoSrc ? (
+                      <video
+                        className="favourite-product-video"
+                        src={product.videoSrc}
+                        muted
+                        loop
+                        autoPlay
+                        playsInline
+                        preload="metadata"
+                      />
+                    ) : (
+                      <img
+                        src={product.imageSrc}
+                        alt={product.imageAlt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    )}
                   </div>
                   <figcaption>
                     <strong>{product.name}</strong>

@@ -10,13 +10,85 @@
   <link rel="stylesheet" href="/shared-navbar.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Manrope', sans-serif; background: #f6f7ff; color: #1f2850; min-height: 100vh; }
+    body { font-family: var(--font-body); background: #f6f7ff; color: #1f2850; min-height: 100vh; }
     .page { padding: 20px; }
     .card { width: min(94vw, 720px); margin: 26px auto; background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 12px 24px rgba(17, 25, 60, 0.12); }
-    h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 12px; text-align: center; }
+    h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 12px; text-align: center; }
     p { color: #54618a; line-height: 1.7; margin-bottom: 10px; text-align: center; }
     .back { display: inline-block; margin-top: 16px; text-decoration: none; color: #fff; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); border-radius: 999px; padding: 12px 22px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 700; }
     .wrap { text-align: center; }
+
+    /* Nav color override */
+    .nav-link,
+    .nav-link-dropdown,
+    .nav-dropdown-link {
+      color: #000000;
+      font-weight: 700;
+    }
+    .nav-link,
+    .nav-link-dropdown {
+      cursor: pointer;
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
   </style>
 </head>
 <body>

@@ -7,15 +7,17 @@
   <meta name="description" content="Explore Vitra Fruit vegetable powders crafted for bold flavour, clean ingredients, and premium bar presentation." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
+      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
+      --font-display: 'Marcellus', 'Georgia', serif;
       --nav-ink: #111111;
       --nav-accent: #f6b25f;
     }
     body {
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       color: #1c2550;
       background: #f6f7ff;
       min-height: 100vh;
@@ -359,7 +361,7 @@
       background: #ffffff;
     }
     .products-title {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(1.6rem, 2.8vw, 2.25rem);
       color: #1f2850;
       font-weight: 700;
@@ -412,7 +414,7 @@
       filter: brightness(1.04);
     }
     .product-name {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       color: #1f2850;
       font-size: 1.2rem;
       line-height: 1.05;
@@ -488,7 +490,7 @@
         ) center/cover no-repeat;
     }
     h1 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: clamp(2rem, 5vw, 3.3rem);
       line-height: 1.08;
       margin-bottom: 12px;
@@ -514,7 +516,7 @@
       padding: 16px;
     }
     .card h3 {
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.25rem;
       margin-bottom: 6px;
     }
@@ -670,7 +672,7 @@
       margin-bottom: 0.35rem;
       font-size: clamp(1.35rem, 1.9vw, 1.85rem);
       line-height: 1.12;
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-weight: 700;
       letter-spacing: 0.01em;
     }
@@ -747,7 +749,7 @@
       background-repeat: no-repeat;
       color: #fff;
       padding: 2.2rem 20px 0.9rem;
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
     }
     .footer-content {
       display: flex;
@@ -759,7 +761,7 @@
     .footer-col h4 {
       margin-bottom: 0.8rem;
       color: #ffffff;
-      font-family: 'Playfair Display', serif;
+      font-family: var(--font-display);
       font-size: 1.3rem;
       font-weight: 700;
     }
@@ -801,6 +803,78 @@
       border-top: 1px solid rgba(255,255,255,0.22);
       font-size: 0.82rem;
       letter-spacing: 0.02em;
+    }
+
+    /* Nav color override */
+    .nav-link,
+    .nav-link-dropdown,
+    .nav-dropdown-link {
+      color: #000000;
+      font-weight: 700;
+    }
+    .nav-link,
+    .nav-link-dropdown {
+      cursor: pointer;
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
     }
   </style>
 </head>
