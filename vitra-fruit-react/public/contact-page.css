@@ -5,6 +5,16 @@
       --nav-ink: #111111;
       --nav-accent: #f6b25f;
     }
+    body {
+      opacity: 0;
+      transition: opacity 0.22s ease;
+    }
+    body.is-ready {
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      body { transition: none; }
+    }
     #wrapper-navbar {
       background: transparent;
       position: sticky;

@@ -5,6 +5,17 @@
       --nav-accent: #f6b25f;
     }
 
+body {
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+body.is-ready {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+}
+
 /* Navbar (Unified from Citrus) */
 #wrapper-navbar {
       background: transparent;
