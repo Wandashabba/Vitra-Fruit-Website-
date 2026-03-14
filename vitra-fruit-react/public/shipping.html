@@ -6,10 +6,16 @@
   <title>Shipping Costs | Vitra Fruit</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="shared-navbar.css">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Marcellus&display=swap" rel="stylesheet" />
+  
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
+      --font-display: 'Marcellus', 'Georgia', serif;
+      --nav-ink: #111111;
+      --nav-accent: #f6b25f;
+    }
     body { font-family: var(--font-body); background: #f6f7ff; color: #1f2850; min-height: 100vh; }
     .page { padding: 20px; }
     .card { width: min(94vw, 720px); margin: 26px auto; background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 12px 24px rgba(17, 25, 60, 0.12); }
@@ -18,83 +24,489 @@
     .back { display: inline-block; margin-top: 16px; text-decoration: none; color: #fff; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); border-radius: 999px; padding: 12px 22px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 700; }
     .wrap { text-align: center; }
 
-    /* Nav color override */
-    .nav-link,
-    .nav-link-dropdown,
-    .nav-dropdown-link {
-      color: #000000;
-      font-weight: 700;
-    }
-    .nav-link,
-    .nav-link-dropdown {
-      cursor: pointer;
-    }
-    .nav-link::after {
-      background: #000000;
-    }
-    .nav-link:hover,
-    .nav-link:focus-visible,
-    .nav-link.active {
-      color: #000000;
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-link-dropdown {
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-dropdown-link:hover,
-    .nav-dropdown-link:focus-visible,
-    .nav-dropdown-link.active {
-      color: #000000;
-      background: rgba(0, 0, 0, 0.04);
-    }
-    .nav-link::after {
-      background: #000000;
-    }
-    .nav-link:hover,
-    .nav-link:focus-visible,
-    .nav-link.active {
-      color: #000000;
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-link-dropdown {
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-dropdown-link:hover,
-    .nav-dropdown-link:focus-visible,
-    .nav-dropdown-link.active {
-      color: #000000;
-      background: rgba(0, 0, 0, 0.04);
-    }
-    .nav-link::after {
-      background: #000000;
-    }
-    .nav-link:hover,
-    .nav-link:focus-visible,
-    .nav-link.active {
-      color: #000000;
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-link-dropdown {
-      background: transparent;
-      border-color: transparent;
-    }
-    .nav-dropdown-link:hover,
-    .nav-dropdown-link:focus-visible,
-    .nav-dropdown-link.active {
-      color: #000000;
-      background: rgba(0, 0, 0, 0.04);
-    }
+    /* Navbar */
+#wrapper-navbar {
+  background: transparent;
+  position: sticky;
+  top: 0;
+  z-index: 1400;
+  padding: 14px 16px 0;
+  transition: transform 0.32s ease, opacity 0.32s ease;
+  will-change: transform, opacity;
+}
+
+#wrapper-navbar.is-hidden {
+  transform: translateY(-135%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navbar {
+  padding: 1rem 0;
+  border-radius: 24px;
+  position: relative;
+  overflow: visible;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 30px rgba(11, 13, 32, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 23px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.2)
+  );
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(0.55rem, 1.4vw, 1.2rem);
+  position: relative;
+  z-index: 1;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  order: 2;
+  margin: 0 clamp(0.15rem, 0.9vw, 0.7rem);
+  flex-shrink: 0;
+}
+
+.navbar-left {
+  order: 1;
+  justify-content: flex-end;
+  padding-right: 0.35rem;
+}
+
+.navbar-right {
+  order: 3;
+  justify-content: flex-start;
+  padding-left: 0.35rem;
+}
+
+.navbar-logo img {
+  height: 68px;
+  width: auto;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 8px 22px rgba(11, 13, 32, 0.38),
+    0 0 0 3px rgba(255, 255, 255, 0.07);
+  transition: all 0.3s;
+}
+
+.navbar-logo img:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow:
+    0 12px 26px rgba(11, 13, 32, 0.5),
+    0 0 0 3px rgba(246, 178, 95, 0.17);
+}
+
+.navbar-menu {
+  display: none;
+  list-style: none;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  flex: 1;
+}
+
+@media (min-width: 1100px) {
+  .navbar-menu {
+    display: flex;
+  }
+  
+  .navbar-logo {
+    flex: 0 0 auto;
+  }
+}
+
+.navbar-toggler {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(17, 17, 17, 0.22);
+  border-radius: 11px;
+  padding: 0.55rem;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 10px 22px rgba(12, 18, 40, 0.12);
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.navbar-toggler:focus-visible {
+  outline: 2px solid rgba(246, 178, 95, 0.75);
+  outline-offset: 4px;
+}
+
+@media (min-width: 1100px) {
+  .navbar-toggler {
+    display: none;
+  }
+}
+
+.navbar-toggler-icon {
+  width: 22px;
+  height: 16px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.toggler-line {
+  width: 22px;
+  height: 2px;
+  background: #111;
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+
+.navbar-toggler.is-open {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(17, 17, 17, 0.3);
+  box-shadow: 0 14px 28px rgba(12, 18, 40, 0.16);
+}
+
+.navbar-toggler.is-open .navbar-toggler-icon {
+  position: relative;
+  justify-content: center;
+}
+
+.navbar-toggler.is-open .toggler-line:nth-child(1),
+.navbar-toggler.is-open .toggler-line:nth-child(3) {
+  position: absolute;
+  left: 0;
+}
+
+.navbar-toggler.is-open .toggler-line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.navbar-toggler.is-open .toggler-line:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar-toggler.is-open .toggler-line:nth-child(3) {
+  transform: rotate(-45deg);
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 12px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--nav-ink);
+  font-weight: 700;
+  font-size: 0.83rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  padding: 0.65rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  position: relative;
+  border-radius: 999px;
+  border: 1px solid transparent;
+}
+
+.nav-link-dropdown {
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid transparent;
+  font-family: inherit;
+  color: inherit;
+  box-shadow: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.nav-link-dropdown:focus,
+.nav-link-dropdown:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.nav-caret {
+  font-size: 0.72rem;
+  line-height: 1;
+  transform: translateY(1px);
+  transition: transform 0.25s ease;
+}
+
+.nav-dropdown-menu {
+  list-style: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 220px;
+  margin: 0;
+  padding: 0.4rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: 0 14px 30px rgba(12, 16, 38, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+  z-index: 25;
+}
+
+.nav-dropdown-link {
+  display: block;
+  padding: 0.6rem 0.75rem;
+  color: #000000;
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.nav-dropdown-link:hover,
+.nav-dropdown-link:focus-visible {
+  background: rgba(0, 0, 0, 0.04);
+  color: #000000;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.nav-dropdown:hover .nav-caret,
+.nav-dropdown:focus-within .nav-caret {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  width: 24px;
+  height: 2px;
+  transform: translateX(-50%) scaleX(0);
+  background: #000000;
+  transition: transform 0.28s ease;
+}
+
+.nav-link:hover {
+  color: #000000;
+  border-color: transparent;
+  background: transparent;
+}
+
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.nav-link.active {
+  color: #000000;
+  border-color: transparent;
+  background: transparent;
+}
+
+.nav-link.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.cart-link {
+  background: transparent;
+  border-color: transparent;
+}
+
+.nav-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  background: linear-gradient(135deg, #ffd9a6, var(--nav-accent));
+  color: #24162f;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.45);
+}
+
+.mobile-nav {
+  display: block;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 20px 40px rgba(10, 13, 31, 0.22);
+  padding: 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  transform: translateY(-8px) scale(0.985);
+  transform-origin: top center;
+  pointer-events: none;
+  transition: max-height 0.38s ease, opacity 0.28s ease, transform 0.28s ease, visibility 0.28s ease;
+}
+
+.mobile-nav::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 17px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.14) 40%,
+    rgba(255, 255, 255, 0.24)
+  );
+}
+
+.mobile-nav.is-open {
+  max-height: 560px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mobile-nav .navbar-nav {
+  list-style: none;
+  padding: 0.2rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.mobile-nav .nav-link {
+  color: var(--nav-ink);
+  width: 100%;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.mobile-nav .nav-link:hover,
+.mobile-nav .nav-link:focus-visible {
+  background: rgba(246, 178, 95, 0.16);
+  border-color: rgba(246, 178, 95, 0.3);
+  color: var(--nav-ink);
+}
+
+.mobile-nav .nav-link.active {
+  border-color: rgba(246, 178, 95, 0.35);
+  background: rgba(246, 178, 95, 0.18);
+  color: var(--nav-ink);
+}
+
+.mobile-nav .nav-link::after {
+  display: none;
+}
+
+.mobile-nav .nav-item:last-child .nav-link {
+  margin-bottom: 0;
+}
+
+.mobile-nav .nav-dropdown .nav-dropdown-menu {
+  position: static;
+  min-width: 100%;
+  margin-top: 0.25rem;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  box-shadow: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 0.28s ease, opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+}
+
+.mobile-nav .nav-dropdown .nav-dropdown-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  max-height: 220px;
+  pointer-events: auto;
+}
+
+.mobile-nav .nav-dropdown-link {
+  color: #111;
+  border-radius: 10px;
+  font-size: 0.74rem;
+}
+
+.mobile-nav .nav-dropdown-link:hover,
+.mobile-nav .nav-dropdown-link:focus-visible,
+.mobile-nav .nav-dropdown-link.active {
+  background: rgba(0, 0, 0, 0.04);
+  color: #000000;
+}
   </style>
+  <link rel="stylesheet" href="nav-unified.css" />
 </head>
 <body>
-  <header class="nav-wrap" data-site-nav>
-    <nav class="site-navbar" aria-label="Main navigation">
-      <div class="site-nav-inner">
+    <div id="wrapper-navbar">
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="container navbar-container">
+        <ul class="navbar-menu navbar-left">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item nav-dropdown">
+            <button class="nav-link nav-link-dropdown" type="button" aria-haspopup="true">
+              <span>Shop Now</span>
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="nav-dropdown-menu">
+              <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
+              <li><a class="nav-dropdown-link" href="fruit-strips.html">Tropical</a></li>
+              <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
+              <li><a class="nav-dropdown-link" href="fruit-strips.html">Fruit Bites</a></li>
+              <li><a class="nav-dropdown-link" href="index.html#about">Lifestyle</a></li>
+            </ul>
+          </li>
+        </ul>
+
         <a class="navbar-logo" href="index.html">
           <picture>
             <source srcset="/images/logo.avif" type="image/avif" />
@@ -103,28 +515,42 @@
           </picture>
         </a>
 
-        <button class="site-nav-hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
-          <span></span><span></span><span></span>
+        <ul class="navbar-menu navbar-right">
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+        </ul>
+
+        <button id="navToggler" class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon">
+            <span class="toggler-line"></span>
+            <span class="toggler-line"></span>
+            <span class="toggler-line"></span>
+          </span>
         </button>
 
-        <ul class="site-nav-menu" data-menu>
-          <li><a class="site-nav-link" data-match="home" href="index.html">Home</a></li>
-          <li class="site-nav-dropdown" data-shop-item>
-            <button class="site-nav-button" type="button" data-shop-toggle aria-haspopup="true" aria-expanded="false">Shop Now <span aria-hidden="true">▾</span></button>
-            <ul class="site-nav-dropdown-menu">
-              <li><a href="citrus.html">Citrus</a></li>
-              <li><a href="fruit-strips.html">Tropical</a></li>
-              <li><a href="vegetable-powders.html">Vegetable Powders</a></li>
-              <li><a href="fruit-strips.html">Fruit Bites</a></li>
-              <li><a href="index.html#about">Lifestyle</a></li>
-            </ul>
-          </li>
-          <li><a class="site-nav-link" data-match="contact" href="contact.html">Contact</a></li>
-          <li><a class="site-nav-link cart-link" data-match="account" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
-        </ul>
+        <div id="mobileNav" class="mobile-nav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item nav-dropdown" id="mobileShopItem">
+              <button id="mobileShopToggle" class="nav-link nav-link-dropdown" type="button" aria-expanded="false" aria-haspopup="true">
+                <span>Shop Now</span>
+                <span class="nav-caret" aria-hidden="true">▾</span>
+              </button>
+              <ul id="mobileShopDropdown" class="nav-dropdown-menu">
+                <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
+                <li><a class="nav-dropdown-link" href="fruit-strips.html">Tropical</a></li>
+                <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
+                <li><a class="nav-dropdown-link" href="fruit-strips.html">Fruit Bites</a></li>
+                <li><a class="nav-dropdown-link" href="index.html#about">Lifestyle</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            <li class="nav-item"><a class="nav-link cart-link" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+          </ul>
+        </div>
       </div>
     </nav>
-  </header>
+  </div>
 
   <main class="page">
     <section class="card">
@@ -135,7 +561,7 @@
     </section>
   </main>
 
-  <script src="shared-navbar.js"></script>
+  <script src="shop-pages.js"></script>
   <script src="cart.js"></script>
 </body>
 </html>

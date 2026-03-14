@@ -747,6 +747,11 @@
       background: #ffffff;
       border-top: none;
     }
+    .promo-signup::before,
+    .promo-signup + .footer::before {
+      content: none;
+    }
+
     .promo-signup-inner {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -991,6 +996,7 @@
       background: rgba(0, 0, 0, 0.04);
     }
   </style>
+  <link rel="stylesheet" href="nav-unified.css" />
 </head>
 <body>
   <div id="wrapper-navbar">

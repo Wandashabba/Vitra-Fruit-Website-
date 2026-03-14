@@ -722,6 +722,11 @@
       background: #ffffff;
       border-top: none;
     }
+    .promo-signup::before,
+    .promo-signup + .footer::before {
+      content: none;
+    }
+
     .promo-signup-inner {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
@@ -939,12 +944,22 @@
       display: grid;
       gap: 1rem;
     }
+    .cart-scroll-hint {
+      display: none;
+      justify-content: flex-end;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-700);
+      font-weight: 800;
+    }
     .cart-empty {
       color: var(--ink-700);
       margin-bottom: 0.5rem;
     }
     .cart-table-wrap {
       overflow-x: auto;
+      position: relative;
       border-radius: 0;
       border: 1px solid var(--panel-border);
       background: var(--panel-bg);
@@ -1033,13 +1048,24 @@
       font-weight: 600;
       color: var(--ink-900);
     }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
     .cart-summary {
       position: static;
-      background: transparent;
-      border-radius: 0;
-      border: none;
-      padding: 0;
-      box-shadow: none;
+      background: #ffffff;
+      border-radius: 18px;
+      border: 1px solid rgba(31, 40, 80, 0.12);
+      padding: 22px 22px 24px;
+      box-shadow: 0 18px 32px rgba(16, 24, 56, 0.08);
     }
     .cart-totals {
       width: 100%;
@@ -1051,21 +1077,30 @@
     }
     .cart-totals h2 {
       font-family: var(--font-display);
-      font-size: 1.2rem;
-      margin-bottom: 0.6rem;
+      font-size: 1.25rem;
+      margin-bottom: 0.85rem;
       color: var(--ink-900);
     }
     .totals-row {
       display: flex;
       justify-content: space-between;
-      padding: 6px 0;
+      padding: 10px 0;
       font-weight: 700;
       color: var(--ink-900);
       border-bottom: 1px dashed var(--line-soft);
     }
+    .totals-row.total-row {
+      font-size: 1rem;
+      border-bottom: none;
+      padding-bottom: 6px;
+    }
     .totals-vat-row {
       align-items: center;
       gap: 12px;
+      border-top: 1px solid var(--line-soft);
+      margin-top: 6px;
+      padding-top: 12px;
+      border-bottom: none;
     }
     .vat-label {
       font-size: 0.68rem;
@@ -1094,14 +1129,14 @@
     .cart-actions {
       display: flex;
       gap: 0.8rem;
-      margin-top: 1rem;
-      justify-content: flex-start;
+      margin-top: 1.2rem;
+      justify-content: space-between;
       flex-wrap: wrap;
     }
     .cart-clear,
     .cart-checkout {
-      padding: 0.65rem 1.1rem;
-      border-radius: 4px;
+      padding: 0.7rem 1.2rem;
+      border-radius: 999px;
       font-size: 0.72rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -1128,6 +1163,33 @@
       }
       .cart-grid {
         grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 700px) {
+      .cart-scroll-hint {
+        display: flex;
+      }
+      .cart-table-wrap::after {
+        content: "→";
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 0.72rem;
+        color: var(--ink-700);
+        background: rgba(255, 255, 255, 0.78);
+        border-radius: 999px;
+        padding: 2px 8px;
+        pointer-events: none;
+      }
+      .cart-table-wrap::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 42px;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--panel-bg));
+        pointer-events: none;
       }
     }
 
@@ -1203,6 +1265,7 @@
       background: rgba(0, 0, 0, 0.04);
     }
   </style>
+  <link rel="stylesheet" href="nav-unified.css" />
 </head>
 <body>
   <div id="wrapper-navbar">
@@ -1284,12 +1347,13 @@
       <div class="cart-grid">
         <div class="cart-items">
           <p class="cart-empty" data-cart-empty hidden>Your cart is empty.</p>
+          <div class="cart-scroll-hint" aria-hidden="true">Swipe to see quantity →</div>
           <div class="cart-table-wrap">
             <table class="cart-table" aria-label="Cart items">
               <thead>
                 <tr>
                   <th>Remove item</th>
-                  <th>Thumbnail image</th>
+                  <th><span class="sr-only">Thumbnail image</span></th>
                   <th>Product</th>
                   <th>Price</th>
                   <th>Quantity</th>
@@ -1308,7 +1372,7 @@
               <span>Subtotal</span>
               <span data-cart-subtotal>R0.00 (incl. VAT)</span>
             </div>
-            <div class="totals-row">
+            <div class="totals-row total-row">
               <span>Total</span>
               <span data-cart-total>R0.00 (includes R0.00 VAT)</span>
             </div>
