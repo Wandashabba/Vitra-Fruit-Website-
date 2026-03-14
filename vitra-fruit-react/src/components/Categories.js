@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import citrusPng from '../assets/images/Citrus2.png';
-import tropicalPng from '../assets/images/Tropical2.png';
+import categoryPlaceholder from '../assets/images/category-placeholder.svg';
 
 function Categories() {
   const [activeTab, setActiveTab] = useState('citrus');
@@ -13,8 +12,8 @@ function Categories() {
     return categoryPageById[category.id] || '#products';
   };
   const tabImages = {
-    citrus: { png: citrusPng, alt: 'Citrus category' },
-    tropical: { png: tropicalPng, alt: 'Tropical category' }
+    citrus: { png: categoryPlaceholder, alt: 'Citrus category placeholder' },
+    tropical: { png: categoryPlaceholder, alt: 'Tropical category placeholder' }
   };
 
   const categories = [
