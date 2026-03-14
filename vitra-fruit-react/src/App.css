@@ -1140,7 +1140,7 @@ textarea:focus-visible {
 
 .favourite-products {
   --hero-section-overlap: 0px;
-  --favourite-bg: #f5f5f5;
+  --favourite-bg: #d8d9d6;
   --favourite-speck: rgba(255, 255, 255, 0.35);
   position: relative;
   isolation: isolate;
@@ -1148,22 +1148,7 @@ textarea:focus-visible {
   margin-top: 0;
   padding: 44px 16px 58px;
   background: var(--favourite-bg) !important;
-  background-image:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.75) 0%,
-      rgba(255, 255, 255, 0) 18%,
-      rgba(255, 255, 255, 0) 82%,
-      rgba(255, 255, 255, 0.75) 100%
-    ),
-    radial-gradient(circle at 12% 18%, var(--favourite-speck) 0 1.2px, transparent 1.4px),
-    radial-gradient(circle at 82% 24%, var(--favourite-speck) 0 1px, transparent 1.3px),
-    radial-gradient(circle at 36% 62%, var(--favourite-speck) 0 1.1px, transparent 1.4px),
-    radial-gradient(circle at 68% 74%, var(--favourite-speck) 0 1px, transparent 1.3px),
-    radial-gradient(circle at 22% 86%, var(--favourite-speck) 0 1px, transparent 1.3px),
-    radial-gradient(circle at 90% 58%, var(--favourite-speck) 0 1.1px, transparent 1.4px);
-  background-repeat: repeat;
-  background-size: 220px 220px;
+  background-image: none;
   border-top: none;
 }
 
@@ -1308,11 +1293,11 @@ textarea:focus-visible {
 }
 
 .favourite-product-item img {
-  width: min(100%, 290px);
-  height: 290px;
+  width: 100%;
+  height: 100%;
   display: block;
   margin: 0 auto;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   filter: none;
   position: relative;
@@ -1388,16 +1373,21 @@ textarea:focus-visible {
   animation: product-orbit 1.15s steps(3, end) infinite;
 }
 
+.favourite-product-item:hover .favourite-product-visual,
+.favourite-product-item:focus-within .favourite-product-visual {
+  animation: product-float 2.8s ease-in-out infinite;
+}
+
 .favourite-product-item:hover img,
 .favourite-product-item:focus-within img {
   transform: translateY(-8px) scale(1.04);
-  filter: drop-shadow(0 18px 26px rgba(22, 31, 65, 0.2));
+  filter: none;
 }
 
 .favourite-product-item:hover video,
 .favourite-product-item:focus-within video {
   transform: translateY(-8px) scale(1.04);
-  filter: drop-shadow(0 18px 26px rgba(22, 31, 65, 0.2));
+  filter: none;
 }
 
 .favourite-product-item figcaption {
@@ -2142,8 +2132,8 @@ textarea:focus-visible {
   }
 
   .favourite-product-item img {
-    width: min(100%, 230px);
-    height: 230px;
+    width: 100%;
+    height: 100%;
   }
 
   .tab-buttons {
@@ -2307,8 +2297,8 @@ textarea:focus-visible {
   }
 
   .favourite-product-item img {
-    width: min(100%, 200px);
-    height: 200px;
+    width: 100%;
+    height: 100%;
   }
 
   .about-section-home {
@@ -2342,6 +2332,16 @@ textarea:focus-visible {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
+  }
+}
+
+@keyframes product-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
   }
 }
 
@@ -2451,6 +2451,11 @@ textarea:focus-visible {
     transition: none;
     transform: none;
     filter: none;
+  }
+
+  .favourite-product-item:hover .favourite-product-visual,
+  .favourite-product-item:focus-within .favourite-product-visual {
+    animation: none;
   }
 
 }

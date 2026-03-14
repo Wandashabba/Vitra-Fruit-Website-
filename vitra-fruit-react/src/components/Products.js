@@ -2,9 +2,9 @@ import React from 'react';
 import aboutUsJpg from '../assets/images/about-us.jpg';
 import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
-import hibiscusVideo from '../assets/images/homepageHivideo-matted-480.mp4';
-import orangeHomeVideo from '../assets/images/OrangeHome-matted-480.mp4';
-import pearSlicesVideo from '../assets/images/PearslicesVideo-matted-480.mp4';
+import homepagePe from '../assets/images/homepagePe.png';
+import homepageOr from '../assets/images/homepageOr.png';
+import homepageHi from '../assets/images/homepageHi.png';
 
 const favouriteProducts = [
   {
@@ -12,27 +12,24 @@ const favouriteProducts = [
     note: 'Sweet and mellow',
     price: 'R60-R360',
     href: '#shop',
-    imageSrc: '/images/pear.png',
-    imageAlt: 'Fresh pear flavour inspiration',
-    videoSrc: pearSlicesVideo
+    imageSrc: homepagePe,
+    imageAlt: 'Fresh pear flavour inspiration'
   },
   {
     name: 'Orange wheel',
     note: 'Citrus brightness',
     price: 'R80-R480',
     href: '#shop',
-    imageSrc: '/images/orange-wheel.png',
-    imageAlt: 'Orange wheel flavour inspiration',
-    videoSrc: orangeHomeVideo
+    imageSrc: homepageOr,
+    imageAlt: 'Orange wheel flavour inspiration'
   },
   {
     name: 'Hibiscus Flower',
     note: 'Floral and vibrant',
     price: 'R60',
     href: '#shop',
-    imageSrc: '/images/Hibiscus.png',
-    imageAlt: 'Hibiscus flavour inspiration',
-    videoSrc: hibiscusVideo
+    imageSrc: homepageHi,
+    imageAlt: 'Hibiscus flavour inspiration'
   }
 ];
 
@@ -51,17 +48,16 @@ function Products() {
         className="favourite-products"
         id="shop"
         aria-labelledby="favourite-products-heading"
-        style={{ backgroundColor: '#f5f5f5' }}
       >
         <div className="container">
-          <div className="favourite-products-section" style={{ backgroundColor: '#f5f5f5' }}>
+          <div className="favourite-products-section">
             <div className="favourite-products-head">
               <div className="favourite-products-title-block">
                 <p className="featured-kicker">Handpicked Flavours</p>
                 <h2 id="favourite-products-heading">Our Crowd Pleasers</h2>
               </div>
             </div>
-            <div className="favourite-products-grid" role="list" aria-label="Favourite products" style={{ backgroundColor: '#f5f5f5' }}>
+            <div className="favourite-products-grid" role="list" aria-label="Favourite products">
               {favouriteProducts.map((product, index) => (
                 <figure
                   key={product.name}
