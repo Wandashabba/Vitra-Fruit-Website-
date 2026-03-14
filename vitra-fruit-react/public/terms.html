@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms and Conditions | Vitra Fruit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared-navbar.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font-body); background: #f6f7ff; color: #1f2850; min-height: 100vh; }
+    .page { padding: 20px; }
+    .card { width: min(94vw, 760px); margin: 26px auto; background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 12px 24px rgba(17, 25, 60, 0.12); }
+    h1 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.4rem); margin-bottom: 12px; text-align: center; }
+    p { color: #54618a; line-height: 1.7; margin-bottom: 12px; }
+    .back { display: inline-block; margin-top: 8px; text-decoration: none; color: #fff; background: linear-gradient(135deg, #ff6b6b, #ee5a6f); border-radius: 999px; padding: 12px 22px; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.78rem; font-weight: 700; }
+    .wrap { text-align: center; }
+
+    /* Nav color override */
+    .nav-link,
+    .nav-link-dropdown,
+    .nav-dropdown-link {
+      color: #000000;
+      font-weight: 700;
+    }
+    .nav-link,
+    .nav-link-dropdown {
+      cursor: pointer;
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+    .nav-link::after {
+      background: #000000;
+    }
+    .nav-link:hover,
+    .nav-link:focus-visible,
+    .nav-link.active {
+      color: #000000;
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-link-dropdown {
+      background: transparent;
+      border-color: transparent;
+    }
+    .nav-dropdown-link:hover,
+    .nav-dropdown-link:focus-visible,
+    .nav-dropdown-link.active {
+      color: #000000;
+      background: rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body>
+  <header class="nav-wrap" data-site-nav>
+    <nav class="site-navbar" aria-label="Main navigation">
+      <div class="site-nav-inner">
+        <a class="navbar-logo" href="index.html">
+          <picture>
+            <source srcset="/images/logo.avif" type="image/avif" />
+            <source srcset="/images/logo.webp" type="image/webp" />
+            <img src="/images/logo.jpg" alt="Vitra Fruit logo" />
+          </picture>
+        </a>
+
+        <button class="site-nav-hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <span></span><span></span><span></span>
+        </button>
+
+        <ul class="site-nav-menu" data-menu>
+          <li><a class="site-nav-link" data-match="home" href="index.html">Home</a></li>
+          <li class="site-nav-dropdown" data-shop-item>
+            <button class="site-nav-button" type="button" data-shop-toggle aria-haspopup="true" aria-expanded="false">Shop Now <span aria-hidden="true">▾</span></button>
+            <ul class="site-nav-dropdown-menu">
+              <li><a href="citrus.html">Citrus</a></li>
+              <li><a href="fruit-strips.html">Tropical</a></li>
+              <li><a href="vegetable-powders.html">Vegetable Powders</a></li>
+              <li><a href="fruit-strips.html">Fruit Bites</a></li>
+              <li><a href="index.html#about">Lifestyle</a></li>
+            </ul>
+          </li>
+          <li><a class="site-nav-link" data-match="contact" href="contact.html">Contact</a></li>
+          <li><a class="site-nav-link cart-link" data-match="account" href="cart.html">Cart <span class="nav-count" data-cart-count>0</span></a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="card">
+      <h1>Terms and Conditions</h1>
+      <p>By placing an order with Vitra Fruit, you agree to our product, delivery, and returns policies.</p>
+      <p>For full legal terms, please contact us and we will provide the latest complete terms document.</p>
+      <div class="wrap"><a class="back" href="contact.html">Contact Us</a></div>
+    </section>
+  </main>
+
+  <script src="shared-navbar.js"></script>
+  <script src="/cart.js"></script>
+</body>
+</html>

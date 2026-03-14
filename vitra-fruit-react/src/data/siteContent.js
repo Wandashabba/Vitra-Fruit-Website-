@@ -4,7 +4,7 @@ export const navLinks = {
     { label: 'Shop Now', href: '#shop' }
   ],
   right: [
-    { label: 'Contact', href: '/contact.html' },
-    { label: 'Cart', href: '/cart.html' }
+    { label: 'Contact', href: 'contact.html' },
+    { label: 'Cart', href: 'cart.html' }
   ]
 };

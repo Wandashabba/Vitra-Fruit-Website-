@@ -21,11 +21,11 @@ function Navbar({ cartCount = 0 }) {
   );
   const shopDropdownItems = useMemo(
     () => [
-      { label: "Citrus", categoryId: "citrus", href: "/citrus.html" },
+      { label: "Citrus", categoryId: "citrus", href: "citrus.html" },
       { label: "Tropical", categoryId: "tropical" },
-      { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "/vegetable-powders.html" },
-      { label: "Fruit Bites", categoryId: "fruit-bites", href: "/fruit-strips.html" },
-      { label: "Lifestyle", categoryId: "lifestyle", href: "#about" }
+      { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "vegetable-powders.html" },
+      { label: "Fruit Bites", categoryId: "fruit-bites", href: "fruit-strips.html" },
+      { label: "Lifestyle", categoryId: "lifestyle", href: "index.html#about" }
     ],
     []
   );
