@@ -353,9 +353,9 @@
       .navbar-toggler { display: none; }
     }
     body {
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
       color: #1c2550;
-      background: #f6f7ff;
+      background: #ffffff;
       min-height: 100vh;
     }
     .navbar,
@@ -373,58 +373,136 @@
     }
 
 .contact-section {
-      padding: 44px 20px 66px;
-      background: #fff;
+      padding: 48px 20px 72px;
+      background: #ffffff;
     }
     .contact-shell {
       max-width: 1140px;
       margin: 0 auto;
-      background: transparent;
-      border: 0;
-      border-radius: 0;
-      box-shadow: none;
-      overflow: visible;
+      display: grid;
+      gap: 34px;
     }
-    .contact-head {
-      padding: 10px 0 24px;
+    .contact-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 28px;
+      align-items: center;
+      padding-bottom: 28px;
       border-bottom: 1px solid rgba(31, 40, 80, 0.1);
-      margin-bottom: 22px;
     }
-    .contact-top-image {
-      margin: 0 0 22px;
-      border-bottom: 1px solid rgba(31, 40, 80, 0.1);
-      padding-bottom: 22px;
+    .contact-hero-copy {
+      display: grid;
+      gap: 14px;
+      max-width: 520px;
+      animation: hero-rise 0.8s ease both;
     }
-    .contact-top-image img {
-      width: 100%;
-      height: clamp(190px, 26vw, 280px);
-      object-fit: cover;
-      display: block;
-      border-radius: 8px;
+    .contact-kicker {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f6b25f;
+      font-weight: 700;
+      margin: 0;
     }
-    .contact-head h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3.3vw, 2.5rem);
+    .contact-hero-copy h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.5vw, 2.9rem);
       color: #1f2850;
-      margin-bottom: 0.45rem;
+      margin: 0;
     }
-    .contact-head p {
+    .contact-lede {
       color: #4f5d88;
       font-size: 1rem;
       line-height: 1.7;
-      max-width: 66ch;
       margin: 0;
+    }
+    .contact-hero-links {
+      display: grid;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .contact-hero-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #1f2850;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      position: relative;
+      width: fit-content;
+    }
+    .contact-icon,
+    .detail-icon {
+      width: 18px;
+      height: 18px;
+      color: #f6b25f;
+      flex: 0 0 auto;
+    }
+    .contact-hero-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      background: rgba(246, 178, 95, 0.55);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.2s ease;
+    }
+    .contact-hero-links a:hover::after,
+    .contact-hero-links a:focus-visible::after {
+      transform: scaleX(1);
+    }
+    .contact-hero-media img {
+      width: 100%;
+      height: clamp(220px, 28vw, 360px);
+      object-fit: cover;
+      display: block;
+    }
+    @keyframes hero-rise {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .contact-hero-copy {
+        animation: none;
+      }
+      .contact-hero-links a::after {
+        transition: none;
+      }
     }
     .contact-grid {
       display: grid;
-      grid-template-columns: minmax(250px, 0.85fr) minmax(0, 1.15fr);
+      grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
       gap: 36px;
       align-items: start;
     }
     .contact-details {
-      padding: 0 34px 0 0;
+      padding: 0 28px 0 0;
       background: transparent;
       border-right: 1px solid rgba(31, 40, 80, 0.12);
+    }
+    .contact-details h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: #1f2850;
+      margin: 0 0 0.4rem;
+    }
+    .contact-note {
+      margin: 0 0 1.4rem;
+      color: #4f5d88;
+      line-height: 1.6;
+      font-size: 0.95rem;
+      max-width: 38ch;
     }
     .detail-block {
       margin-bottom: 1.1rem;
@@ -452,12 +530,41 @@
       line-height: 1.6;
       font-weight: 600;
     }
+    .detail-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .detail-value-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
     .detail-value a:hover {
       text-decoration: underline;
       color: #283467;
     }
     .contact-form-wrap {
       padding: 0;
+    }
+    .contact-form-head {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .contact-form-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: #1f2850;
+      margin: 0;
+    }
+    .contact-form-head p {
+      margin: 0;
+      color: #4f5d88;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 48ch;
     }
     form {
       display: grid;
@@ -499,8 +606,8 @@ input, textarea {
     textarea { min-height: 140px; resize: vertical; }
     input:focus, textarea:focus {
       outline: none;
-      border-color: #5a67d8;
-      box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.15);
+      border-color: rgba(246, 178, 95, 0.8);
+      box-shadow: 0 0 0 3px rgba(246, 178, 95, 0.18);
       background: #ffffff;
     }
     .field-error {
@@ -526,7 +633,7 @@ input, textarea {
       justify-content: flex-start;
       margin-top: 4px;
     }
-    button, .back {
+    .contact-section button, .contact-section .back {
       border: 0;
       text-decoration: none;
       cursor: pointer;
@@ -538,10 +645,10 @@ input, textarea {
       font-weight: 700;
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
-    button {
-      color: #fff;
-      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-      box-shadow: 0 9px 18px rgba(238, 90, 111, 0.3);
+    .contact-section button {
+      color: #2a1b0f;
+      background: linear-gradient(135deg, #fbd49c, #f6b25f);
+      box-shadow: 0 9px 18px rgba(246, 178, 95, 0.35);
     }
     .back {
       color: #28325b;
@@ -550,7 +657,7 @@ input, textarea {
     .back:hover {
       background: #e6ebff;
     }
-    button:hover, .back:hover { transform: translateY(-2px); }
+    .contact-section button:hover, .contact-section .back:hover { transform: translateY(-2px); }
     .status {
       margin-top: 8px;
       font-size: 0.92rem;
@@ -561,17 +668,15 @@ input, textarea {
     .status.error { color: #b02f45; }
 
     .map-wrap {
-      border-top: 1px solid rgba(31, 40, 80, 0.1);
-      padding-top: 22px;
-      margin-top: 14px;
+      border-top: 1px solid rgba(31, 40, 80, 0.12);
+      padding-top: 24px;
+      margin-top: 36px;
     }
     .map-wrap iframe {
       width: 100%;
       height: 360px;
       border: 0;
       display: block;
-      border-radius: 10px;
-      box-shadow: 0 10px 24px rgba(16, 26, 60, 0.1);
     }
 
     .footer {
@@ -588,7 +693,7 @@ input, textarea {
       background-repeat: no-repeat;
       color: #fff;
       padding: 2.2rem 20px 0.9rem;
-      font-family: 'Manrope', sans-serif;
+      font-family: var(--font-body);
     }
     .footer-content {
       display: flex;
@@ -645,6 +750,9 @@ input, textarea {
     }
 
     @media (max-width: 1040px) {
+      .contact-hero {
+        grid-template-columns: 1fr;
+      }
       .contact-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -663,8 +771,11 @@ input, textarea {
       .contact-section {
         padding: 28px 16px 42px;
       }
-      .contact-head {
-        padding: 4px 0 16px;
+      .contact-hero {
+        padding-bottom: 20px;
+      }
+      .contact-hero-copy {
+        max-width: 100%;
       }
       .contact-details,
       .contact-form-wrap {
@@ -680,8 +791,8 @@ input, textarea {
       .map-wrap iframe {
         height: 300px;
       }
-      .contact-top-image img {
-        height: 190px;
+      .contact-hero-media img {
+        height: 220px;
       }
     }
 
@@ -690,8 +801,8 @@ input, textarea {
         flex-direction: column;
         align-items: stretch;
       }
-      button,
-      .back {
+      .contact-section button,
+      .contact-section .back {
         width: 100%;
         justify-content: center;
         text-align: center;

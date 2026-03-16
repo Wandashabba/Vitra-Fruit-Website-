@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import aboutUsJpg from '../assets/images/about-us.jpg';
 import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
@@ -38,9 +38,34 @@ const welcomeOfferHighlight = '10% off';
 const welcomeOfferTail = 'your first purchase.';
 
 function Products() {
+  const [searchQuery, setSearchQuery] = useState('');
 
   const welcomeOfferItems = Array.from({ length: 6 }, (_, index) => index);
   const welcomeOfferMarquee = [...welcomeOfferItems, ...welcomeOfferItems];
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredProducts = useMemo(() => {
+    if (!normalizedQuery) {
+      return favouriteProducts;
+    }
+
+    return favouriteProducts.filter((product) => {
+      const haystack = [product.name, product.note, product.price]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(normalizedQuery);
+    });
+  }, [normalizedQuery]);
+
+  useEffect(() => {
+    const handleProductSearch = (event) => {
+      const nextQuery = event.detail?.query ?? '';
+      setSearchQuery(nextQuery);
+    };
+
+    window.addEventListener('vitra:product-search', handleProductSearch);
+    return () => window.removeEventListener('vitra:product-search', handleProductSearch);
+  }, []);
 
   return (
     <>
@@ -56,43 +81,55 @@ function Products() {
                 <p className="featured-kicker">Handpicked Flavours</p>
                 <h2 id="favourite-products-heading">Our Crowd Pleasers</h2>
               </div>
+              {normalizedQuery ? (
+                <p className="product-search-note">
+                  Showing results for "{searchQuery}"
+                </p>
+              ) : null}
             </div>
             <div className="favourite-products-grid" role="list" aria-label="Favourite products">
-              {favouriteProducts.map((product, index) => (
-                <figure
-                  key={product.name}
-                  className={`favourite-product-item favourite-product-item-${index + 1}${product.videoSrc ? ' has-video' : ''}`}
-                  role="listitem"
-                >
-                  <div className="favourite-product-visual">
-                    {product.videoSrc ? (
-                      <video
-                        className="favourite-product-video"
-                        src={product.videoSrc}
-                        muted
-                        loop
-                        autoPlay
-                        playsInline
-                        preload="metadata"
-                      />
-                    ) : (
-                      <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    )}
-                  </div>
-                  <figcaption>
-                    <strong>{product.name}</strong>
-                    {product.price ? <span className="favourite-product-price">{product.price}</span> : null}
-                    <a href={product.href} className="btn favourite-buy-btn" aria-label={`Buy ${product.name} now`}>
-                      Buy now
-                    </a>
-                  </figcaption>
-                </figure>
-              ))}
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product, index) => (
+                  <figure
+                    key={product.name}
+                    className={`favourite-product-item favourite-product-item-${index + 1}${product.videoSrc ? ' has-video' : ''}`}
+                    role="listitem"
+                  >
+                    <div className="favourite-product-visual">
+                      {product.videoSrc ? (
+                        <video
+                          className="favourite-product-video"
+                          src={product.videoSrc}
+                          muted
+                          loop
+                          autoPlay
+                          playsInline
+                          preload="metadata"
+                        />
+                      ) : (
+                        <img
+                          src={product.imageSrc}
+                          alt={product.imageAlt}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      )}
+                    </div>
+                    <figcaption>
+                      <strong>{product.name}</strong>
+                      {product.price ? <span className="favourite-product-price">{product.price}</span> : null}
+                      <a href={product.href} className="btn favourite-buy-btn" aria-label={`Buy ${product.name} now`}>
+                        Buy now
+                      </a>
+                    </figcaption>
+                  </figure>
+                ))
+              ) : (
+                <div className="product-search-empty">
+                  <h3>No products match that search yet.</h3>
+                  <p>Try another term like pear, orange, or hibiscus.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>

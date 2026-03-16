@@ -9,8 +9,11 @@ function Navbar({ cartCount = 0 }) {
   const [isMobileShopOpen, setIsMobileShopOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [activeHref, setActiveHref] = useState("#home");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const lastScrollY = useRef(0);
   const navbarRef = useRef(null);
+  const searchInputRef = useRef(null);
   const allLinks = useMemo(() => [...navLinks.left, ...navLinks.right], []);
   const sectionLinks = useMemo(
     () =>
@@ -29,6 +32,20 @@ function Navbar({ cartCount = 0 }) {
     ],
     []
   );
+  const searchItems = useMemo(
+    () => [
+      { label: "Lemon Wheel", href: "lemon-wheel.html", tags: ["lemon", "citrus", "wheel"] },
+      { label: "Orange Wheel", href: "orange-wheel.html", tags: ["orange", "citrus", "wheel"] },
+      { label: "Lime Wheel", href: "lime-wheel.html", tags: ["lime", "citrus", "wheel"] },
+      { label: "Grapefruit Wheel", href: "grapefruit-wheel.html", tags: ["grapefruit", "citrus", "wheel"] },
+      { label: "Citrus Collection", href: "citrus.html", tags: ["citrus", "collection", "wheels", "powders"] },
+      { label: "Fruit Strips", href: "fruit-strips.html", tags: ["tropical", "strips", "bites"] },
+      { label: "Vegetable Powders", href: "vegetable-powders.html", tags: ["vegetable", "powders"] },
+      { label: "Shakers", href: "shakers.html", tags: ["shakers", "citrus"] },
+      { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "fruits", "citrus"] }
+    ],
+    []
+  );
 
   const selectCategory = (categoryId) => {
     window.dispatchEvent(
@@ -42,6 +59,24 @@ function Navbar({ cartCount = 0 }) {
     const shopSection = document.querySelector("#shop");
     if (shopSection) {
       shopSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const scrollToShop = () => {
+    const shopSection = document.querySelector("#shop");
+    if (shopSection) {
+      shopSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const triggerSearch = (query, { scroll = false } = {}) => {
+    const trimmedQuery = query.trim();
+    window.dispatchEvent(
+      new CustomEvent("vitra:product-search", { detail: { query: trimmedQuery } })
+    );
+    if (scroll) {
+      setActiveHref("#shop");
+      scrollToShop();
     }
   };
 
@@ -93,17 +128,19 @@ function Navbar({ cartCount = 0 }) {
   }, [sectionLinks]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen && !isSearchOpen) return;
 
     const handleOutsideClick = (event) => {
       if (navbarRef.current && !navbarRef.current.contains(event.target)) {
         setIsOpen(false);
+        setIsSearchOpen(false);
       }
     };
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsOpen(false);
+        setIsSearchOpen(false);
       }
     };
 
@@ -116,7 +153,13 @@ function Navbar({ cartCount = 0 }) {
       document.removeEventListener("touchstart", handleOutsideClick);
       document.removeEventListener("keydown", handleEscape);
     };
-  }, [isOpen]);
+  }, [isOpen, isSearchOpen]);
+
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -174,6 +217,9 @@ function Navbar({ cartCount = 0 }) {
     }
 
     const isCart = link.label.toLowerCase() === "cart";
+    if (isMobile && isCart) {
+      return null;
+    }
     const isActive = !isCart && activeHref === link.href;
 
     return (
@@ -204,6 +250,33 @@ function Navbar({ cartCount = 0 }) {
     );
   };
 
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    triggerSearch(searchQuery, { scroll: true });
+    if (window.innerWidth < 1100) {
+      setIsSearchOpen(false);
+    }
+  };
+
+  const handleSearchChange = (event) => {
+    const nextQuery = event.target.value;
+    setSearchQuery(nextQuery);
+    triggerSearch(nextQuery);
+  };
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredSearchItems = useMemo(() => {
+    if (!normalizedQuery) {
+      return [];
+    }
+    return searchItems
+      .filter((item) => {
+        const haystack = [item.label, ...(item.tags || [])].join(" ").toLowerCase();
+        return haystack.includes(normalizedQuery);
+      })
+      .slice(0, 6);
+  }, [normalizedQuery, searchItems]);
+
   return (
     <div id="wrapper-navbar" className={!isVisible && !isOpen ? "is-hidden" : ""}>
       <nav ref={navbarRef} className="navbar" aria-label="Main Navigation">
@@ -222,6 +295,21 @@ function Navbar({ cartCount = 0 }) {
 
           <ul className="navbar-menu navbar-right">
             {navLinks.right.map((link) => renderLink(link, "right"))}
+            <li className="nav-item nav-item-icon">
+              <button
+                className="nav-icon-button nav-search-button"
+                type="button"
+                aria-label="Search products"
+                aria-expanded={isSearchOpen}
+                aria-controls="nav-search-panel"
+                onClick={() => setIsSearchOpen((current) => !current)}
+              >
+                <svg className="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                  <path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                </svg>
+              </button>
+            </li>
           </ul>
 
           <button
@@ -237,6 +325,79 @@ function Navbar({ cartCount = 0 }) {
               <span className="toggler-line" />
             </span>
           </button>
+
+          <div className="navbar-actions">
+            <button
+              className="nav-icon-button nav-search-button"
+              type="button"
+              aria-label="Search products"
+              aria-expanded={isSearchOpen}
+              aria-controls="nav-search-panel"
+              onClick={() => setIsSearchOpen((current) => !current)}
+            >
+              <svg className="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+                <path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+            <a className="nav-icon-link nav-cart-link" href="cart.html" aria-label="View cart">
+              <svg className="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
+                <circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" />
+              </svg>
+              {cartCount > 0 && <span className="nav-count">{cartCount}</span>}
+            </a>
+          </div>
+
+          <div
+            id="nav-search-panel"
+            className={`nav-search-panel ${isSearchOpen ? "is-open" : ""}`}
+            role="search"
+          >
+            <form className="nav-search-form" onSubmit={handleSearchSubmit}>
+              <input
+                ref={searchInputRef}
+                className="nav-search-input"
+                type="search"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder="Search products..."
+                aria-label="Search products"
+              />
+              <button className="nav-search-submit" type="submit">Search</button>
+              <button
+                className="nav-search-clear"
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  triggerSearch("");
+                }}
+              >
+                Clear
+              </button>
+            </form>
+            {normalizedQuery ? (
+              <div className="nav-search-results" role="list" aria-live="polite">
+                {filteredSearchItems.length ? (
+                  filteredSearchItems.map((item) => (
+                    <a key={item.href} className="nav-search-result" href={item.href} role="listitem">
+                      {item.label}
+                    </a>
+                  ))
+                ) : (
+                  <div className="nav-search-empty">No products found.</div>
+                )}
+              </div>
+            ) : null}
+          </div>
 
           <div className={`mobile-nav ${isOpen ? "is-open" : ""}`}>
             <ul className="navbar-nav">
