@@ -83,7 +83,11 @@
   const tabPanels = Array.from(document.querySelectorAll('.tab-pane'));
   const productCards = Array.from(document.querySelectorAll('.product-card'));
   const productsCount = document.getElementById('productsCount');
-  let activeCategoryId = tabButtons.find((button) => button.classList.contains('active'))?.getAttribute('data-category-tab') || '';
+  let activeCategoryId = '';
+  const activeButton = tabButtons.find((button) => button.classList.contains('active'));
+  if (activeButton) {
+    activeCategoryId = activeButton.getAttribute('data-category-tab') || '';
+  }
 
   function setActiveCategory(categoryId) {
     activeCategoryId = categoryId || activeCategoryId;
@@ -109,7 +113,8 @@
     const visibleButtons = [];
 
     tabButtons.forEach((button) => {
-      const label = normalizeValue(button.textContent) + ' ' + normalizeValue(button.querySelector('img')?.alt);
+      const img = button.querySelector('img');
+      const label = normalizeValue(button.textContent) + ' ' + normalizeValue(img ? img.alt : '');
       const matches = !hasQuery || label.includes(query);
       button.hidden = !matches;
       button.setAttribute('aria-hidden', matches ? 'false' : 'true');

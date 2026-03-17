@@ -4,20 +4,44 @@
   const COUNT_SELECTOR = '[data-cart-count]';
   const BAG_COUNT_SELECTOR = '[data-cart-bag-count]';
   const DEFAULT_MAX_QTY = 100;
+  const memoryStore = { cart: [], vatRate: 0.15 };
+  const canUseStorage = (function () {
+    try {
+      const testKey = '__vitra_storage_test__';
+      localStorage.setItem(testKey, '1');
+      localStorage.removeItem(testKey);
+      return true;
+    } catch (err) {
+      return false;
+    }
+  })();
 
   function loadCart() {
+    if (!canUseStorage) {
+      return Array.isArray(memoryStore.cart) ? memoryStore.cart : [];
+    }
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const items = raw ? JSON.parse(raw) : [];
       return Array.isArray(items) ? items : [];
     } catch (err) {
-      return [];
+      return Array.isArray(memoryStore.cart) ? memoryStore.cart : [];
     }
   }
 
   function saveCart(items) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
-    updateCount(items);
+    const nextItems = Array.isArray(items) ? items : [];
+    if (!canUseStorage) {
+      memoryStore.cart = nextItems;
+      updateCount(nextItems);
+      return;
+    }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextItems));
+    } catch (err) {
+      memoryStore.cart = nextItems;
+    }
+    updateCount(nextItems);
   }
 
   function updateCount(items) {
@@ -33,13 +57,24 @@
   }
 
   function loadVatRate() {
+    if (!canUseStorage) {
+      return memoryStore.vatRate;
+    }
     const stored = localStorage.getItem(VAT_KEY);
     const parsed = stored ? parseFloat(stored) : NaN;
-    return Number.isFinite(parsed) ? parsed : 0.15;
+    return Number.isFinite(parsed) ? parsed : memoryStore.vatRate;
   }
 
   function saveVatRate(rate) {
-    localStorage.setItem(VAT_KEY, String(rate));
+    if (!canUseStorage) {
+      memoryStore.vatRate = rate;
+      return;
+    }
+    try {
+      localStorage.setItem(VAT_KEY, String(rate));
+    } catch (err) {
+      memoryStore.vatRate = rate;
+    }
   }
 
   function parsePrice(value) {
@@ -66,7 +101,7 @@
   }
 
   function attachAddToCart() {
-    document.querySelectorAll('[data-add-to-cart]')?.forEach((button) => {
+    document.querySelectorAll('[data-add-to-cart]').forEach((button) => {
       button.addEventListener('click', function () {
         const name = button.getAttribute('data-product') || 'Product';
         const image = button.getAttribute('data-image') || '';
