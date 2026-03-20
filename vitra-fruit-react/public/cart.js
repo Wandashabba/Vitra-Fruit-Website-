@@ -177,7 +177,11 @@
         row.innerHTML = `
           <td class="cart-cell cart-cell-remove">
             <button class="cart-remove" type="button" data-remove="${item.id}" aria-label="Remove item">
-              ×
+              <svg class="cart-remove-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                <path d="M8 6V4h8v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M6 6l1 14h10l1-14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
               <span class="cart-remove-label">Remove</span>
             </button>
           </td>
@@ -286,10 +290,26 @@
     const totalEl = document.querySelector('[data-checkout-total]');
     const cart = loadCart();
     const vatRate = loadVatRate();
+    const payfastForm = document.getElementById('payfastForm');
+    const payfastNote = document.querySelector('[data-checkout-note]');
+    const payfastButton = payfastForm ? payfastForm.querySelector('.place-order') : null;
+    const billingFirstName = document.getElementById('billingFirstName');
+    const billingLastName = document.getElementById('billingLastName');
+    const billingEmail = document.getElementById('billingEmail');
 
     itemsWrap.innerHTML = '';
 
-    if (!cart.length) {
+    const wheelItems = cart.filter((item) => /wheel/i.test(item.name || ''));
+    const nonWheelCount = cart.length - wheelItems.length;
+
+    if (!wheelItems.length) {
+      if (payfastNote) {
+        payfastNote.textContent = 'PayFast checkout is available for wheel products only.';
+      }
+      if (payfastButton) {
+        payfastButton.disabled = true;
+        payfastButton.setAttribute('aria-disabled', 'true');
+      }
       if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
       if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
       return;
@@ -297,7 +317,7 @@
 
     let subtotal = 0;
 
-    cart.forEach((item) => {
+    wheelItems.forEach((item) => {
       const row = document.createElement('div');
       row.className = 'order-row';
 
@@ -333,6 +353,63 @@
     const vat = subtotal - subtotal / (1 + vatRate);
     if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
     if (totalEl) totalEl.textContent = `${formatPrice(subtotal)} (includes ${formatPrice(vat)} VAT)`;
+
+    if (payfastNote) {
+      payfastNote.textContent = nonWheelCount > 0
+        ? 'PayFast will charge for wheel items only. Other items are not included.'
+        : '';
+    }
+    if (payfastButton) {
+      payfastButton.disabled = false;
+      payfastButton.removeAttribute('aria-disabled');
+    }
+
+    if (payfastForm) {
+      const setField = (name, value) => {
+        const field = payfastForm.querySelector(`[name="${name}"]`);
+        if (field) {
+          field.value = value;
+        }
+      };
+
+      const description = wheelItems
+        .map((item) => {
+          const sizeLabel = item.size ? ` ${item.size}` : '';
+          const qtyLabel = item.quantity > 1 ? ` x${item.quantity}` : '';
+          return `${item.name || 'Wheel'}${sizeLabel}${qtyLabel}`;
+        })
+        .join(', ');
+
+      const origin = window.location.origin || '';
+      const liveDomain = 'https://www.vitrafruits.co.za';
+      const returnBase = origin.includes('vitrafruits.co.za') ? origin : liveDomain;
+      setField('amount', subtotal.toFixed(2));
+      setField('item_name', 'Vitra Fruit Wheels');
+      setField('item_description', description);
+      setField('return_url', returnBase + '/checkout.html?status=success');
+      setField('cancel_url', returnBase + '/checkout.html?status=cancel');
+      setField('notify_url', returnBase + '/payfast-itn');
+      setField('m_payment_id', `VITRA-${Date.now()}`);
+      setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
+      setField('name_last', billingLastName ? billingLastName.value.trim() : '');
+      setField('email_address', billingEmail ? billingEmail.value.trim() : '');
+
+      if (!payfastForm.dataset.listenerAttached) {
+        payfastForm.addEventListener('submit', function (event) {
+          if (!wheelItems.length) {
+            event.preventDefault();
+            if (payfastNote) {
+              payfastNote.textContent = 'Please add wheel items to checkout with PayFast.';
+            }
+            return;
+          }
+          setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
+          setField('name_last', billingLastName ? billingLastName.value.trim() : '');
+          setField('email_address', billingEmail ? billingEmail.value.trim() : '');
+        });
+        payfastForm.dataset.listenerAttached = 'true';
+      }
+    }
   }
 
   updateCount();

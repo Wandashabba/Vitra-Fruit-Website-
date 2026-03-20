@@ -101,8 +101,8 @@ textarea:focus-visible {
   overflow: hidden;
   background: #ffffff;
   color: #fff;
-  min-height: min(84vh, 760px);
-  min-height: min(84svh, 760px);
+  min-height: 100vh;
+  min-height: 100svh;
   padding: clamp(104px, 14vh, 160px) 20px clamp(60px, 10vh, 110px);
   padding: clamp(104px, 14svh, 160px) 20px clamp(60px, 10svh, 110px);
   text-align: center;
@@ -119,6 +119,7 @@ textarea:focus-visible {
   object-fit: cover;
   object-position: 50% 50%;
   transform-origin: center center;
+  will-change: transform;
   filter: none;
   z-index: 0;
   pointer-events: none;

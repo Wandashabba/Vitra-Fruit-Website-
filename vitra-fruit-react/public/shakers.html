@@ -379,14 +379,21 @@
 
     .wrap {
       width: min(1080px, 94vw);
-      margin: 18px auto 28px;
+      margin: 0 auto;
+      min-height: 100vh;
+      min-height: 100svh;
       background: rgba(255, 255, 255, 0.94);
-      border-radius: 24px;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: 0 18px 40px rgba(16, 24, 56, 0.2);
+      box-shadow: none;
     }
     .hero {
       position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       padding: clamp(48px, 7vw, 80px) clamp(18px, 4vw, 48px);
       color: #fff;
       text-align: center;

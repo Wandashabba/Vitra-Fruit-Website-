@@ -424,15 +424,7 @@
       isolation: isolate;
     }
     :where(.product-page, .related, .contact, .promo-signup, .footer)::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: -26px;
-      height: 26px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--section-bg, #ffffff));
-      pointer-events: none;
-      z-index: 0;
+      content: none;
     }
     :where(.product-page, .related, .contact, .promo-signup, .footer) > * {
       position: relative;
@@ -441,6 +433,8 @@
 
     .product-page {
       padding: clamp(0px, 0.6vw, 4px) 0 clamp(0px, 0.6vw, 4px);
+      min-height: 100vh;
+      min-height: 100svh;
       --section-bg: var(--page-bg);
     }
     .product-shell {
@@ -503,6 +497,20 @@
       font-weight: 700;
       color: #6a7397;
     }
+    .field-note {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #8a93ab;
+      font-weight: 600;
+    }
+    .select-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
     select,
     input[type="number"] {
       appearance: none;
@@ -517,10 +525,36 @@
       color: #1f2850;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
     }
+    select {
+      cursor: pointer;
+    }
+    .select-wrap select {
+      width: 100%;
+      padding-right: 2.6rem;
+    }
+    .select-wrap select:hover:not(:disabled) {
+      border-color: rgba(31, 40, 80, 0.35);
+    }
+    .select-wrap select:focus {
+      outline: none;
+      border-color: rgba(255, 179, 71, 0.85);
+      box-shadow: 0 0 0 3px rgba(255, 179, 71, 0.22);
+    }
+    .select-caret {
+      position: absolute;
+      right: 18px;
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 7px solid #6a7397;
+      pointer-events: none;
+    }
     select:disabled {
-      opacity: 0.8;
+      opacity: 1;
       cursor: not-allowed;
-      background: rgba(255, 255, 255, 0.82);
+      background: rgba(243, 244, 247, 0.95);
+      color: #8a93ab;
     }
     .actions {
       display: flex;
@@ -1162,7 +1196,7 @@
     <div class="container">
       <div class="product-shell">
         <div class="product-media">
-          <img src="/images/Limewheel.png" alt="Dehydrated Lime Wheel" loading="eager" decoding="async" />
+          <img src="/images/Limewheel-1600.png" srcset="/images/Limewheel-800.png 800w, /images/Limewheel-1600.png 1600w" sizes="(max-width: 900px) 80vw, 520px" alt="Dehydrated Lime Wheel" loading="eager" decoding="async" />
         </div>
         <div class="product-info">
           <h1>Dehydrated Lime Wheel</h1>
@@ -1172,12 +1206,15 @@
           </div>
 
           <div class="field">
-            <label for="sizeSelect">Size</label>
-            <select id="sizeSelect" name="size">
-              <option value="150g" data-price="R150">150g</option>
-              <option value="200g" data-price="R190">200g</option>
-              <option value="1kg" data-price="R480">1kg</option>
-            </select>
+            <label for="sizeSelect">Size <span class="field-note">Choose a size</span></label>
+            <div class="select-wrap">
+              <select id="sizeSelect" name="size">
+                <option value="150g" data-price="R150">150g</option>
+                <option value="200g" data-price="R190">200g</option>
+                <option value="1kg" data-price="R480">1kg</option>
+              </select>
+              <span class="select-caret" aria-hidden="true"></span>
+            </div>
           </div>
 
           <div class="field">
@@ -1193,7 +1230,7 @@
             <label for="quantityInput">Quantity</label>
             <div class="actions">
               <input class="qty" id="quantityInput" type="number" name="quantity" min="1" max="100" value="1" />
-              <button class="btn-cart" type="button" data-add-to-cart data-product="Dehydrated Lime Wheel" data-image="/images/Limewheel.png" data-size-select="#sizeSelect" data-price-select="#priceSelect" data-qty-input="#quantityInput" data-max-qty="100">
+              <button class="btn-cart" type="button" data-add-to-cart data-product="Dehydrated Lime Wheel" data-image="/images/Limewheel-800.png" data-size-select="#sizeSelect" data-price-select="#priceSelect" data-qty-input="#quantityInput" data-max-qty="100">
                 <svg class="btn-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                   <path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
                   <circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" />
@@ -1213,19 +1250,19 @@
       <h2 class="related-title">You may also like</h2>
       <div class="related-grid">
         <a class="related-card" href="lemon-wheel.html">
-          <img src="/images/LemonWheel.png" alt="Dehydrated lemon wheel" loading="lazy" decoding="async" />
+          <img src="/images/LemonWheel-800.png" srcset="/images/LemonWheel-800.png 800w, /images/LemonWheel-1600.png 1600w" sizes="(max-width: 900px) 40vw, 220px" alt="Dehydrated lemon wheel" loading="lazy" decoding="async" />
           <span class="related-name">Lemon Wheel</span>
           <span class="related-from">From R150</span>
           <span class="related-cta">Shop Now</span>
         </a>
         <a class="related-card" href="grapefruit-wheel.html">
-          <img src="/images/GrapeWheel.png" alt="Dehydrated grapefruit wheel" loading="lazy" decoding="async" />
+          <img src="/images/GrapeWheel-800.png" srcset="/images/GrapeWheel-800.png 800w, /images/GrapeWheel-1600.png 1600w" sizes="(max-width: 900px) 40vw, 220px" alt="Dehydrated grapefruit wheel" loading="lazy" decoding="async" />
           <span class="related-name">Grapefruit Wheel</span>
           <span class="related-from">From R150</span>
           <span class="related-cta">Shop Now</span>
         </a>
         <a class="related-card" href="orange-wheel.html">
-          <img src="/images/Orangewheel.png" alt="Dehydrated orange wheel" loading="lazy" decoding="async" />
+          <img src="/images/Orangewheel-800.png" srcset="/images/Orangewheel-800.png 800w, /images/Orangewheel-1600.png 1600w" sizes="(max-width: 900px) 40vw, 220px" alt="Dehydrated orange wheel" loading="lazy" decoding="async" />
           <span class="related-name">Orange Wheel</span>
           <span class="related-from">From R150</span>
           <span class="related-cta">Shop Now</span>

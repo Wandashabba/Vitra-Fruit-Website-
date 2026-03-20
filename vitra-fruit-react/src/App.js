@@ -72,6 +72,8 @@ function App() {
                       alt={isDecorativeDuplicate ? '' : logo.alt}
                       aria-hidden={isDecorativeDuplicate ? 'true' : undefined}
                       className="payment-logo"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </li>
                 );

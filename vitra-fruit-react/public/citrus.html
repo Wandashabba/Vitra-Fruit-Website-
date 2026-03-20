@@ -409,6 +409,7 @@
 
     .category-hero {
       --citrus-hero-h: clamp(260px, 30vw, 420px);
+      min-height: var(--citrus-hero-h);
       padding: 0;
       background: var(--citrus-hero-bg, #ffffff);
       color: #ffffff;
@@ -417,20 +418,13 @@
       isolation: isolate;
     }
     .category-hero::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -1px;
-      height: 34px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
-      pointer-events: none;
-      z-index: 0;
+      content: none;
     }
     .category-hero .container {
       padding-right: 0;
       position: relative;
       z-index: 1;
+      height: 100%;
     }
     .category-hero-inner {
       display: flex;
@@ -438,6 +432,7 @@
       justify-content: space-between;
       gap: clamp(18px, 4vw, 46px);
       min-height: var(--citrus-hero-h);
+      height: 100%;
     }
     .category-hero-copy {
       flex: 0 1 520px;
@@ -1628,19 +1623,6 @@
     <div class="container">
       <div class="products-toolbar" aria-label="Product filters and sorting">
         <div class="products-toolbar-group">
-          <span class="products-toolbar-label">Sort by:</span>
-          <label class="sr-only" for="sortSelect">Sort by</label>
-          <span class="products-toolbar-select-wrap">
-            <select id="sortSelect" class="products-toolbar-select">
-              <option value="best" selected>Best selling</option>
-              <option value="new">Newest</option>
-              <option value="price-asc">Price, low to high</option>
-              <option value="price-desc">Price, high to low</option>
-            </select>
-          </span>
-          <span id="productsCount" class="products-toolbar-count">4 products</span>
-        </div>
-        <div class="products-toolbar-group">
           <span class="products-toolbar-label">Category:</span>
           <label class="sr-only" for="citrusTypeSelect">Category</label>
           <span class="products-toolbar-select-wrap">
@@ -1650,12 +1632,13 @@
               <option value="powders">Powders</option>
             </select>
           </span>
+          <span id="productsCount" class="products-toolbar-count">4 products</span>
         </div>
       </div>
       <div class="product-grid">
         <article class="product-card bottle-card wheel-card wheel-card-lemon" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
-            <img src="/images/LemonWheel.png" alt="Dehydrated Lemon wheel" loading="lazy" decoding="async" />
+            <img src="/images/LemonWheel-800.png" srcset="/images/LemonWheel-800.png 800w, /images/LemonWheel-1600.png 1600w" sizes="(max-width: 900px) 60vw, 260px" alt="Dehydrated Lemon wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="lemon-wheel.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -1665,7 +1648,7 @@
         </article>
         <article class="product-card bottle-card wheel-card wheel-card-grapefruit" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
-            <img src="/images/GrapeWheel.png" alt="Dehydrated Grapefruit wheel" loading="lazy" decoding="async" />
+            <img src="/images/GrapeWheel-800.png" srcset="/images/GrapeWheel-800.png 800w, /images/GrapeWheel-1600.png 1600w" sizes="(max-width: 900px) 60vw, 260px" alt="Dehydrated Grapefruit wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="grapefruit-wheel.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -1675,7 +1658,7 @@
         </article>
         <article class="product-card bottle-card wheel-card wheel-card-lime" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
-            <img src="/images/Limewheel.png" alt="Dehydrated Lime wheel" loading="lazy" decoding="async" />
+            <img src="/images/Limewheel-800.png" srcset="/images/Limewheel-800.png 800w, /images/Limewheel-1600.png 1600w" sizes="(max-width: 900px) 60vw, 260px" alt="Dehydrated Lime wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="lime-wheel.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -1685,7 +1668,7 @@
         </article>
         <article class="product-card bottle-card wheel-card wheel-card-orange" data-citrus-types="wheels slides powders">
           <div class="bottle-media">
-            <img src="/images/Orangewheel.png" alt="Dehydrated Orange wheel" loading="lazy" decoding="async" />
+            <img src="/images/Orangewheel-800.png" srcset="/images/Orangewheel-800.png 800w, /images/Orangewheel-1600.png 1600w" sizes="(max-width: 900px) 60vw, 260px" alt="Dehydrated Orange wheel" loading="lazy" decoding="async" />
             <a class="bottle-cta" href="orange-wheel.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -1764,82 +1747,7 @@
     </div>
   </footer>
 
-  <script>
-    (function () {
-      const hero = document.querySelector('.category-hero');
-      const video = document.querySelector('.category-hero-video');
-      if (!hero || !video) return;
-
-      function clampByte(value) {
-        return Math.max(0, Math.min(255, value | 0));
-      }
-
-      function sampleHeroBg() {
-        try {
-          if (video.readyState < 2) return;
-          const w = 48;
-          const h = 48;
-          const canvas = document.createElement('canvas');
-          canvas.width = w;
-          canvas.height = h;
-          const ctx = canvas.getContext('2d', { willReadFrequently: true });
-          if (!ctx) return;
-
-          ctx.drawImage(video, 0, 0, w, h);
-          const data = ctx.getImageData(0, 0, w, h).data;
-
-          // Sample corners so we mostly capture the background, not the subject.
-          const region = 8;
-          const regions = [
-            { x0: 0, y0: 0, x1: region, y1: region },
-            { x0: w - region, y0: 0, x1: w, y1: region },
-            { x0: 0, y0: h - region, x1: region, y1: h },
-            { x0: w - region, y0: h - region, x1: w, y1: h },
-          ];
-
-          let r = 0, g = 0, b = 0, n = 0;
-          for (const { x0, y0, x1, y1 } of regions) {
-            for (let y = y0; y < y1; y++) {
-              for (let x = x0; x < x1; x++) {
-                const i = (y * w + x) * 4;
-                r += data[i];
-                g += data[i + 1];
-                b += data[i + 2];
-                n++;
-              }
-            }
-          }
-
-          if (!n) return;
-          const baseR = clampByte(Math.round(r / n));
-          const baseG = clampByte(Math.round(g / n));
-          const baseB = clampByte(Math.round(b / n));
-
-          // Slightly brighten to match perceived video backdrop (sampling tends to skew dark).
-          const brighten = 0.12;
-          const lift = (c) => clampByte(Math.round(c + (255 - c) * brighten));
-          const rr = lift(baseR);
-          const gg = lift(baseG);
-          const bb = lift(baseB);
-          const bg = `rgb(${rr}, ${gg}, ${bb})`;
-          hero.style.setProperty('--citrus-hero-bg', bg);
-        } catch (err) {
-          // If sampling fails, we keep the CSS fallback.
-        }
-      }
-
-      video.addEventListener(
-        'loadeddata',
-        function () {
-          // Wait a couple frames so the decoded frame is available for canvas sampling.
-          requestAnimationFrame(function () {
-            requestAnimationFrame(sampleHeroBg);
-          });
-        },
-        { once: true }
-      );
-    })();
-  </script>
+  
   <script>
     (function () {
       const select = document.getElementById('citrusTypeSelect');
