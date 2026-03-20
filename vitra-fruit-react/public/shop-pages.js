@@ -26,6 +26,30 @@
     node.textContent = String(new Date().getFullYear());
   });
 
+  const enhanceImageLoading = () => {
+    const viewportHeight = window.innerHeight || 800;
+    document.querySelectorAll('img').forEach((img) => {
+      if (img.hasAttribute('loading')) {
+        return;
+      }
+      const rect = img.getBoundingClientRect();
+      const isHidden = rect.width === 0 && rect.height === 0;
+      const isAboveFold = !isHidden && rect.top < viewportHeight * 1.1;
+      if (isAboveFold) {
+        img.loading = 'eager';
+        return;
+      }
+      img.loading = 'lazy';
+      img.decoding = 'async';
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', enhanceImageLoading, { once: true });
+  } else {
+    enhanceImageLoading();
+  }
+
   if (!wrapper || !toggler || !mobileNav || !mobileShopToggle || !mobileShopDropdown) {
     return;
   }

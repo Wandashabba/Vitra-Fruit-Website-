@@ -24,7 +24,7 @@ function Hero() {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="metadata"
         aria-hidden="true"
       >
         <source src="/images/HeroVideoCompressed1.mp4" type="video/mp4" />

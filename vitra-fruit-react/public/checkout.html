@@ -419,15 +419,7 @@
       isolation: isolate;
     }
     :where(.checkout-page, .contact, .promo-signup, .footer)::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: -26px;
-      height: 26px;
-      background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--section-bg, #ffffff));
-      pointer-events: none;
-      z-index: 0;
+      content: none;
     }
     :where(.checkout-page, .contact, .promo-signup, .footer) > * {
       position: relative;
@@ -897,6 +889,8 @@
 
     .checkout-page {
       padding: clamp(18px, 4vw, 42px) 0 clamp(18px, 4vw, 42px);
+      min-height: 100vh;
+      min-height: 100svh;
       --section-bg: var(--page-bg);
     }
     .checkout-layout {
@@ -1066,6 +1060,13 @@
       color: #6a7397;
       line-height: 1.5;
     }
+    .checkout-note {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: #8a5674;
+      line-height: 1.5;
+      min-height: 1.2em;
+    }
     .place-order {
       display: inline-flex;
       align-items: center;
@@ -1082,6 +1083,12 @@
       cursor: pointer;
       box-shadow: 0 14px 28px rgba(8, 12, 28, 0.2);
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    }
+    .place-order:disabled,
+    .place-order[aria-disabled="true"] {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
     }
     .place-order:hover {
       transform: translateY(-1px);
@@ -1409,7 +1416,27 @@
 
           <p class="privacy-note">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.</p>
 
-          <button class="place-order" type="button">Place order</button>
+          <form
+            id="payfastForm"
+            class="payfast-form"
+            method="post"
+            action="https://www.payfast.co.za/eng/process"
+          >
+            <input type="hidden" name="merchant_id" value="34140649" />
+            <input type="hidden" name="merchant_key" value="1ghduz30h5y5c" />
+            <input type="hidden" name="return_url" value="" />
+            <input type="hidden" name="cancel_url" value="" />
+            <input type="hidden" name="notify_url" value="" />
+            <input type="hidden" name="amount" value="0.00" />
+            <input type="hidden" name="item_name" value="Vitra Fruit Wheels" />
+            <input type="hidden" name="item_description" value="" />
+            <input type="hidden" name="name_first" value="" />
+            <input type="hidden" name="name_last" value="" />
+            <input type="hidden" name="email_address" value="" />
+            <input type="hidden" name="m_payment_id" value="" />
+            <button class="place-order" type="submit">Pay with PayFast</button>
+            <p class="checkout-note" data-checkout-note></p>
+          </form>
         </aside>
       </div>
     </div>

@@ -375,6 +375,8 @@
 .contact-section {
       padding: 48px 20px 72px;
       background: #ffffff;
+      min-height: 100vh;
+      min-height: 100svh;
     }
     .contact-shell {
       max-width: 1140px;
