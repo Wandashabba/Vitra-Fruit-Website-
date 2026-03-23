@@ -1,0 +1,126 @@
+/* ═══════════════════════════════════════════════════════
+   Product Hover Graphics — Fruit illustrations
+   Real fruit shapes hugging the product on hover
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Base graphic containers ── */
+.hover-graphic {
+  position: absolute;
+  top: 50%;
+  width: clamp(75px, 10vw, 105px);
+  height: clamp(110px, 15vw, 160px);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateY(-50%);
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hover-graphic svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* ── Left graphic — tucked right against the product ── */
+.hover-graphic-left {
+  right: calc(100% - 55px);
+  opacity: 0;
+  transform: translateY(-50%) translateX(25px) scale(0.3);
+}
+
+/* ── Right graphic — tucked right against the product ── */
+.hover-graphic-right {
+  left: calc(100% - 55px);
+  opacity: 0;
+  transform: translateY(-50%) translateX(-25px) scale(0.3);
+}
+
+/* ── Hover state — graphics pop in tight against the product ── */
+.favourite-product-item:hover .hover-graphic-left,
+.favourite-product-item:focus-within .hover-graphic-left {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
+.favourite-product-item:hover .hover-graphic-right,
+.favourite-product-item:focus-within .hover-graphic-right {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
+/* ── Staggered timing ── */
+.hover-graphic-right {
+  transition-delay: 0.06s;
+}
+
+/* ── SVG inner group — gentle float ── */
+.hover-svg-group {
+  transform-origin: center center;
+  animation: none;
+}
+
+.favourite-product-item:hover .hover-svg-group,
+.favourite-product-item:focus-within .hover-svg-group {
+  animation: fruitFloat 2.5s ease-in-out infinite;
+}
+
+@keyframes fruitFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* ── Leaf wiggle ── */
+.favourite-product-item:hover .leaf-wiggle,
+.favourite-product-item:focus-within .leaf-wiggle {
+  animation: leafWiggle 1.8s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+@keyframes leafWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(6deg); }
+  75% { transform: rotate(-4deg); }
+}
+
+/* ── Sparkle pulse ── */
+.favourite-product-item:hover .sparkle-star,
+.favourite-product-item:focus-within .sparkle-star {
+  animation: sparklePop 1s ease-in-out infinite alternate;
+}
+
+@keyframes sparklePop {
+  0% { opacity: 0.4; transform: scale(0.7); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* ══════════════════════════════
+   Responsive adjustments
+   ══════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .hover-graphic {
+    width: clamp(55px, 8vw, 80px);
+    height: clamp(85px, 12vw, 120px);
+  }
+
+  .hover-graphic-left {
+    right: calc(100% - 40px);
+  }
+
+  .hover-graphic-right {
+    left: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 768px) {
+  .hover-graphic {
+    display: none;
+  }
+}

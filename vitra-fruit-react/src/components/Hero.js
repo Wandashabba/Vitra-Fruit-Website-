@@ -1,8 +1,8 @@
 import React from 'react';
 
-const heroTitle = 'All natural dehydrated fruits.';
-const heroSubtitle = 'Crafted for cocktails, baking, snacking & indulging.';
-const heroTitleWords = ['All', 'natural', 'dehydrated', 'fruits.'];
+const heroTitle = 'All natural dehydrated fruits';
+const heroSubtitle = 'Crafted for cocktails, baking, snacking & indulging';
+const heroTitleWords = ['All', 'natural', 'dehydrated', 'fruits'];
 
 function Hero() {
 
@@ -30,7 +30,7 @@ function Hero() {
         <source src="/images/HeroVideoCompressed1.mp4" type="video/mp4" />
       </video>
       <div className="hero-content">
-        <p className="hero-kicker">Vitra Fruit Collection</p>
+        <p className="hero-kicker">VitraFruits Collection</p>
         <div className="hero-layout-side">
           <div className="hero-copy-left">
             <h1 className="hero-title" aria-label={heroTitle}>

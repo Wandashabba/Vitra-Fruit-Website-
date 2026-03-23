@@ -1,8 +1,8 @@
 :root {
-      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
-      --font-display: 'Marcellus', 'Georgia', serif;
+      --font-body: 'Montserrat', 'Segoe UI', sans-serif;
+      --font-display: 'Playfair Display', 'Times New Roman', 'Georgia', serif;
       --nav-ink: #111111;
-      --nav-accent: #f6b25f;
+      --nav-accent: #C09828;
     }
 
 /* Navbar (Unified from Citrus) */
@@ -65,7 +65,7 @@
     .navbar-right { order: 3; justify-content: flex-start; padding-left: 0.35rem; }
     .navbar-logo { display: flex; align-items: center; order: 2; margin: 0 clamp(0.15rem, 0.9vw, 0.7rem); flex-shrink: 0; }
     .navbar-logo img {
-      height: 68px;
+      height: 96px;
       width: auto;
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.45);

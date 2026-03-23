@@ -289,7 +289,7 @@ function Navbar({ cartCount = 0 }) {
             <picture>
               <source srcSet={logoAvif} type="image/avif" />
               <source srcSet={logoWebp} type="image/webp" />
-              <img src={logoJpg} alt="Vitra Fruit logo" />
+              <img src={logoJpg} alt="VitraFruits logo" />
             </picture>
           </a>
 

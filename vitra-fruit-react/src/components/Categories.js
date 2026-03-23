@@ -92,7 +92,7 @@ function Categories() {
   return (
     <section className="categories" id="shop">
       <div className="container">
-        <div className="categories-header">
+        <div className="categories-header reveal">
           <p className="categories-kicker">Shop by Category</p>
           {normalizedQuery ? (
             <p className="category-search-note">
@@ -100,7 +100,7 @@ function Categories() {
             </p>
           ) : null}
         </div>
-        <div className="category-tabs">
+        <div className="category-tabs reveal">
           {filteredCategories.length ? (
             <>
               <div className="tab-buttons" role="tablist" aria-label="Product categories">
