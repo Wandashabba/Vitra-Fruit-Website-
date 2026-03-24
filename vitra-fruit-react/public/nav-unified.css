@@ -1,8 +1,8 @@
 :root {
-      --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
-      --font-display: 'Marcellus', 'Georgia', serif;
+      --font-body: 'Montserrat', 'Segoe UI', sans-serif;
+      --font-display: 'Playfair Display', 'Times New Roman', 'Georgia', serif;
       --nav-ink: #111111;
-      --nav-accent: #f6b25f;
+      --nav-accent: #C09828;
     }
 
 /* Navbar (Unified from Citrus) */
@@ -25,18 +25,13 @@
       border-radius: 24px;
       position: relative;
       overflow: visible;
-      border: 1px solid rgba(255, 255, 255, 0.48);
-      background: rgba(255, 255, 255, 0.14);
-      box-shadow: 0 18px 30px rgba(11, 13, 32, 0.22);
-      backdrop-filter: blur(14px);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      background: #ffffff;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+      backdrop-filter: none;
     }
     .navbar::before {
-      content: '';
-      position: absolute;
-      inset: 1px;
-      border-radius: 23px;
-      pointer-events: none;
-      background: linear-gradient(90deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.2));
+      content: none;
     }
     .navbar-container {
       display: flex;
@@ -65,7 +60,7 @@
     .navbar-right { order: 3; justify-content: flex-start; padding-left: 0.35rem; }
     .navbar-logo { display: flex; align-items: center; order: 2; margin: 0 clamp(0.15rem, 0.9vw, 0.7rem); flex-shrink: 0; }
     .navbar-logo img {
-      height: 68px;
+      height: 96px;
       width: auto;
       border-radius: 16px;
       border: 1px solid rgba(255, 255, 255, 0.45);
