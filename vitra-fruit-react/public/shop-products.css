@@ -191,3 +191,8 @@
     filter: none;
   }
 }
+
+.product-card[data-type-hidden="true"],
+.product-card[hidden] {
+  display: none !important;
+}

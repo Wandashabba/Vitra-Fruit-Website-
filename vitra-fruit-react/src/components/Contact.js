@@ -10,7 +10,7 @@ function Contact() {
   return (
     <section className="contact" id="contact">
       <div className="container">
-        <div className="contact-gallery" aria-label="Contact gallery">
+        <div className="contact-gallery reveal-scale" aria-label="Contact gallery">
           {galleryImages.map((image) => (
             <figure key={image.src} className="contact-gallery-item">
               <img src={image.src} alt={image.alt} loading="lazy" decoding="async" />
