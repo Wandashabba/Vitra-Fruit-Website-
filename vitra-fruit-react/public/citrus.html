@@ -21,6 +21,69 @@
   <link rel="stylesheet" href="shop-products.css" />
   <link rel="stylesheet" href="citrus.css" />
   <link rel="stylesheet" href="nav-unified.css" />
+  <style>
+    .footer {
+      background:
+        linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)),
+        image-set(
+          url('/images/footer-960.avif') type('image/avif') 1x,
+          url('/images/footer.avif') type('image/avif') 2x,
+          url('/images/footer-960.webp') type('image/webp') 1x,
+          url('/images/footer.webp') type('image/webp') 2x,
+          url('/images/footer.jpg') type('image/jpeg') 1x
+        );
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      padding: 2.2rem 20px 0.9rem;
+      font-family: 'Montserrat', 'Segoe UI', sans-serif;
+      margin-top: 60px;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.4rem;
+      text-align: center;
+    }
+    .footer-col h4 {
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+      font-family: 'Times New Roman MT', 'Times New Roman', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; }
+    .footer-col ul li { margin-bottom: 0.4rem; }
+    .footer-col a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+    .footer-col a:hover { color: #ffd8a6; }
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .footer-social-link svg { width: 15px; height: 15px; fill: currentColor; }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.22);
+      font-family: 'Montserrat', 'Segoe UI', sans-serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
+  </style>
 </head>
 <body>
   <div id="wrapper-navbar">
@@ -182,8 +245,8 @@
         <article class="product-card bottle-card wheel-card wheel-card-lemon" data-citrus-types="wheels">
           <div class="bottle-media">
             <img
-              src="images/LemonWheel-800.png"
-              srcset="images/LemonWheel-800.png 800w, images/LemonWheel-1600.png 1600w"
+              src="images/Lemonwheel.png"
+              srcset="images/Lemonwheel.png 800w, images/Lemonwheel.png 1600w"
               sizes="(max-width: 900px) 60vw, 220px"
               alt="Dehydrated Lemon wheel"
               loading="lazy"
@@ -200,8 +263,8 @@
         <article class="product-card bottle-card wheel-card wheel-card-grapefruit" data-citrus-types="wheels">
           <div class="bottle-media">
             <img
-              src="/images/GrapeWheel-800.png"
-              srcset="/images/GrapeWheel-800.png 800w, /images/GrapeWheel-1600.png 1600w"
+              src="/images/Grapefruitwheel.png"
+              srcset="/images/Grapefruitwheel.png 800w, /images/Grapefruitwheel.png 1600w"
               sizes="(max-width: 900px) 60vw, 220px"
               alt="Dehydrated Grapefruit wheel"
               loading="lazy"
@@ -218,8 +281,8 @@
         <article class="product-card bottle-card wheel-card wheel-card-lime" data-citrus-types="wheels">
           <div class="bottle-media">
             <img
-              src="/images/Limewheel-800.png"
-              srcset="/images/Limewheel-800.png 800w, /images/Limewheel-1600.png 1600w"
+              src="/images/Pleaser4.png"
+              srcset="/images/Pleaser4.png 800w, /images/Pleaser4.png 1600w"
               sizes="(max-width: 900px) 60vw, 220px"
               alt="Dehydrated Lime wheel"
               loading="lazy"
@@ -236,8 +299,8 @@
         <article class="product-card bottle-card wheel-card wheel-card-orange" data-citrus-types="wheels">
           <div class="bottle-media">
             <img
-              src="/images/Orangewheel-800.png"
-              srcset="/images/Orangewheel-800.png 800w, /images/Orangewheel-1600.png 1600w"
+              src="/images/OrangePleaser.png"
+              srcset="/images/OrangePleaser.png 800w, /images/OrangePleaser.png 1600w"
               sizes="(max-width: 900px) 60vw, 220px"
               alt="Dehydrated Orange wheel"
               loading="lazy"

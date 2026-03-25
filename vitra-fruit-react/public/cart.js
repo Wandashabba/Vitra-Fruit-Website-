@@ -16,16 +16,37 @@
     }
   })();
 
+  function migrateImages(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map((item) => {
+      const next = { ...item };
+      const name = (next.name || '').toLowerCase();
+      if (name.includes('orange wheel') && (!next.image || next.image.toLowerCase().includes('orangewheel'))) {
+        next.image = '/images/OrangePleaser.png';
+      }
+      if (name.includes('grapefruit wheel') && (!next.image || next.image.toLowerCase().includes('grapewheel'))) {
+        next.image = '/images/Grapefruitwheel.png';
+      }
+      if (name.includes('lime wheel') && (!next.image || next.image.toLowerCase().includes('limewheel'))) {
+        next.image = '/images/Pleaser4.png';
+      }
+      if (name.includes('lemon wheel') && (!next.image || next.image.toLowerCase().includes('lemonwheel'))) {
+        next.image = '/images/Lemonwheel.png';
+      }
+      return next;
+    });
+  }
+
   function loadCart() {
     if (!canUseStorage) {
-      return Array.isArray(memoryStore.cart) ? memoryStore.cart : [];
+      return migrateImages(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
     }
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const items = raw ? JSON.parse(raw) : [];
-      return Array.isArray(items) ? items : [];
+      return migrateImages(Array.isArray(items) ? items : []);
     } catch (err) {
-      return Array.isArray(memoryStore.cart) ? memoryStore.cart : [];
+      return migrateImages(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
     }
   }
 
@@ -134,19 +155,8 @@
     const closeBtn = document.querySelector('[data-cart-close]');
     const vatSelect = document.querySelector('[data-vat-rate]');
 
-    let vatRate = loadVatRate();
-
-    if (vatSelect) {
-      vatSelect.value = String(vatRate);
-      vatSelect.addEventListener('change', function () {
-        const nextRate = parseFloat(vatSelect.value);
-        if (Number.isFinite(nextRate)) {
-          vatRate = nextRate;
-          saveVatRate(vatRate);
-          render();
-        }
-      });
-    }
+    let vatRate = 0.15;
+    // VAT rate locked at 0.15
 
     function render() {
       const cart = loadCart();
@@ -207,7 +217,7 @@
 
       const vat = subtotal - subtotal / (1 + vatRate);
       if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
-      if (totalEl) totalEl.textContent = `${formatPrice(subtotal)} (includes ${formatPrice(vat)} VAT)`;
+      if (totalEl) totalEl.textContent = `${formatPrice(subtotal)}`;
       if (vatEl) vatEl.textContent = '';
 
       updateCount(cart);
@@ -341,6 +351,7 @@
       title.appendChild(name);
 
       const price = document.createElement('span');
+      price.className = 'order-subtotal';
       price.textContent = formatPrice(item.price * item.quantity);
 
       row.appendChild(title);
@@ -352,7 +363,7 @@
 
     const vat = subtotal - subtotal / (1 + vatRate);
     if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
-    if (totalEl) totalEl.textContent = `${formatPrice(subtotal)} (includes ${formatPrice(vat)} VAT)`;
+    if (totalEl) totalEl.textContent = `${formatPrice(subtotal)}`;
 
     if (payfastNote) {
       payfastNote.textContent = nonWheelCount > 0

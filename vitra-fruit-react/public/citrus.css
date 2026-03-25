@@ -710,19 +710,21 @@
     }
     .products-strip .bottle-name {
       font-family: var(--font-display);
-      color: var(--brand-text);
-      font-size: 1.2rem;
-      line-height: 1.1;
+      color: #1f2850;
+      font-size: clamp(1.12rem, 1.7vw, 1.48rem);
+      line-height: 1.05;
       margin: 0 0 0.35rem;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.015em;
+      font-weight: 700;
     }
     .products-strip .bottle-from {
       margin: 0;
-      font-size: 0.78rem;
-      font-weight: 800;
-      letter-spacing: 0.16em;
+      font-family: 'Montserrat', 'Segoe UI', sans-serif;
+      font-size: clamp(0.9rem, 1.25vw, 1.05rem);
+      font-weight: 700;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      color: var(--nav-accent);
+      color: #c09828;
     }
     @media (max-width: 1180px) {
       .products-strip .product-grid {
@@ -1158,4 +1160,3 @@
       font-size: 0.82rem;
       letter-spacing: 0.02em;
     }
-
