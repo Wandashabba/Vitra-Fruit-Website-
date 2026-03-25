@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dehydrated Orange Wheel | Vitra Fruits</title>
-  <meta name="description" content="Premium Dehydrated Orange Wheel - 100% natural, no added sugar." />
+  <title>Dehydrated Lemon Slices | Vitra Fruits</title>
+  <meta name="description" content="Premium Dehydrated Lemon Slices - 100% natural, no added sugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -20,6 +20,28 @@
       --accent-color: #f6b25f;
       --text-main: #1c2550;
       --text-muted: #555e7d;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 10px 0 14px;
+    }
+    .field label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text-muted);
+    }
+    .select {
+      padding: 12px 14px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      background: #fff;
+      color: var(--text-main);
     }
     body {
       font-family: var(--font-body);
@@ -271,7 +293,11 @@
       font-size: 1.3rem;
       font-weight: 700;
     }
-    .footer-col ul { list-style: none; margin: 0; padding: 0; }
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
     .footer-col ul li { margin-bottom: 0.4rem; }
     .footer-col a {
       color: #fff;
@@ -451,12 +477,20 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/OrangePleaser.png" alt="Dehydrated Orange Wheel" />
+          <img src="/images/LemonSlices.png" alt="Dehydrated Lemon Slices" />
         </div>
 
         <div class="product-info">
-          <h1>Dehydrated Orange Wheel</h1>
-          <div class="product-price">R 80.00</div>
+          <h1>Dehydrated Lemon Slices</h1>
+          <div class="product-price">R 215.00</div>
+          <div class="field">
+            <label for="sizeSelect">Size</label>
+            <select id="sizeSelect" class="select">
+              <option value="150g" data-price="215">150g</option>
+              <option value="200g" data-price="290">200g</option>
+              <option value="1kg" data-price="960">1kg</option>
+            </select>
+          </div>
           <div class="divider"></div>
 
           <ul class="product-features">
@@ -476,7 +510,7 @@
               <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
-            <button class="btn-cart" type="button" id="addToCartBtn" data-price="80.00">
+            <button class="btn-cart" type="button" id="addToCartBtn" data-price="150.00">
               Add to cart
             </button>
           </div>
@@ -569,6 +603,23 @@
       const toast = document.getElementById('cartToast');
       const toastText = document.querySelector('.cart-toast-text');
       const qtyInput = document.getElementById('quantityInput');
+      const sizeSelect = document.getElementById('sizeSelect');
+      const priceDisplay = document.querySelector('.product-price');
+
+      const priceMap = {
+        '150g': 215.0,
+        '200g': 290.0,
+        '1kg': 960.0
+      };
+
+      function updatePrice() {
+        const size = sizeSelect?.value || '150g';
+        const price = priceMap[size] || 215.0;
+        if (priceDisplay) priceDisplay.textContent = `R ${price.toFixed(2)}`;
+        return price;
+      }
+      sizeSelect?.addEventListener('change', updatePrice);
+      updatePrice();
 
       function loadCart() {
         try {
@@ -602,16 +653,19 @@
 
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
+        const size = sizeSelect?.value || '150g';
+        const price = updatePrice();
         addItemToCart({
-          id: 'dehydrated-orange-wheel',
-          name: 'Dehydrated Orange Wheel',
-          price: 80.0,
-          image: '/images/Orangewheel-800.png',
+          id: 'dehydrated-lemon-slices',
+          name: 'Dehydrated Lemon Slices',
+          price,
+          size,
+          image: '/images/LemonSlices.png',
           quantity: qty
         });
 
         if (toastText) {
-          toastText.textContent = 'Dehydrated Orange Wheel added to cart';
+          toastText.textContent = 'Dehydrated Lemon Slices added to cart';
         }
         toast.classList.add('is-visible');
         setTimeout(() => toast.classList.remove('is-visible'), 3000);
