@@ -560,7 +560,10 @@
         const raw = localStorage.getItem('vitra_cart');
         const items = raw ? JSON.parse(raw) : [];
         const total = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
-        countEls.forEach(el => el.textContent = total);
+        countEls.forEach(el => {
+          el.textContent = total;
+          el.style.display = total > 0 ? 'inline-flex' : 'none';
+        });
       }
       updateCartDisplay();
       window.addEventListener('storage', updateCartDisplay);
