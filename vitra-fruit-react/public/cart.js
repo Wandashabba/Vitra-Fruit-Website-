@@ -31,7 +31,7 @@
         next.image = '/images/Pleaser4.png';
       }
       if (name.includes('lemon wheel') && (!next.image || next.image.toLowerCase().includes('lemonwheel'))) {
-        next.image = '/images/Lemonwheel.png';
+        next.image = '/images/LemonWheel.png';
       }
       return next;
     });
