@@ -13,8 +13,8 @@ const favouriteProducts = [
   {
     name: 'Lemon Slices',
     note: 'Sweet and mellow',
-    price: 'R150 - R480',
-    href: '#shop',
+    price: 'R215 - R960',
+    href: 'lemon-slices.html',
     imageSrc: homepagePe,
     imageAlt: 'Fresh lemon flavour inspiration'
   },
@@ -22,7 +22,7 @@ const favouriteProducts = [
     name: 'Orange wheel',
     note: 'Citrus brightness',
     price: 'R80',
-    href: '#shop',
+    href: 'orange-wheel.html',
     imageSrc: homepageOr,
     imageAlt: 'Orange wheel flavour inspiration'
   },
@@ -30,7 +30,7 @@ const favouriteProducts = [
     name: 'Grapefruit Slices',
     note: 'Floral and vibrant',
     price: 'R150 - R480',
-    href: '#shop',
+    href: 'grapefruit-slices.html',
     imageSrc: homepageHi,
     imageAlt: 'Grapefruit flavour inspiration'
   },
@@ -38,7 +38,7 @@ const favouriteProducts = [
     name: 'Lime Wheels',
     note: 'Zesty and refreshing',
     price: 'R80',
-    href: '#shop',
+    href: 'lime-wheel.html',
     imageSrc: homepageLi,
     imageAlt: 'Lime wheel flavour inspiration'
   }
