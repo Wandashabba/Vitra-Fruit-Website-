@@ -25,10 +25,9 @@ function Navbar({ cartCount = 0 }) {
   const shopDropdownItems = useMemo(
     () => [
       { label: "Citrus", categoryId: "citrus", href: "citrus.html" },
-      { label: "Tropical", categoryId: "tropical", href: "fruit-strips.html" },
+      { label: "Dried Fruits", categoryId: "dried-fruits", href: "dried-fruits.html" },
       { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "vegetable-powders.html" },
-      { label: "Fruit Bites", categoryId: "fruit-bites", href: "fruit-strips.html" },
-      { label: "Lifestyle", categoryId: "lifestyle", href: "index.html#about" }
+      { label: "Lifestyle", categoryId: "lifestyle", href: "lifestyle.html" }
     ],
     []
   );
@@ -39,10 +38,11 @@ function Navbar({ cartCount = 0 }) {
       { label: "Lime Wheel", href: "lime-wheel.html", tags: ["lime", "citrus", "wheel"] },
       { label: "Grapefruit Wheel", href: "grapefruit-wheel.html", tags: ["grapefruit", "citrus", "wheel"] },
       { label: "Citrus Collection", href: "citrus.html", tags: ["citrus", "collection", "wheels", "powders"] },
-      { label: "Fruit Strips", href: "fruit-strips.html", tags: ["tropical", "strips", "bites"] },
+      { label: "Dried Fruits", href: "dried-fruits.html", tags: ["dried", "fruits", "slices", "chips", "strips", "apple", "pear", "banana", "pineapple", "mango"] },
       { label: "Vegetable Powders", href: "vegetable-powders.html", tags: ["vegetable", "powders"] },
       { label: "Shakers", href: "shakers.html", tags: ["shakers", "citrus"] },
-      { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "fruits", "citrus"] }
+      { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "fruits", "citrus"] },
+      { label: "Lifestyle", href: "lifestyle.html", tags: ["lifestyle", "teas", "juices"] }
     ],
     []
   );
