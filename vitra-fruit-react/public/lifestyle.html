@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lifestyle | Teas & Juices | VitraFruits</title>
+  <meta
+    name="description"
+    content="Experience VitraFruits lifestyle range featuring premium teas and natural juices."
+  />
+  <link rel="canonical" href="https://vitrafruit.com/lifestyle.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shop-products.css" />
+  <link rel="stylesheet" href="nav-unified.css" />
+  <style>
+    .category-hero {
+        background: #f4f4f4;
+        padding: 60px 0;
+        text-align: center;
+    }
+    .footer {
+      background:
+        linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)),
+        image-set(
+          url('/images/footer.webp') type('image/webp') 1x,
+          url('/images/footer.jpg') type('image/jpeg') 1x
+        );
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #fff;
+      padding: 2.2rem 20px 0.9rem;
+      font-family: 'Montserrat', 'Segoe UI', sans-serif;
+      margin-top: 60px;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.4rem;
+      text-align: center;
+    }
+    .footer-col h4 {
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+      font-weight: 700;
+    }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; }
+    .footer-col a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.88rem;
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.22);
+      font-size: 0.82rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper-navbar">
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="container navbar-container">
+        <ul class="navbar-menu navbar-left">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item nav-dropdown">
+            <button class="nav-link nav-link-dropdown active" type="button" aria-haspopup="true">
+              <span>Shop Now</span>
+              <span class="nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <ul class="nav-dropdown-menu">
+              <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
+              <li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li>
+              <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
+              <li><a class="nav-dropdown-link active" href="lifestyle.html">Lifestyle</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <a class="navbar-logo" href="index.html">
+          <img src="/images/logo.jpg" alt="VitraFruits logo" />
+        </a>
+
+        <ul class="navbar-menu navbar-right">
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html">
+              <span>Cart</span>
+              <span class="nav-count" data-cart-count>0</span>
+            </a></li>
+        </ul>
+
+      </div>
+    </nav>
+  </div>
+
+  <section class="category-hero" aria-label="Lifestyle category hero">
+    <div class="container">
+      <div class="category-hero-inner">
+        <div class="category-hero-copy">
+          <p class="category-hero-kicker">VitraFruits</p>
+          <h1 class="category-hero-title">Lifestyle</h1>
+          <p>Discover our range of Teas and Juices</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products-strip">
+    <div class="container">
+      <div class="product-grid">
+        <article class="product-card bottle-card">
+          <div class="bottle-media">
+            <img src="/images/placeholder.svg" alt="Natural Tea Blend" loading="lazy" />
+            <a class="bottle-cta" href="contact.html">Shop Now</a>
+          </div>
+          <div class="bottle-meta">
+            <p class="bottle-name">Infusion Teas</p>
+            <p class="bottle-from">Pure & Natural</p>
+          </div>
+        </article>
+        <article class="product-card bottle-card">
+          <div class="bottle-media">
+            <img src="/images/placeholder.svg" alt="Natural Fruit Juice" loading="lazy" />
+            <a class="bottle-cta" href="contact.html">Shop Now</a>
+          </div>
+          <div class="bottle-meta">
+            <p class="bottle-name">Cold Pressed Juices</p>
+            <p class="bottle-from">Freshly Preserved</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; 2026 VitraFruits. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script src="shop-pages.js"></script>
+</body>
+</html>

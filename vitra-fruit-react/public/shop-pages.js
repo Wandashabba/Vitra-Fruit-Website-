@@ -72,10 +72,11 @@
     { label: 'Orange Powder', href: 'orange-powder.html', tags: ['orange', 'powder', 'citrus'] },
     { label: 'Grapefruit Powder', href: 'grapefruit-powder.html', tags: ['grapefruit', 'powder', 'citrus'] },
     { label: 'Citrus Collection', href: 'citrus.html', tags: ['citrus', 'wheels', 'powders'] },
-    { label: 'Fruit Strips', href: 'fruit-strips.html', tags: ['tropical', 'strips', 'bites'] },
+    { label: 'Dried Fruits', href: 'dried-fruits.html', tags: ['dried', 'fruits', 'apple', 'pear', 'banana', 'pineapple', 'mango'] },
     { label: 'Vegetable Powders', href: 'vegetable-powders.html', tags: ['vegetable', 'powders'] },
     { label: 'Shakers', href: 'shakers.html', tags: ['shakers', 'citrus'] },
-    { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'fruits'] }
+    { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'fruits'] },
+    { label: 'Lifestyle', href: 'lifestyle.html', tags: ['lifestyle', 'teas', 'juices'] }
   ];
 
   if (searchPanel && !searchResults) {
