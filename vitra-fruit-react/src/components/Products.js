@@ -7,6 +7,10 @@ import homepagePe from '../assets/images/Pleaser2.png';
 import homepageOr from '../assets/images/OrangePleaser.png';
 import homepageHi from '../assets/images/Pleaser3.png';
 import homepageLi from '../assets/images/Pleaser4.png';
+import grapefruitFront from '../assets/images/GrapefruitFront.png';
+import grapefruitBack from '../assets/images/GrapefruitBack.png';
+import lemonFront from '../assets/images/LemonFront.png';
+import lemonBack from '../assets/images/LemonBack.png';
 import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.png';
 
 const favouriteProducts = [
@@ -15,8 +19,8 @@ const favouriteProducts = [
     note: 'Sweet and mellow',
     price: 'R215 - R960',
     href: 'lemon-slices.html',
-    imageSrc: homepagePe,
-    imageAlt: 'Fresh lemon flavour inspiration'
+    imageSrc: lemonFront,
+    imageAlt: 'Lemon product front'
   },
   {
     name: 'Orange wheel',
@@ -31,8 +35,8 @@ const favouriteProducts = [
     note: 'Floral and vibrant',
     price: 'R150 - R480',
     href: 'grapefruit-slices.html',
-    imageSrc: homepageHi,
-    imageAlt: 'Grapefruit flavour inspiration'
+    imageSrc: grapefruitFront,
+    imageAlt: 'Grapefruit product front'
   },
   {
     name: 'Lime Wheels',
@@ -105,7 +109,7 @@ function Products() {
                     className={`favourite-product-item favourite-product-item-${index + 1}${product.videoSrc ? ' has-video' : ''}`}
                     role="listitem"
                   >
-                    <div className="favourite-product-visual">
+                    <div className={`favourite-product-visual${product.imageSrcBack ? ' flip-card' : ''}`}>
                       {/* Hover graphic decorations */}
                       <div className="hover-graphic hover-graphic-left" aria-hidden="true">
                         <ProductGraphicLeft index={index} />
@@ -113,7 +117,26 @@ function Products() {
                       <div className="hover-graphic hover-graphic-right" aria-hidden="true">
                         <ProductGraphicRight index={index} />
                       </div>
-                      {product.videoSrc ? (
+                      {product.imageSrcBack ? (
+                        <div className="flip-card-inner">
+                          <div className="flip-card-face flip-card-front">
+                            <img
+                              src={product.imageSrc}
+                              alt={product.imageAlt}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                          <div className="flip-card-face flip-card-back">
+                            <img
+                              src={product.imageSrcBack}
+                              alt={`${product.imageAlt} - back view`}
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </div>
+                        </div>
+                      ) : product.videoSrc ? (
                         <video
                           className="favourite-product-video"
                           src={product.videoSrc}
