@@ -397,7 +397,7 @@
 
     .category-hero {
       --citrus-hero-h: clamp(340px, 35vw, 480px);
-      --citrus-hero-bg: #f5efe5;
+      --citrus-hero-bg: #e9e9e5;
       min-height: var(--citrus-hero-h);
       padding: 0;
       background: var(--citrus-hero-bg);
@@ -461,15 +461,13 @@
       align-items: stretch;
       margin-right: calc(50% - 50vw);
       position: relative;
-      background: var(--citrus-hero-bg);
     }
     .category-hero-video {
       width: min(520px, 44vw);
       height: 100%;
       display: block;
       object-fit: cover;
-      background: transparent;
-      mix-blend-mode: multiply;
+      background: var(--citrus-hero-bg, #ffffff);
       border-radius: 0;
       position: relative;
       z-index: 1;
@@ -611,7 +609,7 @@
       background: #ffffff;
     }
     .products-strip .product-grid {
-      grid-template-columns: repeat(4, minmax(0, 240px));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 240px));
       align-items: end;
       gap: clamp(14px, 2.4vw, 24px);
       justify-content: center;
@@ -658,6 +656,24 @@
     .products-strip .product-card:hover img,
     .products-strip .product-card:focus-within img {
       transform: scale(var(--img-scale-hover));
+    }
+    /* Uniform sizing for dried fruit product images — match citrus */
+    .dried-product-img {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 220px !important;
+      max-height: 320px !important;
+      object-fit: contain !important;
+      object-position: center center !important;
+      display: block !important;
+      margin: 0 auto !important;
+      padding: 0 !important;
+      background: transparent !important;
+      border-radius: 0 !important;
+      transform-origin: bottom center;
+      -webkit-mask-image: none;
+      mask-image: none;
+      filter: none;
     }
     .products-strip .bottle-cta {
       position: absolute;
