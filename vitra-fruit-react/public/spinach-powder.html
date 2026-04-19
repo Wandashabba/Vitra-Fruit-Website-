@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spinach Vegetable Powder | Vitra Fruits</title>
+  <meta name="description" content="Premium Spinach Vegetable Powder - 100% natural, no added sugar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="nav-unified.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --font-body: 'Montserrat', 'Segoe UI', sans-serif; --font-display: 'Times New Roman MT', 'Times New Roman', serif; --nav-ink: #111111; --nav-accent: #C09828; --page-bg: #fdfdfd; --accent-color: #f6b25f; --text-main: #1c2550; --text-muted: #555e7d; }
+    .field { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 14px; }
+    .field label { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 800; color: var(--text-muted); }
+    .select { padding: 12px 14px; border: 1px solid #ddd; border-radius: 12px; font-family: var(--font-body); font-weight: 600; background: #fff; color: var(--text-main); }
+    body { font-family: var(--font-body); color: var(--text-main); background: var(--page-bg); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; scroll-padding-top: 120px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .product-page { padding: 0 0 80px; }
+    .product-shell { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 80px; align-items: center; }
+    .product-media { position: relative; display: flex; justify-content: center; align-items: center; background: var(--page-bg); border-radius: 40px; padding: 0px 60px 0; margin-top: -30px; transition: transform 0.2s ease; }
+    .product-media img { width: 100%; max-width: 320px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12)); z-index: 2; }
+    .product-media-bg { display: none; }
+    .product-info { margin-top: 0px; }
+    .product-info h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 800; line-height: 1; margin-bottom: 4px; text-transform: uppercase; color: var(--text-main); }
+    .product-price { font-size: clamp(0.9rem, 1.25vw, 1.05rem); font-weight: 700; letter-spacing: 0.05em; color: #c09828; margin-bottom: 0px; font-family: var(--font-body); }
+    .divider { height: 1px; background: rgba(0,0,0,0.08); margin: 24px 0; }
+    .product-features { list-style: none; padding: 0 2px; margin: 8px 0 36px; display: grid; gap: 14px; }
+    .feature-item { display: flex; align-items: center; gap: 15px; font-weight: 700; font-size: 0.95rem; }
+    .feature-icon { width: 26px; height: 26px; background: #000; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .actions { display: flex; gap: 20px; align-items: center; }
+    .qty-picker { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 999px; background: #fff; overflow: hidden; }
+    .qty-btn { border: none; background: none; padding: 14px 22px; cursor: pointer; font-weight: 800; font-size: 1.2rem; }
+    .qty-input { width: 45px; text-align: center; border: none; font-weight: 800; font-size: 1rem; font-family: inherit; }
+    .btn-cart { flex: 1; padding: 18px 35px; background: linear-gradient(135deg, #c03030, #e88020); color: #f5f0e8; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.85rem; cursor: pointer; box-shadow: 0 10px 20px rgba(192, 48, 48, 0.3); transition: all 0.3s ease; }
+    .btn-cart:hover { background: linear-gradient(135deg, #e88020, #c03030); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(232, 128, 32, 0.4); }
+    @media (max-width: 1000px) { .product-shell { grid-template-columns: 1fr; gap: 60px; } .product-media { padding: 18px 32px 24px; margin-top: -8px; } .product-media img { max-width: 240px; } .product-info h1 { font-size: 3rem; } }
+    .footer { background: linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)), image-set(url('/images/footer-960.avif') type('image/avif') 1x, url('/images/footer.avif') type('image/avif') 2x, url('/images/footer-960.webp') type('image/webp') 1x, url('/images/footer.webp') type('image/webp') 2x, url('/images/footer.jpg') type('image/jpeg') 1x); background-size: cover; background-position: center; background-repeat: no-repeat; color: #fff; padding: 2.2rem 20px 0.9rem; font-family: var(--font-body); margin-top: 60px; }
+    .footer-content { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 1.4rem; text-align: center; }
+    .footer-col h4 { margin-bottom: 0.8rem; color: #ffffff; font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
+    .footer-col ul { list-style: none; margin: 0; padding: 0; } .footer-col ul li { margin-bottom: 0.4rem; }
+    .footer-col a { color: #fff; text-decoration: none; transition: color 0.3s; font-size: 0.88rem; letter-spacing: 0.03em; } .footer-col a:hover { color: #ffd8a6; }
+    .footer-social-link { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.6rem; padding: 0.45rem 0.7rem; border-radius: 999px; background: rgba(255, 255, 255, 0.12); color: #fff; }
+    .footer-social-link svg { width: 15px; height: 15px; fill: currentColor; }
+    .footer-bottom { text-align: center; padding-top: 1.2rem; border-top: 1px solid rgba(255,255,255,0.22); font-family: var(--font-body); font-size: 0.82rem; letter-spacing: 0.02em; }
+    .cart-toast { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); background: #b9f0d0; padding: 18px 30px; border-radius: 15px; font-weight: 700; box-shadow: 0 20px 40px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 15px; z-index: 3000; opacity: 0; visibility: hidden; transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1); }
+    .cart-toast.is-visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(10px); }
+    .cart-toast-icon { width: 24px; height: 24px; background: #0f2e20; color: #b9f0d0; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div id="wrapper-navbar">
+    <nav class="navbar" aria-label="Main Navigation">
+      <div class="container navbar-container">
+        <ul class="navbar-menu navbar-left">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item nav-dropdown">
+            <button class="nav-link nav-link-dropdown active" type="button" aria-haspopup="true"><span>Shop Now</span><span class="nav-caret" aria-hidden="true">▾</span></button>
+            <ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul>
+          </li>
+        </ul>
+        <a class="navbar-logo" href="index.html"><picture><source srcset="/images/logo.avif" type="image/avif" /><source srcset="/images/logo.webp" type="image/webp" /><img src="/images/logo.jpg" alt="VitraFruits logo" /></picture></a>
+        <ul class="navbar-menu navbar-right">
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link cart-link" href="cart.html"><svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" /><circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" /></svg><span>Cart</span><span class="nav-count" data-cart-count>0</span></a></li>
+          <li class="nav-item nav-item-icon"><button class="nav-icon-button nav-search-button" type="button" aria-label="Search products" aria-expanded="false" aria-controls="nav-search-panel"><svg class="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></button></li>
+        </ul>
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><span class="toggler-line"></span><span class="toggler-line"></span><span class="toggler-line"></span></span></button>
+        <div class="navbar-actions">
+          <button class="nav-icon-button nav-search-button" type="button" aria-label="Search products" aria-expanded="false" aria-controls="nav-search-panel"><svg class="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></button>
+          <a class="nav-icon-link nav-cart-link" href="cart.html" aria-label="View cart"><svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" /><circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" /></svg><span class="nav-count" data-cart-count>0</span></a>
+        </div>
+        <div id="nav-search-panel" class="nav-search-panel" role="search"><form class="nav-search-form"><input class="nav-search-input" type="search" placeholder="Search products..." aria-label="Search products" /><button class="nav-search-submit" type="submit">Search</button><button class="nav-search-clear" type="button">Clear</button></form></div>
+        <div class="mobile-nav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item nav-dropdown"><button class="nav-link nav-link-dropdown active" type="button" aria-expanded="false" aria-haspopup="true"><span>Shop Now</span><span class="nav-caret" aria-hidden="true">▾</span></button><ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul></li><li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li></ul></div>
+      </div>
+    </nav>
+  </div>
+
+  <main class="product-page">
+    <div class="container">
+      <div class="product-shell">
+        <div class="product-media">
+          <div class="product-media-bg"></div>
+          <img src="/images/SpinachVeg.png" alt="Spinach Vegetable Powder" />
+        </div>
+        <div class="product-info">
+          <h1>Spinach Vegetable Powder</h1>
+          <div class="product-price">R 160.00</div>
+          <div class="field">
+            <label for="sizeSelect">Size</label>
+            <select id="sizeSelect" class="select">
+              <option value="100g" data-price="160">100g</option>
+              <option value="500g" data-price="380">500g</option>
+            </select>
+          </div>
+          <div class="divider"></div>
+          <ul class="product-features">
+            <li class="feature-item"><span class="feature-icon">✓</span> No Preservatives</li>
+            <li class="feature-item"><span class="feature-icon">✓</span> No Additives</li>
+          </ul>
+          <div class="actions">
+            <div class="qty-picker">
+              <button class="qty-btn" type="button" onclick="this.nextElementSibling.stepDown()">-</button>
+              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
+              <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
+            </div>
+            <button class="btn-cart" type="button" id="addToCartBtn">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-col"><h4>Customer Service</h4><ul><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="shipping.html">Shipping Costs</a></li><li><a href="terms.html">Terms and Conditions</a></li></ul><a class="footer-social-link" href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg><span>@vitrafruits</span></a></div></div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p></div></div></footer>
+
+  <div class="cart-toast" id="cartToast"><span class="cart-toast-icon">✓</span><span class="cart-toast-text">Added to cart</span></div>
+
+  <script src="cart.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    (function() {
+      const toggler = document.querySelector('.navbar-toggler'); const mobileNav = document.querySelector('.mobile-nav'); const searchBtns = document.querySelectorAll('.nav-search-button'); const searchPanel = document.getElementById('nav-search-panel'); const shopToggles = document.querySelectorAll('.nav-link-dropdown');
+      toggler?.addEventListener('click', () => { toggler.classList.toggle('is-open'); mobileNav.classList.toggle('is-open'); });
+      searchBtns.forEach(btn => { btn.addEventListener('click', () => { searchPanel.classList.toggle('is-open'); }); });
+      shopToggles.forEach(toggle => { toggle.addEventListener('click', (e) => { if (window.innerWidth < 1100) { const menu = toggle.nextElementSibling; if (menu) { menu.classList.toggle('is-open'); toggle.setAttribute('aria-expanded', menu.classList.contains('is-open')); } } }); });
+      function updateCartDisplay() { const countEls = document.querySelectorAll('[data-cart-count]'); const raw = localStorage.getItem('vitra_cart'); const items = raw ? JSON.parse(raw) : []; const total = items.reduce((sum, item) => sum + (item.quantity || 0), 0); countEls.forEach(el => { el.textContent = total; el.style.display = total > 0 ? 'inline-flex' : 'none'; }); }
+      updateCartDisplay(); window.addEventListener('storage', updateCartDisplay);
+      const addToCartBtn = document.getElementById('addToCartBtn'); const toast = document.getElementById('cartToast'); const toastText = document.querySelector('.cart-toast-text'); const qtyInput = document.getElementById('quantityInput'); const sizeSelect = document.getElementById('sizeSelect'); const priceDisplay = document.querySelector('.product-price');
+      const priceMap = { '100g': 160.0, '500g': 380.0 };
+      function updatePrice() { const size = sizeSelect?.value || '100g'; const price = priceMap[size] || 160.0; if (priceDisplay) priceDisplay.textContent = `R ${price.toFixed(2)}`; return price; }
+      sizeSelect?.addEventListener('change', updatePrice); updatePrice();
+      function loadCart() { try { const raw = localStorage.getItem('vitra_cart'); const parsed = raw ? JSON.parse(raw) : []; return Array.isArray(parsed) ? parsed : []; } catch (err) { return []; } }
+      function saveCart(items) { try { localStorage.setItem('vitra_cart', JSON.stringify(items)); } catch (err) {} updateCartDisplay(); }
+      function addItemToCart(item) { const cart = loadCart(); const existing = cart.find((it) => it.id === item.id); if (existing) { existing.quantity = (existing.quantity || 0) + item.quantity; } else { cart.push(item); } saveCart(cart); }
+      addToCartBtn?.addEventListener('click', () => {
+        const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10)); const size = sizeSelect?.value || '100g'; const price = updatePrice();
+        addItemToCart({ id: `spinach-vegetable-powder__${size}`, name: 'Spinach Vegetable Powder', price, size, image: '/images/SpinachVeg.png', quantity: qty });
+        if (toastText) { toastText.textContent = 'Spinach Vegetable Powder added to cart'; }
+        toast.classList.add('is-visible'); setTimeout(() => toast.classList.remove('is-visible'), 3000);
+      });
+    })();
+  </script>
+</body>
+</html>
