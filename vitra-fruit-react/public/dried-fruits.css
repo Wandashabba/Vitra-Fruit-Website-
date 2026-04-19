@@ -3,13 +3,13 @@
       --font-body: 'Montserrat', 'Segoe UI', sans-serif;
       --font-display: 'Times New Roman MT', 'Times New Roman', 'Georgia', serif;
       --font-bestyling: 'Times New Roman MT', 'Times New Roman', serif;
-      --nav-ink: #2a1c0f;
-      --nav-accent: #c47a2c;
-      --brand-text: #2e2315;
-      --brand-primary: #b45a2b;
-      --brand-secondary: #e3b05c;
+      --nav-ink: #111111;
+      --nav-accent: #c09828;
+      --brand-text: #333333;
+      --brand-primary: #c03030;
+      --brand-secondary: #e88020;
       --brand-cream: #ffffff;
-      --brand-cream-soft: #f5eee4;
+      --brand-cream-soft: #f2e8d0;
     }
     html {
       scroll-behavior: smooth;
@@ -674,6 +674,19 @@
       -webkit-mask-image: none;
       mask-image: none;
       filter: none;
+    }
+
+    .product-card[data-dried-types="slices"] img,
+    .product-card[data-dried-types="chips"] img,
+    .product-card[data-dried-types="strips"] img {
+      width: 75% !important;
+      height: 75% !important;
+      margin: auto auto 0 auto !important;
+    }
+    .product-card[data-dried-types="slices"] .bottle-media,
+    .product-card[data-dried-types="chips"] .bottle-media,
+    .product-card[data-dried-types="strips"] .bottle-media {
+      padding-bottom: 70px;
     }
     .products-strip .bottle-cta {
       position: absolute;

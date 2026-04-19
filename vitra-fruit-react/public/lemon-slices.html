@@ -377,6 +377,7 @@
             </button>
             <ul class="nav-dropdown-menu">
               <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
+              <li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li>
               <li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li>
               <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
               <li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li>
@@ -458,6 +459,7 @@
               </button>
               <ul class="nav-dropdown-menu">
               <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
+              <li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li>
               <li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li>
               <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
               <li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li>
@@ -480,13 +482,13 @@
 
         <div class="product-info">
           <h1>Dehydrated Lemon Slices</h1>
-          <div class="product-price">R 215.00</div>
+          <div class="product-price">R 120.00</div>
           <div class="field">
             <label for="sizeSelect">Size</label>
             <select id="sizeSelect" class="select">
-              <option value="150g" data-price="215">150g</option>
-              <option value="200g" data-price="290">200g</option>
-              <option value="1kg" data-price="960">1kg</option>
+              <option value="100g" data-price="120">100g</option>
+              <option value="200g" data-price="200">200g</option>
+              <option value="1kg" data-price="580">1kg</option>
             </select>
           </div>
           <div class="divider"></div>
@@ -508,7 +510,7 @@
               <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
-            <button class="btn-cart" type="button" id="addToCartBtn" data-price="150.00">
+            <button class="btn-cart" type="button" id="addToCartBtn" data-price="120.00">
               Add to cart
             </button>
           </div>
@@ -605,14 +607,14 @@
       const priceDisplay = document.querySelector('.product-price');
 
       const priceMap = {
-        '150g': 215.0,
-        '200g': 290.0,
-        '1kg': 960.0
+        '100g': 120.0,
+        '200g': 200.0,
+        '1kg': 580.0
       };
 
       function updatePrice() {
-        const size = sizeSelect?.value || '150g';
-        const price = priceMap[size] || 215.0;
+        const size = sizeSelect?.value || '100g';
+        const price = priceMap[size] || 120.0;
         if (priceDisplay) priceDisplay.textContent = `R ${price.toFixed(2)}`;
         return price;
       }
@@ -651,7 +653,7 @@
 
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
-        const size = sizeSelect?.value || '150g';
+        const size = sizeSelect?.value || '100g';
         const price = updatePrice();
         addItemToCart({
           id: 'dehydrated-lemon-slices',
