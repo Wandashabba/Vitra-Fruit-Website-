@@ -445,7 +445,7 @@
     .category-hero-title {
       margin: 0;
       font-family: var(--font-display);
-      font-size: clamp(4rem, 8vw, 7rem);
+      font-size: clamp(2.5rem, 9vw, 6.5rem);
       line-height: 0.95;
       font-weight: 900;
       letter-spacing: -0.02em;
@@ -795,10 +795,10 @@
     }
     @media (max-width: 500px) {
       .category-hero-media {
-        height: clamp(380px, 104vw, 620px);
+        height: clamp(280px, 90vw, 420px);
       }
       .category-hero-video {
-        transform: scale(1.14);
+        transform: scale(1.08);
       }
     }
 
