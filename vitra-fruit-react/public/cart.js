@@ -392,14 +392,14 @@
         .join(', ');
 
       const origin = window.location.origin || '';
-      const liveDomain = 'https://www.vitrafruits.co.za';
+      const liveDomain = 'https://vitrafruits.co.za';
       const returnBase = origin.includes('vitrafruits.co.za') ? origin : liveDomain;
       setField('amount', subtotal.toFixed(2));
       setField('item_name', 'Vitra Fruit Wheels');
       setField('item_description', description);
       setField('return_url', returnBase + '/checkout.html?status=success');
       setField('cancel_url', returnBase + '/checkout.html?status=cancel');
-      setField('notify_url', returnBase + '/payfast-itn');
+      setField('notify_url', '');
       setField('m_payment_id', `VITRA-${Date.now()}`);
       setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
       setField('name_last', billingLastName ? billingLastName.value.trim() : '');
