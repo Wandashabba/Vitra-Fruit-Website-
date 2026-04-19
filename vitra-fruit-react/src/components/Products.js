@@ -13,34 +13,38 @@ const favouriteProducts = [
   {
     name: 'Lemon Slices',
     note: 'Sweet and mellow',
-    price: 'R215 - R960',
+    price: 'R120 - R580',
     href: 'lemon-slices.html',
     imageSrc: lemonFront,
-    imageAlt: 'Lemon product front'
+    imageAlt: 'Lemon product front',
+    graphicVariant: 'grapefruit'
   },
   {
-    name: 'Orange wheel',
+    name: 'Orange Wheels',
     note: 'Citrus brightness',
-    price: 'R80',
+    price: 'R100',
     href: 'orange-wheel.html',
     imageSrc: homepageOr,
-    imageAlt: 'Orange wheel flavour inspiration'
+    imageAlt: 'Orange wheels flavour inspiration',
+    graphicVariant: 'orange'
   },
   {
     name: 'Grapefruit Slices',
     note: 'Floral and vibrant',
-    price: 'R150 - R480',
+    price: 'R120 - R580',
     href: 'grapefruit-slices.html',
     imageSrc: grapefruitFront,
-    imageAlt: 'Grapefruit product front'
+    imageAlt: 'Grapefruit product front',
+    graphicVariant: 'grapefruit'
   },
   {
     name: 'Lime Wheels',
     note: 'Zesty and refreshing',
-    price: 'R80',
+    price: 'R100',
     href: 'lime-wheel.html',
     imageSrc: homepageLi,
-    imageAlt: 'Lime wheel flavour inspiration'
+    imageAlt: 'Lime wheel flavour inspiration',
+    graphicVariant: 'lime'
   }
 ];
 
@@ -108,10 +112,10 @@ function Products() {
                     <div className={`favourite-product-visual${product.imageSrcBack ? ' flip-card' : ''}`}>
                       {/* Hover graphic decorations */}
                       <div className="hover-graphic hover-graphic-left" aria-hidden="true">
-                        <ProductGraphicLeft index={index} />
+                        <ProductGraphicLeft variant={product.graphicVariant} />
                       </div>
                       <div className="hover-graphic hover-graphic-right" aria-hidden="true">
-                        <ProductGraphicRight index={index} />
+                        <ProductGraphicRight variant={product.graphicVariant} />
                       </div>
                       {product.imageSrcBack ? (
                         <div className="flip-card-inner">
@@ -242,7 +246,18 @@ function Products() {
 
 /* ── Hover Graphic SVG Components — Fruit Illustrations ── */
 
-function ProductGraphicLeft({ index }) {
+function getGraphicIndex(variant) {
+  const graphicIndexByVariant = {
+    lemon: 0,
+    orange: 1,
+    grapefruit: 2,
+    lime: 3
+  };
+
+  return graphicIndexByVariant[variant] ?? 0;
+}
+
+function ProductGraphicLeft({ variant }) {
   const graphics = [
     // Product 1: Pear slices — pears and leaves
     <svg viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -263,7 +278,7 @@ function ProductGraphicLeft({ index }) {
         <path className="sparkle-star" d="M15 110l2 4 4 2-4 2-2 4-2-4-4-2 4-2z" fill="#FFEB3B"/>
       </g>
     </svg>,
-    // Product 2: Orange wheel — orange slices and whole orange
+    // Product 2: Orange wheels — orange slices and whole orange
     <svg viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g className="hover-svg-group">
         {/* Large orange slice (half) */}
@@ -338,10 +353,10 @@ function ProductGraphicLeft({ index }) {
       </g>
     </svg>
   ];
-  return graphics[index] || graphics[0];
+  return graphics[getGraphicIndex(variant)] || graphics[0];
 }
 
-function ProductGraphicRight({ index }) {
+function ProductGraphicRight({ variant }) {
   const graphics = [
     // Product 1: Pear — mirrored fruit arrangement
     <svg viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg" style={{transform: 'scaleX(-1)'}}>
@@ -414,7 +429,7 @@ function ProductGraphicRight({ index }) {
       </g>
     </svg>
   ];
-  return graphics[index] || graphics[0];
+  return graphics[getGraphicIndex(variant)] || graphics[0];
 }
 
 export default Products;

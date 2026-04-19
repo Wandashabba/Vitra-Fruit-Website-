@@ -37,16 +37,66 @@
     });
   }
 
+  function normalizeItemPrice(item) {
+    const next = { ...item };
+    const name = (next.name || '').toLowerCase();
+    const size = (next.size || '').toLowerCase();
+    const citrusSliceSizes = {
+      '100g': 120,
+      '150g': 120,
+      '200g': 200,
+      '1kg': 580,
+    };
+    const applePearSizes = {
+      '100g': 100,
+      '200g': 180,
+      '500g': 260,
+    };
+
+    if (name.includes('wheel')) {
+      next.price = 100;
+      return next;
+    }
+
+    if (name.includes('lemon slices') || name.includes('orange slices') || name.includes('grapefruit slices')) {
+      const normalizedSize = size === '150g' ? '100g' : size || '100g';
+      next.size = normalizedSize;
+      next.price = citrusSliceSizes[normalizedSize] || 120;
+      return next;
+    }
+
+    if (name.includes('apple slices') || name.includes('pear slices')) {
+      const normalizedSize = size || '100g';
+      next.size = normalizedSize;
+      next.price = applePearSizes[normalizedSize] || 100;
+      return next;
+    }
+
+    return next;
+  }
+
+  function normalizeCart(items) {
+    return migrateImages(Array.isArray(items) ? items : []).map(normalizeItemPrice);
+  }
+
   function loadCart() {
     if (!canUseStorage) {
-      return migrateImages(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
+      return normalizeCart(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
     }
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       const items = raw ? JSON.parse(raw) : [];
-      return migrateImages(Array.isArray(items) ? items : []);
+      const normalized = normalizeCart(Array.isArray(items) ? items : []);
+      if (raw !== JSON.stringify(normalized)) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+        } catch (writeErr) {
+          memoryStore.cart = normalized;
+        }
+      }
+      return normalized;
     } catch (err) {
-      return migrateImages(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
+      return normalizeCart(Array.isArray(memoryStore.cart) ? memoryStore.cart : []);
     }
   }
 
@@ -309,25 +359,22 @@
 
     itemsWrap.innerHTML = '';
 
-    const wheelItems = cart.filter((item) => /wheel/i.test(item.name || ''));
-    const nonWheelCount = cart.length - wheelItems.length;
-
-    if (!wheelItems.length) {
+    if (!cart.length) {
       if (payfastNote) {
-        payfastNote.textContent = 'PayFast checkout is available for wheel products only.';
+        payfastNote.textContent = 'Your cart is empty. Please add items to checkout.';
       }
       if (payfastButton) {
         payfastButton.disabled = true;
         payfastButton.setAttribute('aria-disabled', 'true');
       }
       if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
-      if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
+      if (totalEl) totalEl.textContent = formatPrice(0);
       return;
     }
 
     let subtotal = 0;
 
-    wheelItems.forEach((item) => {
+    cart.forEach((item) => {
       const row = document.createElement('div');
       row.className = 'order-row';
 
@@ -366,9 +413,7 @@
     if (totalEl) totalEl.textContent = `${formatPrice(subtotal)}`;
 
     if (payfastNote) {
-      payfastNote.textContent = nonWheelCount > 0
-        ? 'PayFast will charge for wheel items only. Other items are not included.'
-        : '';
+      payfastNote.textContent = '';
     }
     if (payfastButton) {
       payfastButton.disabled = false;
@@ -383,11 +428,11 @@
         }
       };
 
-      const description = wheelItems
+      const description = cart
         .map((item) => {
           const sizeLabel = item.size ? ` ${item.size}` : '';
           const qtyLabel = item.quantity > 1 ? ` x${item.quantity}` : '';
-          return `${item.name || 'Wheel'}${sizeLabel}${qtyLabel}`;
+          return `${item.name || 'Product'}${sizeLabel}${qtyLabel}`;
         })
         .join(', ');
 
@@ -395,7 +440,7 @@
       const liveDomain = 'https://vitrafruits.co.za';
       const returnBase = origin.includes('vitrafruits.co.za') ? origin : liveDomain;
       setField('amount', subtotal.toFixed(2));
-      setField('item_name', 'Vitra Fruit Wheels');
+      setField('item_name', 'Vitra Fruit Products');
       setField('item_description', description);
       setField('return_url', returnBase + '/checkout.html?status=success');
       setField('cancel_url', returnBase + '/checkout.html?status=cancel');
@@ -407,10 +452,10 @@
 
       if (!payfastForm.dataset.listenerAttached) {
         payfastForm.addEventListener('submit', function (event) {
-          if (!wheelItems.length) {
+          if (!cart.length) {
             event.preventDefault();
             if (payfastNote) {
-              payfastNote.textContent = 'Please add wheel items to checkout with PayFast.';
+              payfastNote.textContent = 'Please add items to your cart to checkout.';
             }
             return;
           }

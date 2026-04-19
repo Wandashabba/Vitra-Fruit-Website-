@@ -666,10 +666,6 @@ textarea:focus-visible {
   transition: transform 0.28s ease, filter 0.28s ease;
 }
 
-.favourite-product-item-1 img {
-  transform: scale(1.15);
-}
-
 .favourite-product-item video {
   width: 100%;
   height: 100%;
