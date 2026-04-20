@@ -68,9 +68,9 @@
     { label: 'Orange Slices', href: 'orange-slices.html', tags: ['orange', 'slices', 'citrus'] },
     { label: 'Lime Slices', href: 'lime-slices.html', tags: ['lime', 'slices', 'citrus'] },
     { label: 'Grapefruit Slices', href: 'grapefruit-slices.html', tags: ['grapefruit', 'slices', 'citrus'] },
-    { label: 'Lemon Powder', href: 'lemon-powder.html', tags: ['lemon', 'powder', 'citrus'] },
-    { label: 'Orange Powder', href: 'orange-powder.html', tags: ['orange', 'powder', 'citrus'] },
-    { label: 'Grapefruit Powder', href: 'grapefruit-powder.html', tags: ['grapefruit', 'powder', 'citrus'] },
+    { label: 'Lemon Powders', href: 'lemon-powder.html', tags: ['lemon', 'powder', 'powders', 'citrus'] },
+    { label: 'Orange Powders', href: 'orange-powder.html', tags: ['orange', 'powder', 'powders', 'citrus'] },
+    { label: 'Grapefruit Powders', href: 'grapefruit-powder.html', tags: ['grapefruit', 'powder', 'powders', 'citrus'] },
     { label: 'Citrus Collection', href: 'citrus.html', tags: ['citrus', 'wheels', 'slices'] },
     { label: 'Dried Fruits', href: 'dried-fruits.html', tags: ['dried', 'fruits', 'apple', 'pear', 'banana', 'pineapple', 'mango'] },
     { label: 'Apple Slices', href: 'apple-slices.html', tags: ['apple', 'slices', 'dried', 'fruits'] },
@@ -79,7 +79,7 @@
     { label: 'Banana Chips', href: 'banana-chips.html', tags: ['banana', 'chips', 'dried', 'fruits'] },
     { label: 'Mango Strips', href: 'mango-strips.html', tags: ['mango', 'strips', 'dried', 'fruits', 'tropical'] },
     { label: 'Vegetable Powders', href: 'vegetable-powders.html', tags: ['vegetable', 'powders'] },
-    { label: 'Citrus Shakers', href: 'shakers.html', tags: ['shakers', 'citrus', 'powders'] },
+    { label: 'Citrus Powders', href: 'shakers.html', tags: ['shakers', 'citrus', 'powders'] },
     { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'fruits'] },
     { label: 'Lifestyle', href: 'lifestyle.html', tags: ['lifestyle', 'teas', 'juices'] }
   ];

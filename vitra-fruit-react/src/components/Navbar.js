@@ -25,7 +25,7 @@ function Navbar({ cartCount = 0 }) {
   const shopDropdownItems = useMemo(
     () => [
       { label: "Citrus", categoryId: "citrus", href: "citrus.html" },
-      { label: "Citrus Shakers", categoryId: "citrus-shakers", href: "shakers.html" },
+      { label: "Citrus Powders", categoryId: "citrus-powders", href: "shakers.html" },
       { label: "Dried Fruits", categoryId: "dried-fruits", href: "dried-fruits.html" },
       { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "vegetable-powders.html" },
       { label: "Lifestyle", categoryId: "lifestyle", href: "lifestyle.html" }
@@ -41,7 +41,7 @@ function Navbar({ cartCount = 0 }) {
       { label: "Citrus Collection", href: "citrus.html", tags: ["citrus", "collection", "wheels", "slices"] },
       { label: "Dried Fruits", href: "dried-fruits.html", tags: ["dried", "fruits", "slices", "chips", "strips", "apple", "pear", "banana", "pineapple", "mango"] },
       { label: "Vegetable Powders", href: "vegetable-powders.html", tags: ["vegetable", "powders"] },
-      { label: "Citrus Shakers", href: "shakers.html", tags: ["shakers", "citrus", "powders"] },
+      { label: "Citrus Powders", href: "shakers.html", tags: ["shakers", "citrus", "powders"] },
       { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "fruits", "citrus"] },
       { label: "Lifestyle", href: "lifestyle.html", tags: ["lifestyle", "teas", "juices"] }
     ],
