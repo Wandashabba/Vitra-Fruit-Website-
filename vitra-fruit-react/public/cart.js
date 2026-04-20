@@ -50,20 +50,19 @@
     const applePearSizes = {
       '100g': 100,
       '200g': 180,
-      '500g': 260,
     };
 
     if (name.includes('wheel')) {
-      next.price = 100;
+      next.size = size || '200g';
+      next.price = 200;
       return next;
     }
 
     if (name.includes('pineapple slices')) {
-      const normalizedSize = size || '100g';
+      const normalizedSize = size === '500g' ? '200g' : size || '100g';
       const pineappleSliceSizes = {
         '100g': 120,
         '200g': 220,
-        '500g': 280,
       };
       next.size = normalizedSize;
       next.price = pineappleSliceSizes[normalizedSize] || 120;
@@ -71,14 +70,35 @@
     }
 
     if (name.includes('banana chips')) {
-      const normalizedSize = size || '100g';
+      const normalizedSize = size === '500g' ? '200g' : size || '100g';
       const bananaChipSizes = {
         '100g': 100,
         '200g': 180,
-        '500g': 240,
       };
       next.size = normalizedSize;
       next.price = bananaChipSizes[normalizedSize] || 100;
+      return next;
+    }
+
+    if (name.includes('mango strips')) {
+      const normalizedSize = size === '500g' ? '200g' : size || '100g';
+      const mangoStripSizes = {
+        '100g': 100,
+        '200g': 160,
+      };
+      next.size = normalizedSize;
+      next.price = mangoStripSizes[normalizedSize] || 100;
+      return next;
+    }
+
+    if (name.includes('lime slices')) {
+      const normalizedSize = size || '100g';
+      const limeSliceSizes = {
+        '100g': 120,
+        '1kg': 960,
+      };
+      next.size = normalizedSize;
+      next.price = limeSliceSizes[normalizedSize] || 120;
       return next;
     }
 
@@ -87,6 +107,7 @@
       if (next.id === 'dehydrated-orange-powder') {
         next.id = 'dehydrated-orange-powders';
       }
+      next.price = 140;
       return next;
     }
 
@@ -95,6 +116,7 @@
       if (next.id === 'dehydrated-grapefruit-powder') {
         next.id = 'dehydrated-grapefruit-powders';
       }
+      next.price = 140;
       return next;
     }
 
@@ -103,6 +125,7 @@
       if (next.id === 'dehydrated-lemon-powder') {
         next.id = 'dehydrated-lemon-powders';
       }
+      next.price = 140;
       return next;
     }
 
@@ -146,7 +169,7 @@
     }
 
     if (name.includes('apple slices') || name.includes('pear slices')) {
-      const normalizedSize = size || '100g';
+      const normalizedSize = size === '500g' ? '200g' : size || '100g';
       next.size = normalizedSize;
       next.price = applePearSizes[normalizedSize] || 100;
       return next;
