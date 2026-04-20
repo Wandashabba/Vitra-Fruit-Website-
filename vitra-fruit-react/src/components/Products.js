@@ -22,7 +22,7 @@ const favouriteProducts = [
   {
     name: 'Orange Wheels',
     note: 'Citrus brightness',
-    price: 'R100',
+    price: 'R200',
     href: 'orange-wheel.html',
     imageSrc: homepageOr,
     imageAlt: 'Orange wheels flavour inspiration',
@@ -40,7 +40,7 @@ const favouriteProducts = [
   {
     name: 'Lime Wheels',
     note: 'Zesty and refreshing',
-    price: 'R100',
+    price: 'R200',
     href: 'lime-wheel.html',
     imageSrc: homepageLi,
     imageAlt: 'Lime wheel flavour inspiration',
