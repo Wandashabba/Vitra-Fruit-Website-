@@ -5,7 +5,7 @@ import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
 import homepageOr from '../assets/images/OrangePleaser.png';
 import homepageLi from '../assets/images/Pleaser4.png';
-import grapefruitFront from '../assets/images/GrapefruitFront.png';
+import grapefruitFront from '../assets/images/NewGrapefruitsSlices-Photoroom.png';
 import lemonFront from '../assets/images/LemonFront.png';
 import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.png';
 
@@ -150,6 +150,13 @@ function Products() {
                         <img
                           src={product.imageSrc}
                           alt={product.imageAlt}
+                          className={
+                            product.name === 'Grapefruit Slices'
+                              ? 'homepage-grapefruit-slices'
+                              : product.name === 'Lemon Slices'
+                                ? 'homepage-lemon-slices'
+                                : undefined
+                          }
                           loading="lazy"
                           decoding="async"
                         />

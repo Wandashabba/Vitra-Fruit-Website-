@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dehydrated Grapefruit Wheel | Vitra Fruits</title>
-  <meta name="description" content="Premium Dehydrated Grapefruit Wheel - 100% natural, no added sugar." />
+  <title>Dehydrated Grapefruit Wheels | Vitra Fruits</title>
+  <meta name="description" content="Premium Dehydrated Grapefruit Wheels - 100% natural, no added sugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -451,11 +451,11 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/Grapefruitwheel.png" alt="Dehydrated Grapefruit Wheel" />
+          <img src="/images/Grapefruitwheel.png" alt="Dehydrated Grapefruit Wheels" />
         </div>
 
         <div class="product-info">
-          <h1>Dehydrated Grapefruit Wheel</h1>
+          <h1>Dehydrated Grapefruit Wheels</h1>
           <div class="product-price">R 200.00</div>
           <div class="field">
             <label for="sizeSelect">Size</label>
@@ -626,8 +626,8 @@
         const size = sizeSelect?.value || '200g';
         const price = updatePrice();
         addItemToCart({
-          id: `dehydrated-grapefruit-wheel__${size}`,
-          name: 'Dehydrated Grapefruit Wheel',
+          id: `dehydrated-grapefruit-wheels__${size}`,
+          name: 'Dehydrated Grapefruit Wheels',
           price,
           size,
           image: '/images/Grapefruitwheel.png',
@@ -635,7 +635,7 @@
         });
 
         if (toastText) {
-          toastText.textContent = 'Dehydrated Grapefruit Wheel added to cart';
+          toastText.textContent = 'Dehydrated Grapefruit Wheels added to cart';
         }
         toast.classList.add('is-visible');
         setTimeout(() => toast.classList.remove('is-visible'), 3000);
