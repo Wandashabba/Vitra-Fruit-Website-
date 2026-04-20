@@ -58,6 +58,86 @@
       return next;
     }
 
+    if (name.includes('pineapple slices')) {
+      const normalizedSize = size || '100g';
+      const pineappleSliceSizes = {
+        '100g': 120,
+        '200g': 220,
+        '500g': 280,
+      };
+      next.size = normalizedSize;
+      next.price = pineappleSliceSizes[normalizedSize] || 120;
+      return next;
+    }
+
+    if (name.includes('banana chips')) {
+      const normalizedSize = size || '100g';
+      const bananaChipSizes = {
+        '100g': 100,
+        '200g': 180,
+        '500g': 240,
+      };
+      next.size = normalizedSize;
+      next.price = bananaChipSizes[normalizedSize] || 100;
+      return next;
+    }
+
+    if (name.includes('orange powder') && !name.includes('orange powders')) {
+      next.name = 'Dehydrated Orange Powders';
+      if (next.id === 'dehydrated-orange-powder') {
+        next.id = 'dehydrated-orange-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('grapefruit powder') && !name.includes('grapefruit powders')) {
+      next.name = 'Dehydrated Grapefruit Powders';
+      if (next.id === 'dehydrated-grapefruit-powder') {
+        next.id = 'dehydrated-grapefruit-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('lemon powder') && !name.includes('lemon powders')) {
+      next.name = 'Dehydrated Lemon Powders';
+      if (next.id === 'dehydrated-lemon-powder') {
+        next.id = 'dehydrated-lemon-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('beetroot vegetable powder') && !name.includes('beetroot powders')) {
+      next.name = 'Beetroot Powders';
+      if (next.id === 'beetroot-vegetable-powder') {
+        next.id = 'beetroot-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('butternut vegetable powder') && !name.includes('butternut powders')) {
+      next.name = 'Butternut Powders';
+      if (next.id === 'butternut-vegetable-powder') {
+        next.id = 'butternut-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('carrot vegetable powder') && !name.includes('carrot powders')) {
+      next.name = 'Carrot Powders';
+      if (next.id === 'carrot-vegetable-powder') {
+        next.id = 'carrot-powders';
+      }
+      return next;
+    }
+
+    if (name.includes('spinach vegetable powder') && !name.includes('spinach powders')) {
+      next.name = 'Spinach Powders';
+      if (next.id === 'spinach-vegetable-powder') {
+        next.id = 'spinach-powders';
+      }
+      return next;
+    }
+
     if (name.includes('lemon slices') || name.includes('orange slices') || name.includes('grapefruit slices')) {
       const normalizedSize = size === '150g' ? '100g' : size || '100g';
       next.size = normalizedSize;

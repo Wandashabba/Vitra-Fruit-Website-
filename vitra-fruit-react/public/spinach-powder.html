@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spinach Vegetable Powder | Vitra Fruits</title>
-  <meta name="description" content="Premium Spinach Vegetable Powder - 100% natural, no added sugar." />
+  <title>Spinach Powders | Vitra Fruits</title>
+  <meta name="description" content="Premium Spinach Powders - 100% natural, no added sugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -58,7 +58,7 @@
           <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
           <li class="nav-item nav-dropdown">
             <button class="nav-link nav-link-dropdown active" type="button" aria-haspopup="true"><span>Shop Now</span><span class="nav-caret" aria-hidden="true">▾</span></button>
-            <ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul>
+            <ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Powders</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul>
           </li>
         </ul>
         <a class="navbar-logo" href="index.html"><picture><source srcset="/images/logo.avif" type="image/avif" /><source srcset="/images/logo.webp" type="image/webp" /><img src="/images/logo.jpg" alt="VitraFruits logo" /></picture></a>
@@ -73,7 +73,7 @@
           <a class="nav-icon-link nav-cart-link" href="cart.html" aria-label="View cart"><svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" /><circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" /></svg><span class="nav-count" data-cart-count>0</span></a>
         </div>
         <div id="nav-search-panel" class="nav-search-panel" role="search"><form class="nav-search-form"><input class="nav-search-input" type="search" placeholder="Search products..." aria-label="Search products" /><button class="nav-search-submit" type="submit">Search</button><button class="nav-search-clear" type="button">Clear</button></form></div>
-        <div class="mobile-nav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item nav-dropdown"><button class="nav-link nav-link-dropdown active" type="button" aria-expanded="false" aria-haspopup="true"><span>Shop Now</span><span class="nav-caret" aria-hidden="true">▾</span></button><ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Shakers</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul></li><li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li></ul></div>
+        <div class="mobile-nav"><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item nav-dropdown"><button class="nav-link nav-link-dropdown active" type="button" aria-expanded="false" aria-haspopup="true"><span>Shop Now</span><span class="nav-caret" aria-hidden="true">▾</span></button><ul class="nav-dropdown-menu"><li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li><li><a class="nav-dropdown-link" href="shakers.html">Citrus Powders</a></li><li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li><li><a class="nav-dropdown-link active" href="vegetable-powders.html">Vegetable Powders</a></li><li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li></ul></li><li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li></ul></div>
       </div>
     </nav>
   </div>
@@ -83,10 +83,10 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/SpinachVeg.png" alt="Spinach Vegetable Powder" />
+          <img src="/images/SpinachVeg.png" alt="Spinach Powders" />
         </div>
         <div class="product-info">
-          <h1>Spinach Vegetable Powder</h1>
+          <h1>Spinach Powders</h1>
           <div class="product-price">R 160.00</div>
           <div class="field">
             <label for="sizeSelect">Size</label>
@@ -136,8 +136,8 @@
       function addItemToCart(item) { const cart = loadCart(); const existing = cart.find((it) => it.id === item.id); if (existing) { existing.quantity = (existing.quantity || 0) + item.quantity; } else { cart.push(item); } saveCart(cart); }
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10)); const size = sizeSelect?.value || '100g'; const price = updatePrice();
-        addItemToCart({ id: `spinach-vegetable-powder__${size}`, name: 'Spinach Vegetable Powder', price, size, image: '/images/SpinachVeg.png', quantity: qty });
-        if (toastText) { toastText.textContent = 'Spinach Vegetable Powder added to cart'; }
+        addItemToCart({ id: `spinach-powders__${size}`, name: 'Spinach Powders', price, size, image: '/images/SpinachVeg.png', quantity: qty });
+        if (toastText) { toastText.textContent = 'Spinach Powders added to cart'; }
         toast.classList.add('is-visible'); setTimeout(() => toast.classList.remove('is-visible'), 3000);
       });
     })();
