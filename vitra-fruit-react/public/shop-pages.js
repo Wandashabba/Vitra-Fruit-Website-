@@ -245,6 +245,28 @@
     });
   }
 
+  function injectBulkOrderNote() {
+    const addToCartBtn = document.getElementById('addToCartBtn');
+    if (!addToCartBtn || document.querySelector('.bulk-order-note')) {
+      return;
+    }
+
+    const note = document.createElement('div');
+    note.className = 'bulk-order-note';
+    note.innerHTML = `
+      <span style="font-size: 1.2rem;">📦</span>
+      <span>Wholesale or bulk orders? Contact us at <a href="mailto:orderinfo@vitrafruits.co.za" style="color: #c03030; text-decoration: underline; font-weight: 700;">orderinfo@vitrafruits.co.za</a></span>
+    `;
+    note.style.cssText = 'margin: 24px 0 0; padding: 16px; background: #fff9f0; border: 1px solid rgba(192, 152, 40, 0.15); border-radius: 16px; font-size: 0.88rem; font-weight: 500; line-height: 1.4; color: #444; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.03);';
+
+    const actions = addToCartBtn.closest('.actions');
+    if (actions) {
+      actions.insertAdjacentElement('afterend', note);
+    } else {
+      addToCartBtn.parentNode.appendChild(note);
+    }
+  }
+
   toggler.addEventListener('click', function () {
     isOpen = !isOpen;
     toggler.classList.toggle('is-open', isOpen);
@@ -335,4 +357,5 @@
   }
 
   applySearch();
+  injectBulkOrderNote();
 })();
