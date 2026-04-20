@@ -53,6 +53,30 @@
     };
 
     if (name.includes('wheel')) {
+      if (name.includes('orange wheel') && !name.includes('orange wheels')) {
+        next.name = 'Dehydrated Orange Wheels';
+        if (next.id && next.id.startsWith('dehydrated-orange-wheel__')) {
+          next.id = next.id.replace('dehydrated-orange-wheel__', 'dehydrated-orange-wheels__');
+        }
+      }
+      if (name.includes('lemon wheel') && !name.includes('lemon wheels')) {
+        next.name = 'Dehydrated Lemon Wheels';
+        if (next.id && next.id.startsWith('dehydrated-lemon-wheel__')) {
+          next.id = next.id.replace('dehydrated-lemon-wheel__', 'dehydrated-lemon-wheels__');
+        }
+      }
+      if (name.includes('lime wheel') && !name.includes('lime wheels')) {
+        next.name = 'Dehydrated Lime Wheels';
+        if (next.id && next.id.startsWith('dehydrated-lime-wheel__')) {
+          next.id = next.id.replace('dehydrated-lime-wheel__', 'dehydrated-lime-wheels__');
+        }
+      }
+      if (name.includes('grapefruit wheel') && !name.includes('grapefruit wheels')) {
+        next.name = 'Dehydrated Grapefruit Wheels';
+        if (next.id && next.id.startsWith('dehydrated-grapefruit-wheel__')) {
+          next.id = next.id.replace('dehydrated-grapefruit-wheel__', 'dehydrated-grapefruit-wheels__');
+        }
+      }
       next.size = size || '200g';
       next.price = 200;
       return next;

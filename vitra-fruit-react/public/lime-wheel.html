@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dehydrated Lime Wheel | Vitra Fruits</title>
-  <meta name="description" content="Premium Dehydrated Lime Wheel - 100% natural, no added sugar." />
+  <title>Dehydrated Lime Wheels | Vitra Fruits</title>
+  <meta name="description" content="Premium Dehydrated Lime Wheels - 100% natural, no added sugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -451,11 +451,11 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/Pleaser4.png" alt="Dehydrated Lime Wheel" />
+          <img src="/images/Pleaser4.png" alt="Dehydrated Lime Wheels" />
         </div>
 
         <div class="product-info">
-          <h1>Dehydrated Lime Wheel</h1>
+          <h1>Dehydrated Lime Wheels</h1>
           <div class="product-price">R 200.00</div>
           <div class="field">
             <label for="sizeSelect">Size</label>
@@ -626,8 +626,8 @@
         const size = sizeSelect?.value || '200g';
         const price = updatePrice();
         addItemToCart({
-          id: `dehydrated-lime-wheel__${size}`,
-          name: 'Dehydrated Lime Wheel',
+          id: `dehydrated-lime-wheels__${size}`,
+          name: 'Dehydrated Lime Wheels',
           price,
           size,
           image: '/images/Pleaser4.png',
@@ -635,7 +635,7 @@
         });
 
         if (toastText) {
-          toastText.textContent = 'Dehydrated Lime Wheel added to cart';
+          toastText.textContent = 'Dehydrated Lime Wheels added to cart';
         }
         toast.classList.add('is-visible');
         setTimeout(() => toast.classList.remove('is-visible'), 3000);
