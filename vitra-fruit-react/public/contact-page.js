@@ -2,7 +2,7 @@
   const form = document.getElementById('contactForm');
   const submitBtn = document.getElementById('submitBtn');
   const status = document.getElementById('formStatus');
-  const endpoint = 'https://formsubmit.co/ajax/vitrafruits@gmail.com';
+  const endpoint = 'https://formsubmit.co/ajax/orderinfo@vitrafruits.co.za';
 
   if (!form || !submitBtn || !status) {
     return;

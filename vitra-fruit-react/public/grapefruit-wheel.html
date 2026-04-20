@@ -456,7 +456,13 @@
 
         <div class="product-info">
           <h1>Dehydrated Grapefruit Wheel</h1>
-          <div class="product-price">R 100.00</div>
+          <div class="product-price">R 200.00</div>
+          <div class="field">
+            <label for="sizeSelect">Size</label>
+            <select id="sizeSelect" class="select">
+              <option value="200g" data-price="200">200g</option>
+            </select>
+          </div>
           <div class="divider"></div>
 
           <ul class="product-features">
@@ -476,7 +482,7 @@
               <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
-            <button class="btn-cart" type="button" id="addToCartBtn" data-price="100.00">
+            <button class="btn-cart" type="button" id="addToCartBtn" data-price="200.00">
               Add to cart
             </button>
           </div>
@@ -496,11 +502,11 @@
             <li><a href="/shipping.html">Shipping Costs</a></li>
             <li><a href="/terms.html">Terms and Conditions</a></li>
           </ul>
-          <a class="footer-social-link" href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram">
+          <a class="footer-social-link" href="https://www.instagram.com/vitrafruits/" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
             </svg>
-            <span>@vitrafruits</span>
+            <span>@Vitrafruits</span>
           </a>
         </div>
       </div>
@@ -569,6 +575,21 @@
       const toast = document.getElementById('cartToast');
       const toastText = document.querySelector('.cart-toast-text');
       const qtyInput = document.getElementById('quantityInput');
+      const sizeSelect = document.getElementById('sizeSelect');
+      const priceDisplay = document.querySelector('.product-price');
+
+      const priceMap = {
+        '200g': 200.0
+      };
+
+      function updatePrice() {
+        const size = sizeSelect?.value || '200g';
+        const price = priceMap[size] || 200.0;
+        if (priceDisplay) priceDisplay.textContent = `R ${price.toFixed(2)}`;
+        return price;
+      }
+      sizeSelect?.addEventListener('change', updatePrice);
+      updatePrice();
 
       function loadCart() {
         try {
@@ -602,10 +623,13 @@
 
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
+        const size = sizeSelect?.value || '200g';
+        const price = updatePrice();
         addItemToCart({
-          id: 'dehydrated-grapefruit-wheel',
+          id: `dehydrated-grapefruit-wheel__${size}`,
           name: 'Dehydrated Grapefruit Wheel',
-          price: 100.0,
+          price,
+          size,
           image: '/images/Grapefruitwheel.png',
           quantity: qty
         });
@@ -618,5 +642,6 @@
       });
     })();
   </script>
+  <script src="search-results.js"></script>
 </body>
 </html>

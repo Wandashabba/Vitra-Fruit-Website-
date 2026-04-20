@@ -110,7 +110,6 @@
             <select id="sizeSelect" class="select">
               <option value="100g" data-price="100">100g</option>
               <option value="200g" data-price="180">200g</option>
-              <option value="500g" data-price="260">500g</option>
             </select>
           </div>
           <div class="divider"></div>
@@ -131,7 +130,7 @@
     </div>
   </main>
 
-  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-col"><h4>Customer Service</h4><ul><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="shipping.html">Shipping Costs</a></li><li><a href="terms.html">Terms and Conditions</a></li></ul><a class="footer-social-link" href="https://www.instagram.com/vitrafruits?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg><span>@vitrafruits</span></a></div></div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p></div></div></footer>
+  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-col"><h4>Customer Service</h4><ul><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="shipping.html">Shipping Costs</a></li><li><a href="terms.html">Terms and Conditions</a></li></ul><a class="footer-social-link" href="https://www.instagram.com/vitrafruits/" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg><span>@Vitrafruits</span></a></div></div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p></div></div></footer>
 
   <div class="cart-toast" id="cartToast"><span class="cart-toast-icon">✓</span><span class="cart-toast-text">Added to cart</span></div>
 
@@ -146,7 +145,7 @@
       function updateCartDisplay() { const countEls = document.querySelectorAll('[data-cart-count]'); const raw = localStorage.getItem('vitra_cart'); const items = raw ? JSON.parse(raw) : []; const total = items.reduce((sum, item) => sum + (item.quantity || 0), 0); countEls.forEach(el => { el.textContent = total; el.style.display = total > 0 ? 'inline-flex' : 'none'; }); }
       updateCartDisplay(); window.addEventListener('storage', updateCartDisplay);
       const addToCartBtn = document.getElementById('addToCartBtn'); const toast = document.getElementById('cartToast'); const toastText = document.querySelector('.cart-toast-text'); const qtyInput = document.getElementById('quantityInput'); const sizeSelect = document.getElementById('sizeSelect'); const priceDisplay = document.querySelector('.product-price');
-      const priceMap = { '100g': 100.0, '200g': 180.0, '500g': 260.0 };
+      const priceMap = { '100g': 100.0, '200g': 180.0 };
       function updatePrice() { const size = sizeSelect?.value || '100g'; const price = priceMap[size] || 100.0; if (priceDisplay) priceDisplay.textContent = `R ${price.toFixed(2)}`; return price; }
       sizeSelect?.addEventListener('change', updatePrice); updatePrice();
       function loadCart() { try { const raw = localStorage.getItem('vitra_cart'); const parsed = raw ? JSON.parse(raw) : []; return Array.isArray(parsed) ? parsed : []; } catch (err) { return []; } }
@@ -160,5 +159,6 @@
       });
     })();
   </script>
+  <script src="search-results.js"></script>
 </body>
 </html>
