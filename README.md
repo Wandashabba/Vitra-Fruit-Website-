@@ -56,6 +56,23 @@ Vitra-Fruit-Website-/
    npm run build
    ```
 
+## Vercel Deployment
+
+Deploy the `vitra-fruit-react` folder itself as the Vercel project root. This app includes static pages in `public/` and serverless functions in `vitra-fruit-react/api/`, so both need to live in the same Vercel project.
+
+1. In Vercel, create a new project and set the Root Directory to `vitra-fruit-react`.
+2. Leave the build command as `npm run build`.
+3. Leave the output directory as `build`.
+4. Add the environment variables from `vitra-fruit-react/.env.example` in the Vercel project settings.
+5. Deploy, then verify the backend is live by opening `/api/health` on the deployed domain.
+
+Expected backend checks after deploy:
+
+- `https://<your-vercel-domain>/api/health`
+- `https://<your-vercel-domain>/api/create-order` should return `405 Method not allowed` in the browser for a GET request, which is correct because it only accepts `POST`.
+
+If you later connect a custom domain, point that custom domain to this same Vercel project so the frontend and `/api/*` routes stay on the same host.
+
 ## Customization
 
 ### Adding Products

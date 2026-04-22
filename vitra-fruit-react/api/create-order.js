@@ -16,9 +16,16 @@ module.exports = async function handler(req, res) {
 
   try {
     const { billing, shipping, deliveryMethod, items, subtotal, discount, total } = req.body;
+    const missingEnv = getMissingEnvVars();
 
     if (!billing || !items || !items.length || !total) {
       return res.status(400).json({ error: 'Missing required order data' });
+    }
+
+    if (missingEnv.length) {
+      return res.status(500).json({
+        error: `Missing server configuration: ${missingEnv.join(', ')}`
+      });
     }
 
     // Generate a short, readable order ID
@@ -33,9 +40,11 @@ module.exports = async function handler(req, res) {
       secure: false,
       auth: {
         user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
       },
     });
+
+    await transporter.verify();
 
     // --- Shop owner email ---
     const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
@@ -60,9 +69,16 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ success: true, orderId });
   } catch (err) {
     console.error('Create order error:', err);
-    return res.status(500).json({ error: 'Failed to process order. Please try again.' });
+    return res.status(500).json({
+      error: err && err.message ? err.message : 'Failed to process order. Please try again.'
+    });
   }
 };
+
+function getMissingEnvVars() {
+  const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ORDER_EMAIL_TO'];
+  return required.filter((key) => !String(process.env[key] || '').trim());
+}
 
 /* ── Email templates ──────────────────────────────────────────── */
 

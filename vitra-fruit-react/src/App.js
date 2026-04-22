@@ -42,8 +42,16 @@ function App() {
       }
     };
 
+    const handleCartUpdated = () => {
+      readCartCount();
+    };
+
     window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    window.addEventListener('vitra:cart-updated', handleCartUpdated);
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+      window.removeEventListener('vitra:cart-updated', handleCartUpdated);
+    };
   }, []);
 
   // Scroll-triggered reveal animations
