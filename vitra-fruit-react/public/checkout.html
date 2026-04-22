@@ -7,13 +7,19 @@
   <meta name="description" content="Complete your Vitra Fruit checkout and billing details." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="nav-unified.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --font-body: 'Montserrat', 'Segoe UI', sans-serif;
       --font-display: 'Times New Roman MT', 'Times New Roman', serif;
+      --footer-bg: image-set(
+        url('/images/footer-960.avif') type('image/avif') 1x,
+        url('/images/footer.avif') type('image/avif') 2x,
+        url('/images/footer-960.webp') type('image/webp') 1x,
+        url('/images/footer.webp') type('image/webp') 2x
+      );
       --accent-color: #f1b25a;
       --text-main: #1c2550;
       --text-muted: #555e7d;
@@ -222,30 +228,71 @@
       .form-row { grid-template-columns: 1fr; }
     }
 
-    /* Footer (home style) */
     .footer {
       background:
         linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)),
-        image-set(
-          url('/images/footer-960.avif') type('image/avif') 1x,
-          url('/images/footer.avif') type('image/avif') 2x,
-          url('/images/footer-960.webp') type('image/webp') 1x,
-          url('/images/footer.webp') type('image/webp') 2x,
-          url('/images/footer.jpg') type('image/jpeg') 1x
-        );
+        var(--footer-bg);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       color: #fff;
-      padding: 4rem 20px 2rem;
-      margin-top: 60px;
+      padding: 2.2rem 20px 0.9rem;
+      font-family: var(--font-body);
     }
-    .footer-content { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 2rem; text-align: center; }
-    .footer-col h4 { margin-bottom: 1rem; color: #ffffff; font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; }
-    .footer-col ul { list-style: none; }
-    .footer-col a { color: #fff; text-decoration: none; transition: color 0.3s; font-size: 0.9rem; }
-    .footer-col a:hover { color: #ffd8a6; }
-    .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2); font-size: 0.85rem; }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 1.4rem;
+      text-align: center;
+    }
+    .footer-col h4 {
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+      font-family: 'Playfair Display', 'Times New Roman', 'Georgia', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .footer-col ul li {
+      margin-bottom: 0.4rem;
+    }
+    .footer-col a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.3s;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+    }
+    .footer-col a:hover {
+      color: #ffd8a6;
+    }
+    .footer-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .footer-social-link svg {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(255,255,255,0.22);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
   </style>
 </head>
 <body>
@@ -320,9 +367,25 @@
     <div class="container">
       <div class="checkout-grid">
         <section class="billing-details">
-          <h1>Billing details</h1>
-          <form class="billing-form" id="billingForm">
-            <div class="form-row">
+          
+          <div id="checkoutAlert" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; font-weight: 600; line-height: 1.5;"></div>          <div style="margin-bottom: 35px;">
+            <span style="display: block; font-weight: 700; margin-bottom: 12px; font-size: 0.95rem; color: #111;">Delivery Method <span style="color: #c03030;">*</span></span>
+            <div style="display: inline-flex; background: #f0f2f5; padding: 4px; border-radius: 99px; position: relative;">
+              <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #fff; background: var(--palette-orange, #E88020); box-shadow: 0 4px 12px rgba(232, 128, 32, 0.3);" id="labelDelivery">
+                <input type="radio" name="deliveryMethodOptions" value="delivery" checked style="display: none;" />
+                Delivery
+              </label>
+              <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #54618a; background: transparent; box-shadow: none;" id="labelCollection">
+                <input type="radio" name="deliveryMethodOptions" value="collection" style="display: none;" />
+                Collection
+              </label>
+            </div>
+          </div>
+
+          <div id="billingDetailsSection">
+            <h1>Billing details</h1>
+            <form class="billing-form" id="billingForm">
+              <div class="form-row">
               <div class="field">
                 <label for="billingFirstName">First Name <span>*</span></label>
                 <input type="text" id="billingFirstName" required placeholder="Enter first name" />
@@ -391,7 +454,6 @@
                 <input type="tel" id="billingPhone" required placeholder="Enter phone number" />
               </div>
             </div>
-
             <div class="field">
               <label for="billingEmail">Email Address <span>*</span></label>
               <input type="email" id="billingEmail" required placeholder="Enter email address" />
@@ -431,7 +493,51 @@
               </div>
             </div>
           </form>
+          </div>
         </section>
+
+        <script>
+          // Basic UI toggle for delivery methods
+          document.addEventListener('DOMContentLoaded', () => {
+            const radios = document.querySelectorAll('input[name="deliveryMethodOptions"]');
+            const labelDelivery = document.getElementById('labelDelivery');
+            const labelCollection = document.getElementById('labelCollection');
+            const deliverToDifferent = document.getElementById('deliverToDifferent');
+            const shippingSection = document.getElementById('shippingSection');
+
+            radios.forEach(radio => {
+              radio.addEventListener('change', (e) => {
+                if (e.target.value === 'collection') {
+                  labelCollection.style.color = '#fff';
+                  labelCollection.style.background = 'var(--palette-orange, #E88020)';
+                  labelCollection.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
+                  
+                  labelDelivery.style.color = '#54618a';
+                  labelDelivery.style.background = 'transparent';
+                  labelDelivery.style.boxShadow = 'none';
+                  
+                  // Hide shipping section completely if collection
+                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'none';
+                  if (shippingSection) shippingSection.style.display = 'none';
+                } else {
+                  labelDelivery.style.color = '#fff';
+                  labelDelivery.style.background = 'var(--palette-orange, #E88020)';
+                  labelDelivery.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
+                  
+                  labelCollection.style.color = '#54618a';
+                  labelCollection.style.background = 'transparent';
+                  labelCollection.style.boxShadow = 'none';
+
+                  // Restore shipping toggle
+                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'flex';
+                  if (deliverToDifferent && deliverToDifferent.checked && shippingSection) {
+                    shippingSection.style.display = 'grid';
+                  }
+                }
+              });
+            });
+          });
+        </script>
 
         <aside class="order-summary">
           <h2>Your order</h2>
@@ -443,6 +549,10 @@
             <div class="totals-line">
               <span class="totals-label">Subtotal</span>
               <span data-checkout-subtotal>R0.00 (incl. VAT)</span>
+            </div>
+            <div class="totals-line discount-row" data-checkout-discount-row style="display: none;">
+              <span class="totals-label" style="font-style: italic; color: var(--text-muted);">Discount (10%)</span>
+              <span data-checkout-discount style="color: #27ae60; font-weight: 700;">-R0.00</span>
             </div>
             <div class="totals-line total-grand">
               <span class="totals-label">Total</span>
@@ -501,15 +611,27 @@
         <div class="footer-col">
           <h4>Customer Service</h4>
           <ul>
-            <li><a href="account.html">My account</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
-            <li><a href="shipping.html">Shipping Costs</a></li>
-            <li><a href="terms.html">Terms and Conditions</a></li>
+            <li><a href="/account.html">My account</a></li>
+            <li><a href="/contact.html">Contact Us</a></li>
+            <li><a href="/shipping.html">Shipping Costs</a></li>
+            <li><a href="/terms.html">Terms and Conditions</a></li>
           </ul>
+          <a
+            class="footer-social-link"
+            href="https://www.instagram.com/vitrafruits/"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="VitraFruits Instagram"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" />
+            </svg>
+            <span>@Vitrafruits</span>
+          </a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; <span id="currentYear"></span> Vitra Fruit. All Rights Reserved.</p>
+        <p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p>
       </div>
     </div>
   </footer>

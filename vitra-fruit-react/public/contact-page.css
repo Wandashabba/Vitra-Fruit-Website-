@@ -648,9 +648,9 @@ input, textarea {
       transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
     }
     .contact-section button {
-      color: #2a1b0f;
-      background: linear-gradient(135deg, #fbd49c, #f6b25f);
-      box-shadow: 0 9px 18px rgba(246, 178, 95, 0.35);
+      color: #ffffff;
+      background: var(--palette-orange, #E88020);
+      box-shadow: 0 9px 18px rgba(232, 128, 32, 0.35);
     }
     .back {
       color: #28325b;
