@@ -234,6 +234,7 @@
     if (!canUseStorage) {
       memoryStore.cart = nextItems;
       updateCount(nextItems);
+      window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
       return;
     }
     try {
@@ -242,14 +243,23 @@
       memoryStore.cart = nextItems;
     }
     updateCount(nextItems);
+    window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
   }
 
   function updateCount(items) {
     const cart = items || loadCart();
-    const total = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    console.log('[cart.js] Loading cart count. Items in cart:', cart);
+    const total = cart.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
+    console.log('[cart.js] Computed total cart count:', total);
+    
     document.querySelectorAll(COUNT_SELECTOR).forEach((el) => {
       el.textContent = String(total);
-      el.style.display = total > 0 ? 'inline-flex' : 'none';
+      if (total > 0) {
+        el.style.display = 'inline-flex';
+        el.style.opacity = '1';
+      } else {
+        el.style.display = 'none';
+      }
     });
     document.querySelectorAll(BAG_COUNT_SELECTOR).forEach((el) => {
       el.textContent = String(total);
@@ -303,6 +313,55 @@
 
   function formatPrice(value) {
     return `R${value.toFixed(2)}`;
+  }
+
+  function getCheckoutEndpoints() {
+    const origin = window.location.origin || '';
+    const candidateApiBases = [
+      origin,
+      'https://vitrafruit.com',
+      'https://www.vitrafruit.com',
+      'https://vitrafruits.co.za',
+      'https://www.vitrafruits.co.za'
+    ];
+    const returnBase = origin || 'https://vitrafruit.com';
+    const apiBases = candidateApiBases
+      .filter(Boolean)
+      .filter((base, index, list) => list.indexOf(base) === index);
+
+    return { returnBase, apiBases };
+  }
+
+  async function createOrderRequest(payload, apiBases) {
+    let lastError = null;
+
+    for (const base of apiBases) {
+      try {
+        const response = await fetch(base + '/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return { data, apiBase: base };
+        }
+
+        const errText = await response.text();
+        lastError = new Error(`Failed to create order (${response.status}) via ${base}: ${errText}`);
+
+        if (response.status === 404) {
+          continue;
+        }
+
+        throw lastError;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+
+    throw lastError || new Error('Could not reach any order API endpoint.');
   }
 
   function addItem({ id, name, image, price, size, quantity, maxQty }) {
@@ -622,9 +681,7 @@
         .join(', ')
         + (firstTime ? ' [10% First Order Discount Applied]' : '');
 
-      const origin = window.location.origin || '';
-      const liveDomain = 'https://vitrafruits.co.za';
-      const returnBase = origin.includes('vitrafruits.co.za') ? origin : liveDomain;
+      const { returnBase, apiBases } = getCheckoutEndpoints();
       setField('amount', grandTotal.toFixed(2));
       setField('item_name', 'Vitra Fruit Products');
       setField('item_description', description);
@@ -694,26 +751,17 @@
               };
             }
 
-            // Post to our serverless backend
-            const response = await fetch('/api/create-order', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                billing: bData,
-                shipping: sData,
-                deliveryMethod,
-                items: cart,
-                subtotal: subtotal,
-                discount: discountAmount,
-                total: grandTotal
-              })
-            });
+            const orderPayload = {
+              billing: bData,
+              shipping: sData,
+              deliveryMethod,
+              items: cart,
+              subtotal: subtotal,
+              discount: discountAmount,
+              total: grandTotal
+            };
 
-            if (!response.ok) {
-              throw new Error('Failed to create order');
-            }
-
-            const data = await response.json();
+            const { data, apiBase } = await createOrderRequest(orderPayload, apiBases);
             
             // Update PayFast fields before redirecting
             setField('m_payment_id', data.orderId);
@@ -721,7 +769,7 @@
             setField('name_last', bLast);
             setField('email_address', bEmail);
             setField('amount', grandTotal.toFixed(2));
-            setField('notify_url', returnBase + '/api/payfast-notify');
+            setField('notify_url', apiBase + '/api/payfast-notify');
 
             // Mark user as returning to prevent duplicate discounts
             markAsReturningUser();
@@ -731,7 +779,10 @@
 
           } catch (err) {
             console.error('Checkout error:', err);
-            if (payfastNote) payfastNote.textContent = 'Oops, something went wrong saving your order. Please try again.';
+            if (payfastNote) {
+              payfastNote.style.color = '#c53b56';
+              payfastNote.textContent = `Oops, something went wrong saving your order: ${err.message}. Please try again.`;
+            }
             if (payfastButton) {
               payfastButton.disabled = false;
               payfastButton.textContent = 'Pay with PayFast';
@@ -757,6 +808,7 @@
         if (canUseStorage) localStorage.removeItem(STORAGE_KEY);
         else memoryStore.cart = [];
         updateCount();
+        window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
         renderCart();
       } else if (urlParams.get('status') === 'cancel') {
         alertBox.style.display = 'block';
@@ -767,6 +819,14 @@
       }
     }
   }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY) {
+      updateCount();
+      renderCart();
+      renderCheckout();
+    }
+  });
 
   updateCount();
   attachAddToCart();
