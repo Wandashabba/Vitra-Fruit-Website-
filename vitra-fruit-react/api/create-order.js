@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 module.exports = async function handler(req, res) {
   // Allow CORS for same-site requests
@@ -17,7 +18,6 @@ module.exports = async function handler(req, res) {
   try {
     const { billing, shipping, deliveryMethod, items, subtotal, discount, total } = req.body;
     const missingEnv = getMissingEnvVars();
-
     if (!billing || !items || !items.length || !total) {
       return res.status(400).json({ error: 'Missing required order data' });
     }
@@ -45,6 +45,7 @@ module.exports = async function handler(req, res) {
     });
 
     await transporter.verify();
+    const attachments = buildEmailAttachments();
 
     // --- Shop owner email ---
     const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
@@ -54,6 +55,7 @@ module.exports = async function handler(req, res) {
       to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
       subject: `New Order ${orderId} — ${deliveryMethod === 'collection' ? 'COLLECTION' : 'DELIVERY'} — R${total.toFixed(2)}`,
       html: shopHtml,
+      attachments,
     });
 
     // --- Customer confirmation email ---
@@ -64,6 +66,7 @@ module.exports = async function handler(req, res) {
       to: billing.email,
       subject: `Order Received — ${orderId}`,
       html: customerHtml,
+      attachments,
     });
 
     return res.status(200).json({ success: true, orderId });
@@ -78,6 +81,32 @@ module.exports = async function handler(req, res) {
 function getMissingEnvVars() {
   const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ORDER_EMAIL_TO'];
   return required.filter((key) => !String(process.env[key] || '').trim());
+}
+
+function buildEmailAttachments() {
+  const imagesDir = path.join(process.cwd(), 'public', 'images');
+  return [
+    {
+      filename: 'logo.jpg',
+      path: path.join(imagesDir, 'logo.jpg'),
+      cid: 'vitra-logo'
+    },
+    {
+      filename: 'NewGrapefruitsSlices-Photoroom.png',
+      path: path.join(imagesDir, 'NewGrapefruitsSlices-Photoroom.png'),
+      cid: 'vitra-grapefruit-slices'
+    },
+    {
+      filename: 'OrangeSlices1.png',
+      path: path.join(imagesDir, 'OrangeSlices1.png'),
+      cid: 'vitra-orange-slices'
+    },
+    {
+      filename: 'LimeSlices1.png',
+      path: path.join(imagesDir, 'LimeSlices1.png'),
+      cid: 'vitra-lime-slices'
+    }
+  ];
 }
 
 /* ── Email templates ──────────────────────────────────────────── */
@@ -144,7 +173,7 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
   return `
     <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
       <div style="background:#111;padding:34px 40px;text-align:center;">
-        <img src="https://vitrafruits.co.za/images/logo.jpg" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 20px;" />
+        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 20px;" />
         <h1 style="margin:0;color:#fff;font-size:24px;font-family:'Playfair Display', serif;font-weight:700;">New Order Received</h1>
         <p style="margin:8px 0 0;color:#C09828;font-size:14px;font-weight:600;">${orderId} — Awaiting PayFast</p>
       </div>
@@ -219,9 +248,9 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
       <h3 style="font-family:'Playfair Display', serif; color:#111; font-size:18px; margin-bottom:20px;">Freshness guaranteed.</h3>
       <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
         <tr>
-          <td width="31%" style="padding:4px;"><img src="https://vitrafruits.co.za/images/grapefruitslices1.png" alt="Grapefruit" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
-          <td width="31%" style="padding:4px;"><img src="https://vitrafruits.co.za/images/Orangeslices1.png" alt="Orange" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
-          <td width="31%" style="padding:4px;"><img src="https://vitrafruits.co.za/images/limeslices1.png" alt="Lime" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
+          <td width="31%" style="padding:4px;"><img src="cid:vitra-grapefruit-slices" alt="Grapefruit" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
+          <td width="31%" style="padding:4px;"><img src="cid:vitra-orange-slices" alt="Orange" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
+          <td width="31%" style="padding:4px;"><img src="cid:vitra-lime-slices" alt="Lime" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
         </tr>
       </table>
     </div>
@@ -230,7 +259,7 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
   return `
     <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
       <div style="background:#111;padding:40px;text-align:center;">
-        <img src="https://vitrafruits.co.za/images/logo.jpg" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 24px;" />
+        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 24px;" />
         <h1 style="margin:0;color:#fff;font-size:26px;font-family:'Playfair Display', serif;font-weight:700;">Thank you for your order!</h1>
         <p style="margin:10px 0 0;color:#C09828;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Order ${orderId}</p>
       </div>
