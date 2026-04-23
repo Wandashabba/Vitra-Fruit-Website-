@@ -1,5 +1,4 @@
 const nodemailer = require('nodemailer');
-const path = require('path');
 
 module.exports = async function handler(req, res) {
   // Allow CORS for same-site requests
@@ -18,6 +17,7 @@ module.exports = async function handler(req, res) {
   try {
     const { billing, shipping, deliveryMethod, items, subtotal, discount, total } = req.body;
     const missingEnv = getMissingEnvVars();
+    const publicSiteUrl = getPublicSiteUrl(req);
     if (!billing || !items || !items.length || !total) {
       return res.status(400).json({ error: 'Missing required order data' });
     }
@@ -45,7 +45,7 @@ module.exports = async function handler(req, res) {
     });
 
     await transporter.verify();
-    const attachments = buildEmailAttachments();
+    const attachments = await buildEmailAttachments(publicSiteUrl);
 
     // --- Shop owner email ---
     const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
@@ -83,30 +83,52 @@ function getMissingEnvVars() {
   return required.filter((key) => !String(process.env[key] || '').trim());
 }
 
-function buildEmailAttachments() {
-  const imagesDir = path.join(process.cwd(), 'public', 'images');
-  return [
-    {
-      filename: 'logo.jpg',
-      path: path.join(imagesDir, 'logo.jpg'),
-      cid: 'vitra-logo'
-    },
-    {
-      filename: 'NewGrapefruitsSlices-Photoroom.png',
-      path: path.join(imagesDir, 'NewGrapefruitsSlices-Photoroom.png'),
-      cid: 'vitra-grapefruit-slices'
-    },
-    {
-      filename: 'OrangeSlices1.png',
-      path: path.join(imagesDir, 'OrangeSlices1.png'),
-      cid: 'vitra-orange-slices'
-    },
-    {
-      filename: 'LimeSlices1.png',
-      path: path.join(imagesDir, 'LimeSlices1.png'),
-      cid: 'vitra-lime-slices'
-    }
+function getPublicSiteUrl(req) {
+  const explicit = String(process.env.PUBLIC_SITE_URL || '').trim();
+  if (explicit) {
+    return explicit.replace(/\/$/, '');
+  }
+
+  const host = req && req.headers ? req.headers.host : '';
+  if (host) {
+    return `https://${host}`;
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return 'https://vitra-fruit-website-vyda.vercel.app';
+}
+
+async function buildEmailAttachments(publicSiteUrl) {
+  const assets = [
+    { filename: 'logo.jpg', cid: 'vitra-logo' },
+    { filename: 'NewGrapefruitsSlices-Photoroom.png', cid: 'vitra-grapefruit-slices' },
+    { filename: 'OrangeSlices1.png', cid: 'vitra-orange-slices' },
+    { filename: 'LimeSlices1.png', cid: 'vitra-lime-slices' }
   ];
+
+  const attachments = await Promise.all(
+    assets.map(async ({ filename, cid }) => {
+      try {
+        const response = await fetch(`${publicSiteUrl}/images/${filename}`);
+        if (!response.ok) {
+          throw new Error(`Image request failed (${response.status}) for ${filename}`);
+        }
+
+        const contentType = response.headers.get('content-type') || undefined;
+        const content = Buffer.from(await response.arrayBuffer());
+
+        return { filename, cid, content, contentType };
+      } catch (err) {
+        console.warn('Email image attachment skipped:', err.message);
+        return null;
+      }
+    })
+  );
+
+  return attachments.filter(Boolean);
 }
 
 /* ── Email templates ──────────────────────────────────────────── */
