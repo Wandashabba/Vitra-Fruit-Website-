@@ -104,9 +104,10 @@ function getPublicSiteUrl(req) {
 async function buildEmailAttachments(publicSiteUrl) {
   const assets = [
     { filename: 'logo.jpg', cid: 'vitra-logo' },
-    { filename: 'NewGrapefruitsSlices-Photoroom.png', cid: 'vitra-grapefruit-slices' },
-    { filename: 'OrangeSlices1.png', cid: 'vitra-orange-slices' },
-    { filename: 'LimeSlices1.png', cid: 'vitra-lime-slices' }
+    { filename: 'IMG_1114.jpeg', cid: 'vitra-gallery-1' },
+    { filename: 'IMG_1122.jpeg', cid: 'vitra-gallery-2' },
+    { filename: 'IMG_1131.jpeg', cid: 'vitra-gallery-3' },
+    { filename: 'IMG_1135.jpeg', cid: 'vitra-gallery-4' }
   ];
 
   const attachments = await Promise.all(
@@ -178,11 +179,27 @@ function addressBlock(label, data) {
     </div>`;
 }
 
+function buildGallerySection() {
+  return `
+    <div style="margin-top:32px;padding:22px;background:#f7f1e5;border:1px solid #e3d7b9;border-radius:20px;">
+      <p style="margin:0 0 14px;color:#607848;font-size:12px;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;text-align:center;">Vitra Fruit</p>
+      <h3 style="margin:0 0 18px;color:#802050;font-size:22px;font-family:'Playfair Display', serif;font-weight:700;text-align:center;">Crafted colour. Natural flavour.</h3>
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="table-layout:fixed;">
+        <tr>
+          <td width="25%" style="padding:4px;"><img src="cid:vitra-gallery-1" alt="Vitra Fruit product" width="128" height="128" style="display:block;width:100%;height:128px;border-radius:14px;object-fit:cover;background:#efe7d5;" /></td>
+          <td width="25%" style="padding:4px;"><img src="cid:vitra-gallery-2" alt="Vitra Fruit product" width="128" height="128" style="display:block;width:100%;height:128px;border-radius:14px;object-fit:cover;background:#efe7d5;" /></td>
+          <td width="25%" style="padding:4px;"><img src="cid:vitra-gallery-3" alt="Vitra Fruit product" width="128" height="128" style="display:block;width:100%;height:128px;border-radius:14px;object-fit:cover;background:#efe7d5;" /></td>
+          <td width="25%" style="padding:4px;"><img src="cid:vitra-gallery-4" alt="Vitra Fruit product" width="128" height="128" style="display:block;width:100%;height:128px;border-radius:14px;object-fit:cover;background:#efe7d5;" /></td>
+        </tr>
+      </table>
+    </div>`;
+}
+
 function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total }) {
   const isCollection = deliveryMethod === 'collection';
   const methodBadge = isCollection
-    ? '<span style="background:#C09828;color:#fff;padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;">Collection</span>'
-    : '<span style="background:#111;color:#fff;padding:6px 14px;border-radius:99px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.05em;">Delivery</span>';
+    ? '<span style="background:#C09828;color:#fff;padding:8px 16px;border-radius:99px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;">Collection</span>'
+    : '<span style="background:#607848;color:#fff;padding:8px 16px;border-radius:99px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;">Delivery</span>';
 
   const deliveryAddress = !isCollection
     ? addressBlock('Delivery Address', shipping || billing)
@@ -193,27 +210,28 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
     : '';
 
   return `
-    <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
-      <div style="background:#111;padding:34px 40px;text-align:center;">
-        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 20px;" />
-        <h1 style="margin:0;color:#fff;font-size:24px;font-family:'Playfair Display', serif;font-weight:700;">New Order Received</h1>
-        <p style="margin:8px 0 0;color:#C09828;font-size:14px;font-weight:600;">${orderId} — Awaiting PayFast</p>
+    <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:640px;margin:0 auto;background:#fcf8f0;border-radius:24px;overflow:hidden;box-shadow:0 18px 44px rgba(50,30,20,0.14);border:1px solid #eadfc7;">
+      <div style="background:#802050;padding:40px 40px 34px;text-align:center;border-bottom:4px solid #C09828;">
+        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:84px; border-radius:16px; margin-bottom: 18px;" />
+        <p style="margin:0 0 8px;color:#f1dfac;font-size:12px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;">Order Desk</p>
+        <h1 style="margin:0;color:#fff;font-size:30px;font-family:'Playfair Display', serif;font-weight:700;">New Order Received</h1>
+        <p style="margin:10px 0 0;color:#f5e7bf;font-size:14px;font-weight:600;">${orderId} • Awaiting PayFast</p>
       </div>
 
-      <div style="padding:40px;">
+      <div style="padding:38px;">
         <div style="margin-bottom:30px; display:flex; justify-content:space-between; align-items:center;">
           ${methodBadge}
-          <span style="font-size:13px;color:#aaa;font-weight:600;">
+          <span style="font-size:13px;color:#8c7d61;font-weight:600;">
             ${new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' })}
           </span>
         </div>
 
-        <table style="width:100%;border-collapse:collapse;margin-bottom:30px;">
+        <table style="width:100%;border-collapse:collapse;margin-bottom:30px;background:#fff;border-radius:16px;overflow:hidden;">
           <thead>
             <tr>
-              <th style="border-bottom:2px solid #111;text-align:left;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Item</th>
-              <th style="border-bottom:2px solid #111;text-align:center;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Qty</th>
-              <th style="border-bottom:2px solid #111;text-align:right;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Total</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:left;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Item</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:center;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Qty</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:right;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -221,19 +239,19 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
           </tbody>
         </table>
 
-        <table style="width:100%;border-collapse:collapse;margin-bottom:40px;">
+        <table style="width:100%;border-collapse:collapse;margin-bottom:34px;background:#fff7e9;border:1px solid #ebddb9;border-radius:18px;overflow:hidden;">
           <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;">Subtotal</td>
-            <td style="padding:10px 0;font-size:14px;color:#111;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
+            <td style="padding:14px 18px;font-size:14px;color:#666;">Subtotal</td>
+            <td style="padding:14px 18px;font-size:14px;color:#111;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
           ${discountRow}
           <tr>
-            <td style="padding:16px 0;font-size:18px;font-weight:800;color:#111;border-top:2px solid #111;">Total</td>
-            <td style="padding:16px 0;font-size:18px;font-weight:800;color:#C09828;text-align:right;border-top:2px solid #111;">${formatCurrency(total)}</td>
+            <td style="padding:16px 18px;font-size:18px;font-weight:800;color:#802050;border-top:2px solid #d1bb7c;">Total</td>
+            <td style="padding:16px 18px;font-size:18px;font-weight:800;color:#C09828;text-align:right;border-top:2px solid #d1bb7c;">${formatCurrency(total)}</td>
           </tr>
         </table>
 
-        <div style="display:flex;gap:30px;flex-wrap:wrap;border-top:1px solid #eee;padding-top:30px;margin-bottom:20px;">
+        <div style="display:flex;gap:24px;flex-wrap:wrap;border-top:1px solid #eadfc7;padding-top:28px;margin-bottom:18px;">
           <div style="flex:1;min-width:200px;">
             ${addressBlock('Billing Details', billing)}
           </div>
@@ -242,13 +260,15 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
           </div>
         </div>
 
-        <div style="padding:20px;background:#f9fafb;border-radius:12px;border:1px solid #eee;">
-          <strong style="color:#111;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;">Customer Contact</strong>
+        <div style="padding:20px;background:#f4efe4;border-radius:16px;border:1px solid #e5d8bb;">
+          <strong style="color:#607848;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;">Customer Contact</strong>
           <div style="margin-top:8px;font-size:14px;color:#555;font-weight:600;">
             <a href="mailto:${billing.email}" style="color:#C09828;text-decoration:none;">${billing.email}</a><br/>
             ${billing.phone || 'No phone provided'}
           </div>
         </div>
+
+        ${buildGallerySection()}
       </div>
     </div>`;
 }
@@ -261,45 +281,32 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
     : '';
 
   const deliveryNote = isCollection
-    ? '<p style="font-size:15px;color:#555;line-height:1.7;background:#fdfcf9;padding:16px;border-left:4px solid #C09828;border-radius:4px;">You\'ve chosen <strong>collection</strong>. We\'ll confirm when your order is ready for pickup from our store.</p>'
-    : '<p style="font-size:15px;color:#555;line-height:1.7;background:#f6f7ff;padding:16px;border-left:4px solid #111;border-radius:4px;">Your order will be <strong>delivered</strong> to the address provided. We\'ll share tracking details once dispatched!</p>';
-
-  // Beautiful gallery layout for the email footer
-  const galleryHtml = `
-    <div style="margin-top: 40px; text-align: center;">
-      <h3 style="font-family:'Playfair Display', serif; color:#111; font-size:18px; margin-bottom:20px;">Freshness guaranteed.</h3>
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
-        <tr>
-          <td width="31%" style="padding:4px;"><img src="cid:vitra-grapefruit-slices" alt="Grapefruit" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
-          <td width="31%" style="padding:4px;"><img src="cid:vitra-orange-slices" alt="Orange" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
-          <td width="31%" style="padding:4px;"><img src="cid:vitra-lime-slices" alt="Lime" style="width:100%; height:auto; border-radius:8px; background:#f0f2f5;" /></td>
-        </tr>
-      </table>
-    </div>
-  `;
+    ? '<p style="font-size:15px;color:#555;line-height:1.7;background:#fbf3df;padding:18px;border-left:4px solid #C09828;border-radius:10px;">You\'ve chosen <strong>collection</strong>. We\'ll confirm when your order is ready for pickup from our store.</p>'
+    : '<p style="font-size:15px;color:#555;line-height:1.7;background:#eef4e8;padding:18px;border-left:4px solid #607848;border-radius:10px;">Your order will be <strong>delivered</strong> to the address provided. We\'ll share tracking details once dispatched.</p>';
 
   return `
-    <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:600px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
-      <div style="background:#111;padding:40px;text-align:center;">
-        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:56px; border-radius:12px; margin-bottom: 24px;" />
-        <h1 style="margin:0;color:#fff;font-size:26px;font-family:'Playfair Display', serif;font-weight:700;">Thank you for your order!</h1>
-        <p style="margin:10px 0 0;color:#C09828;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Order ${orderId}</p>
+    <div style="font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;max-width:640px;margin:0 auto;background:#fcf8f0;border-radius:24px;overflow:hidden;box-shadow:0 18px 44px rgba(50,30,20,0.14);border:1px solid #eadfc7;">
+      <div style="background:#802050;padding:42px 40px 36px;text-align:center;border-bottom:4px solid #C09828;">
+        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:88px; border-radius:16px; margin-bottom: 18px;" />
+        <p style="margin:0 0 8px;color:#f1dfac;font-size:12px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;">Vitra Fruit</p>
+        <h1 style="margin:0;color:#fff;font-size:30px;font-family:'Playfair Display', serif;font-weight:700;">Thank you for your order</h1>
+        <p style="margin:10px 0 0;color:#f5e7bf;font-size:14px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Order ${orderId}</p>
       </div>
 
-      <div style="padding:40px;">
-        <p style="font-size:16px;color:#111;line-height:1.6;margin-bottom:24px;font-weight:600;">
+      <div style="padding:38px;">
+        <p style="font-size:16px;color:#111;line-height:1.7;margin-bottom:24px;font-weight:600;">
           Hi ${billing.firstName || 'there'},<br/>
-          <span style="font-weight:400;color:#555;">We've received your order and it's being processed. You'll receive a full confirmation once your payment clears through PayFast.</span>
+          <span style="font-weight:400;color:#555;">We've received your order and it is being processed. You'll receive a full confirmation once your payment clears through PayFast.</span>
         </p>
 
         ${deliveryNote}
 
-        <table style="width:100%;border-collapse:collapse;margin:30px 0;">
+        <table style="width:100%;border-collapse:collapse;margin:30px 0;background:#fff;border-radius:16px;overflow:hidden;">
           <thead>
             <tr>
-              <th style="border-bottom:2px solid #111;text-align:left;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Item</th>
-              <th style="border-bottom:2px solid #111;text-align:center;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Qty</th>
-              <th style="border-bottom:2px solid #111;text-align:right;padding:12px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#aaa;">Total</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:left;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Item</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:center;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Qty</th>
+              <th style="border-bottom:2px solid #d8ccb0;text-align:right;padding:16px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:#8c7d61;">Total</th>
             </tr>
           </thead>
           <tbody>
@@ -307,24 +314,24 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
           </tbody>
         </table>
 
-        <table style="width:100%;border-collapse:collapse;margin-bottom:30px;">
+        <table style="width:100%;border-collapse:collapse;margin-bottom:30px;background:#fff7e9;border:1px solid #ebddb9;border-radius:18px;overflow:hidden;">
           <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;">Subtotal</td>
-            <td style="padding:10px 0;font-size:14px;color:#111;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
+            <td style="padding:14px 18px;font-size:14px;color:#666;">Subtotal</td>
+            <td style="padding:14px 18px;font-size:14px;color:#111;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
           ${discountRow}
           <tr>
-            <td style="padding:16px 0;font-size:18px;font-weight:800;color:#111;border-top:2px solid #111;">Total</td>
-            <td style="padding:16px 0;font-size:18px;font-weight:800;color:#C09828;text-align:right;border-top:2px solid #111;">${formatCurrency(total)}</td>
+            <td style="padding:16px 18px;font-size:18px;font-weight:800;color:#802050;border-top:2px solid #d1bb7c;">Total</td>
+            <td style="padding:16px 18px;font-size:18px;font-weight:800;color:#C09828;text-align:right;border-top:2px solid #d1bb7c;">${formatCurrency(total)}</td>
           </tr>
         </table>
-        
-        ${galleryHtml}
+
+        ${buildGallerySection()}
       </div>
 
-      <div style="padding:30px;background:#f9fafb;border-top:1px solid #eee;border-radius:0 0 16px 16px;text-align:center;">
-        <p style="margin:0 0 8px;font-size:13px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">Questions about your order?</p>
-        <a href="mailto:orderinfo@vitrafruits.co.za" style="font-size:15px;color:#111;font-weight:700;text-decoration:none;">orderinfo@vitrafruits.co.za</a>
+      <div style="padding:28px;background:#f3ecdf;border-top:1px solid #e3d7b9;border-radius:0 0 24px 24px;text-align:center;">
+        <p style="margin:0 0 8px;font-size:13px;color:#607848;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Questions about your order?</p>
+        <a href="mailto:orderinfo@vitrafruits.co.za" style="font-size:15px;color:#802050;font-weight:700;text-decoration:none;">orderinfo@vitrafruits.co.za</a>
       </div>
     </div>`;
 }
