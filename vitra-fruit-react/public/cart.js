@@ -358,6 +358,9 @@
         throw lastError;
       } catch (err) {
         lastError = err;
+        if (!(err instanceof Error) || !/Failed to create order \(404\)/.test(err.message)) {
+          break;
+        }
       }
     }
 
