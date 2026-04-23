@@ -96,6 +96,10 @@ function getPublicSiteUrl(req) {
 async function buildEmailAttachments(publicSiteUrl) {
   const assets = [
     { filename: 'logo.jpg', cid: 'vitra-logo' },
+    { filename: 'IMG_1114.jpeg', cid: 'vitra-gallery-1' },
+    { filename: 'IMG_1122.jpeg', cid: 'vitra-gallery-2' },
+    { filename: 'IMG_1131.jpeg', cid: 'vitra-gallery-3' },
+    { filename: 'IMG_1135.jpeg', cid: 'vitra-gallery-4' }
   ];
 
   const attachments = await Promise.all(
@@ -198,7 +202,7 @@ function buildPaymentConfirmedShopEmail({ orderId, amountGross, customerName, cu
       <td style="padding:32px 40px;border-bottom:3px solid #607848;">
         <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
           <tr>
-            <td><img src="cid:vitra-logo" alt="Vitra Fruit" style="height:56px;border-radius:10px;" /></td>
+            <td><img src="cid:vitra-logo" alt="Vitra Fruit" style="height:90px;border-radius:14px;" /></td>
             <td style="text-align:right;">
               <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#607848;font-weight:700;">Payment Update</p>
             </td>
@@ -267,7 +271,7 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
     <!-- Header -->
     <tr>
       <td style="padding:32px 40px;text-align:center;border-bottom:3px solid #607848;">
-        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:60px;border-radius:10px;" />
+        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:90px;border-radius:14px;" />
       </td>
     </tr>
 
