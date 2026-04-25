@@ -53,11 +53,11 @@ function Hero() {
       const ch = canvas.height;
       const iw = frame.naturalWidth;
       const ih = frame.naturalHeight;
-      const scale = Math.min(cw / iw, ch / ih) * 0.85;
+      const scale = Math.min(cw / iw, ch / ih) * 1.05;
       const dw = iw * scale;
       const dh = ih * scale;
       const dx = (cw - dw) / 2;
-      const dy = (ch - dh) / 2;
+      const dy = (ch - dh) / 2 + 50;
       ctx.clearRect(0, 0, cw, ch);
       ctx.drawImage(frame, dx, dy, dw, dh);
       lastDrawnFrameRef.current = index;

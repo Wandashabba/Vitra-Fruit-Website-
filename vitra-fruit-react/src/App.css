@@ -110,6 +110,7 @@ textarea:focus-visible {
   color: #fff;
   height: 175vh;
   text-align: center;
+  margin-top: -80px;
 }
 
 .hero-sticky {
@@ -122,8 +123,8 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(104px, 14vh, 160px) 20px clamp(60px, 10vh, 110px);
-  padding: clamp(104px, 14svh, 160px) 20px clamp(60px, 10svh, 110px);
+  padding: 180px 20px clamp(60px, 10vh, 110px);
+  padding: 180px 20px clamp(60px, 10svh, 110px);
 }
 
 .hero-canvas {
@@ -261,8 +262,9 @@ textarea:focus-visible {
 
 .hero-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   width: auto;
+  margin-right: 60px;
 }
 
 .hero-word {
