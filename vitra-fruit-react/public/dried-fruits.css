@@ -657,7 +657,7 @@
     .products-strip .product-card:focus-within img {
       transform: scale(var(--img-scale-hover));
     }
-    /* Uniform sizing for dried fruit product images — match citrus */
+    /* Uniform sizing for dehydrated fruit product images — match citrus */
     .dried-product-img {
       width: 100% !important;
       height: 100% !important;

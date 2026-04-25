@@ -1,10 +1,12 @@
 (function () {
   const STORAGE_KEY = 'vitra_cart';
   const VAT_KEY = 'vitra_vat_rate';
+  const HAS_ORDERED_KEY = 'vitra_has_ordered';
   const COUNT_SELECTOR = '[data-cart-count]';
   const BAG_COUNT_SELECTOR = '[data-cart-bag-count]';
   const DEFAULT_MAX_QTY = 100;
-  const memoryStore = { cart: [], vatRate: 0.15 };
+  const FIRST_ORDER_DISCOUNT = 0.10; // 10%
+  const memoryStore = { cart: [], vatRate: 0.15, hasOrdered: false };
   const canUseStorage = (function () {
     try {
       const testKey = '__vitra_storage_test__';
@@ -232,6 +234,7 @@
     if (!canUseStorage) {
       memoryStore.cart = nextItems;
       updateCount(nextItems);
+      window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
       return;
     }
     try {
@@ -240,14 +243,23 @@
       memoryStore.cart = nextItems;
     }
     updateCount(nextItems);
+    window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
   }
 
   function updateCount(items) {
     const cart = items || loadCart();
-    const total = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+    console.log('[cart.js] Loading cart count. Items in cart:', cart);
+    const total = cart.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
+    console.log('[cart.js] Computed total cart count:', total);
+    
     document.querySelectorAll(COUNT_SELECTOR).forEach((el) => {
       el.textContent = String(total);
-      el.style.display = total > 0 ? 'inline-flex' : 'none';
+      if (total > 0) {
+        el.style.display = 'inline-flex';
+        el.style.opacity = '1';
+      } else {
+        el.style.display = 'none';
+      }
     });
     document.querySelectorAll(BAG_COUNT_SELECTOR).forEach((el) => {
       el.textContent = String(total);
@@ -275,6 +287,25 @@
     }
   }
 
+  function isFirstTimeUser() {
+    if (!canUseStorage) {
+      return !memoryStore.hasOrdered;
+    }
+    return localStorage.getItem(HAS_ORDERED_KEY) !== 'true';
+  }
+
+  function markAsReturningUser() {
+    if (!canUseStorage) {
+      memoryStore.hasOrdered = true;
+      return;
+    }
+    try {
+      localStorage.setItem(HAS_ORDERED_KEY, 'true');
+    } catch (err) {
+      memoryStore.hasOrdered = true;
+    }
+  }
+
   function parsePrice(value) {
     const num = parseFloat(String(value).replace(/[^0-9.]/g, ''));
     return Number.isFinite(num) ? num : 0;
@@ -282,6 +313,58 @@
 
   function formatPrice(value) {
     return `R${value.toFixed(2)}`;
+  }
+
+  function getCheckoutEndpoints() {
+    const origin = window.location.origin || '';
+    const candidateApiBases = [
+      origin,
+      'https://vitrafruit.com',
+      'https://www.vitrafruit.com',
+      'https://vitrafruits.co.za',
+      'https://www.vitrafruits.co.za'
+    ];
+    const returnBase = origin || 'https://vitrafruit.com';
+    const apiBases = candidateApiBases
+      .filter(Boolean)
+      .filter((base, index, list) => list.indexOf(base) === index);
+
+    return { returnBase, apiBases };
+  }
+
+  async function createOrderRequest(payload, apiBases) {
+    let lastError = null;
+
+    for (const base of apiBases) {
+      try {
+        const response = await fetch(base + '/api/create-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return { data, apiBase: base };
+        }
+
+        const errText = await response.text();
+        lastError = new Error(`Failed to create order (${response.status}) via ${base}: ${errText}`);
+
+        if (response.status === 404) {
+          continue;
+        }
+
+        throw lastError;
+      } catch (err) {
+        lastError = err;
+        if (!(err instanceof Error) || !/Failed to create order \(404\)/.test(err.message)) {
+          break;
+        }
+      }
+    }
+
+    throw lastError || new Error('Could not reach any order API endpoint.');
   }
 
   function addItem({ id, name, image, price, size, quantity, maxQty }) {
@@ -335,8 +418,12 @@
     let vatRate = 0.15;
     // VAT rate locked at 0.15
 
+    const discountEl = document.querySelector('[data-cart-discount]');
+    const discountRow = document.querySelector('[data-cart-discount-row]');
+
     function render() {
       const cart = loadCart();
+      const firstTime = isFirstTimeUser();
       tableBody.innerHTML = '';
 
       if (!cart.length) {
@@ -346,6 +433,7 @@
         if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
         if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
         if (vatEl) vatEl.textContent = '';
+        if (discountRow) discountRow.style.display = 'none';
         updateCount(cart);
         return;
       }
@@ -392,9 +480,23 @@
         subtotal += item.price * item.quantity;
       });
 
+      let discountAmount = 0;
+      if (firstTime && subtotal > 0) {
+        discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
+      }
+      const grandTotal = subtotal - discountAmount;
+
       const vat = subtotal - subtotal / (1 + vatRate);
       if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
-      if (totalEl) totalEl.textContent = `${formatPrice(subtotal)}`;
+      if (discountRow) {
+        if (firstTime && discountAmount > 0) {
+          discountRow.style.display = 'flex';
+          if (discountEl) discountEl.textContent = `-${formatPrice(discountAmount)}`;
+        } else {
+          discountRow.style.display = 'none';
+        }
+      }
+      if (totalEl) totalEl.textContent = `${formatPrice(grandTotal)}`;
       if (vatEl) vatEl.textContent = '';
 
       updateCount(cart);
@@ -475,8 +577,11 @@
 
     const subtotalEl = document.querySelector('[data-checkout-subtotal]');
     const totalEl = document.querySelector('[data-checkout-total]');
+    const discountEl = document.querySelector('[data-checkout-discount]');
+    const discountRow = document.querySelector('[data-checkout-discount-row]');
     const cart = loadCart();
     const vatRate = loadVatRate();
+    const firstTime = isFirstTimeUser();
     const payfastForm = document.getElementById('payfastForm');
     const payfastNote = document.querySelector('[data-checkout-note]');
     const payfastButton = payfastForm ? payfastForm.querySelector('.place-order') : null;
@@ -496,6 +601,7 @@
       }
       if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
       if (totalEl) totalEl.textContent = formatPrice(0);
+      if (discountRow) discountRow.style.display = 'none';
       return;
     }
 
@@ -535,9 +641,26 @@
       subtotal += item.price * item.quantity;
     });
 
+    let discountAmount = 0;
+    if (firstTime && subtotal > 0) {
+      discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
+    }
+    const SHIPPING_FEE = 120;
+    const grandTotal = subtotal - discountAmount + SHIPPING_FEE;
+    const shippingEl = document.querySelector('[data-checkout-shipping]');
+    if (shippingEl) shippingEl.textContent = formatPrice(SHIPPING_FEE);
+
     const vat = subtotal - subtotal / (1 + vatRate);
     if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
-    if (totalEl) totalEl.textContent = `${formatPrice(subtotal)}`;
+    if (discountRow) {
+      if (firstTime && discountAmount > 0) {
+        discountRow.style.display = 'flex';
+        if (discountEl) discountEl.textContent = `-${formatPrice(discountAmount)}`;
+      } else {
+        discountRow.style.display = 'none';
+      }
+    }
+    if (totalEl) totalEl.textContent = `${formatPrice(grandTotal)}`;
 
     if (payfastNote) {
       payfastNote.textContent = '';
@@ -561,12 +684,11 @@
           const qtyLabel = item.quantity > 1 ? ` x${item.quantity}` : '';
           return `${item.name || 'Product'}${sizeLabel}${qtyLabel}`;
         })
-        .join(', ');
+        .join(', ')
+        + (firstTime ? ' [10% First Order Discount Applied]' : '');
 
-      const origin = window.location.origin || '';
-      const liveDomain = 'https://vitrafruits.co.za';
-      const returnBase = origin.includes('vitrafruits.co.za') ? origin : liveDomain;
-      setField('amount', subtotal.toFixed(2));
+      const { returnBase, apiBases } = getCheckoutEndpoints();
+      setField('amount', grandTotal.toFixed(2));
       setField('item_name', 'Vitra Fruit Products');
       setField('item_description', description);
       setField('return_url', returnBase + '/checkout.html?status=success');
@@ -578,22 +700,155 @@
       setField('email_address', billingEmail ? billingEmail.value.trim() : '');
 
       if (!payfastForm.dataset.listenerAttached) {
-        payfastForm.addEventListener('submit', function (event) {
+        payfastForm.addEventListener('submit', async function (event) {
+          event.preventDefault(); // Stop normal form submission
+
           if (!cart.length) {
-            event.preventDefault();
-            if (payfastNote) {
-              payfastNote.textContent = 'Please add items to your cart to checkout.';
-            }
+            if (payfastNote) payfastNote.textContent = 'Please add items to your cart to checkout.';
             return;
           }
-          setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
-          setField('name_last', billingLastName ? billingLastName.value.trim() : '');
-          setField('email_address', billingEmail ? billingEmail.value.trim() : '');
+
+          // Force HTML5 validation on the checkout form
+          const checkoutForm = document.getElementById('billingForm');
+          if (checkoutForm && !checkoutForm.checkValidity()) {
+            checkoutForm.reportValidity();
+            return;
+          }
+
+          // Show loading state
+          if (payfastButton) {
+            payfastButton.disabled = true;
+            payfastButton.textContent = 'Processing...';
+          }
+          if (payfastNote) payfastNote.textContent = '';
+
+          try {
+            // Collection removed, delivery is default
+            const deliveryMethod = 'delivery';
+            
+            // Build billing and shipping data
+            const bFirst = document.getElementById('billingFirstName')?.value.trim();
+            const bLast = document.getElementById('billingLastName')?.value.trim();
+            const bEmail = document.getElementById('billingEmail')?.value.trim();
+            
+            const bData = {
+              firstName: bFirst,
+              lastName: bLast,
+              email: bEmail,
+              phone: document.getElementById('billingPhone')?.value.trim(),
+              street: document.getElementById('billingStreet')?.value.trim(),
+              apartment: document.getElementById('billingApartment')?.value.trim(),
+              suburb: document.getElementById('billingSuburb')?.value.trim(),
+              town: document.getElementById('billingTown')?.value.trim(),
+              province: document.getElementById('billingProvince')?.value.trim(),
+              postcode: document.getElementById('billingPostcode')?.value.trim()
+            };
+
+            const deliverDiff = document.getElementById('deliverToDifferent')?.checked;
+            let sData = null;
+            if (deliveryMethod === 'delivery' && deliverDiff) {
+              sData = {
+                firstName: document.getElementById('shippingFirstName')?.value.trim() || bFirst,
+                lastName: document.getElementById('shippingLastName')?.value.trim() || bLast,
+                street: document.getElementById('shippingStreet')?.value.trim(),
+                town: document.getElementById('shippingTown')?.value.trim(),
+                postcode: document.getElementById('shippingPostcode')?.value.trim()
+              };
+            }
+
+            const paymentId = `VITRA-${Date.now()}`;
+            const orderPayload = {
+              orderId: paymentId,
+              billing: bData,
+              shipping: sData,
+              deliveryMethod,
+              items: cart,
+              subtotal: subtotal,
+              shippingFee: 120,
+              discount: discountAmount,
+              total: grandTotal
+            };
+
+            // Save payload to send email after successful payment
+            localStorage.setItem('vitra_pending_order', JSON.stringify(orderPayload));
+            
+            // Update PayFast fields before redirecting
+            setField('m_payment_id', paymentId);
+            setField('name_first', bFirst);
+            setField('name_last', bLast);
+            setField('email_address', bEmail);
+            setField('amount', grandTotal.toFixed(2));
+            
+            const originUrl = window.location.origin || '';
+            const notifyBase = apiBases[0] || originUrl;
+            setField('notify_url', notifyBase + '/api/payfast-notify');
+
+            // Mark user as returning to prevent duplicate discounts
+            markAsReturningUser();
+
+            // Actually submit to PayFast
+            HTMLFormElement.prototype.submit.call(payfastForm);
+
+          } catch (err) {
+            console.error('Checkout error:', err);
+            if (payfastNote) {
+              payfastNote.style.color = '#c53b56';
+              payfastNote.textContent = `Oops, something went wrong saving your order: ${err.message}. Please try again.`;
+            }
+            if (payfastButton) {
+              payfastButton.disabled = false;
+              payfastButton.textContent = 'Pay with PayFast';
+            }
+          }
         });
         payfastForm.dataset.listenerAttached = 'true';
       }
     }
+    
+    // Check for success/cancel params on checkout page load
+    const alertBox = document.getElementById('checkoutAlert');
+    if (alertBox) {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('status') === 'success') {
+        alertBox.style.display = 'block';
+        alertBox.style.background = '#d1fae5';
+        alertBox.style.color = '#065f46';
+        alertBox.style.border = '1px solid #10b981';
+        alertBox.innerHTML = 'Thank you for your order! Your payment was successful and we are preparing your items. A confirmation email has been sent.';
+        
+        // Send the order email now that payment is confirmed
+        const pending = localStorage.getItem('vitra_pending_order');
+        if (pending) {
+          try {
+            const { apiBases } = getCheckoutEndpoints();
+            createOrderRequest(JSON.parse(pending), apiBases).catch(e => console.error('Email error:', e));
+          } catch(e) {}
+          localStorage.removeItem('vitra_pending_order');
+        }
+
+        // Clear cart now that it's paid
+        if (canUseStorage) localStorage.removeItem(STORAGE_KEY);
+        else memoryStore.cart = [];
+        updateCount();
+        window.dispatchEvent(new CustomEvent('vitra:cart-updated'));
+        renderCart();
+      } else if (urlParams.get('status') === 'cancel') {
+        alertBox.style.display = 'block';
+        alertBox.style.background = '#fee2e2';
+        alertBox.style.color = '#991b1b';
+        alertBox.style.border = '1px solid #ef4444';
+        alertBox.innerHTML = 'Payment was cancelled. Your cart has been saved — you can try checking out again whenever you are ready.';
+      }
+    }
   }
+
+  window.addEventListener('storage', (e) => {
+    if (e.key === STORAGE_KEY) {
+      updateCount();
+      renderCart();
+      renderCheckout();
+    }
+  });
 
   updateCount();
   attachAddToCart();

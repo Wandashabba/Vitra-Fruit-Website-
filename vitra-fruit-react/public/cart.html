@@ -412,7 +412,7 @@
             <ul class="nav-dropdown-menu">
               <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
               <li><a class="nav-dropdown-link" href="shakers.html">Citrus Powders</a></li>
-              <li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li>
+              <li><a class="nav-dropdown-link" href="dehydrated-fruits.html">Dehydrated Fruits</a></li>
               <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
               <li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li>
             </ul>
@@ -484,7 +484,7 @@
               <ul id="mobileShopDropdown" class="nav-dropdown-menu">
                 <li><a class="nav-dropdown-link" href="citrus.html">Citrus</a></li>
                 <li><a class="nav-dropdown-link" href="shakers.html">Citrus Powders</a></li>
-                <li><a class="nav-dropdown-link" href="dried-fruits.html">Dried Fruits</a></li>
+                <li><a class="nav-dropdown-link" href="dehydrated-fruits.html">Dehydrated Fruits</a></li>
                 <li><a class="nav-dropdown-link" href="vegetable-powders.html">Vegetable Powders</a></li>
                 <li><a class="nav-dropdown-link" href="lifestyle.html">Lifestyle</a></li>
               </ul>
@@ -537,6 +537,10 @@
           <div class="totals-row">
             <span>Subtotal</span>
             <span data-cart-subtotal>R0.00 (incl. VAT)</span>
+          </div>
+          <div class="totals-row discount-row" data-cart-discount-row style="display: none;">
+            <span style="font-weight: 600; font-style: italic; color: var(--text-muted);">Discount (10%)</span>
+            <span data-cart-discount style="color: #27ae60; font-weight: 700;">-R0.00</span>
           </div>
           <div class="totals-row total-row">
             <span>Total</span>
@@ -602,6 +606,7 @@
     // Search toggle
     const searchButtons = document.querySelectorAll('.nav-search-button');
     const searchPanel = document.getElementById('nav-search-panel');
+    const searchForm = searchPanel?.querySelector('.nav-search-form');
     const searchInput = searchPanel?.querySelector('.nav-search-input');
     const searchClear = searchPanel?.querySelector('.nav-search-clear');
     searchButtons.forEach((btn) => {
@@ -625,9 +630,8 @@
     const searchIndex = [
       { label: 'Citrus Collection', href: 'citrus.html', tags: ['citrus', 'collection', 'wheels', 'slices'] },
       { label: 'Citrus Powders', href: 'shakers.html', tags: ['citrus', 'powders', 'shakers'] },
-      { label: 'Dried Fruits', href: 'dried-fruits.html', tags: ['dried', 'fruits', 'apple', 'pear', 'banana', 'pineapple', 'mango'] },
+      { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'dried', 'fruits', 'apple', 'pear', 'banana', 'pineapple', 'mango'] },
       { label: 'Vegetable Powders', href: 'vegetable-powders.html', tags: ['vegetable', 'powders', 'beetroot', 'butternut', 'carrot', 'spinach'] },
-      { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'fruits'] },
       { label: 'Lifestyle', href: 'lifestyle.html', tags: ['lifestyle', 'teas', 'juices'] },
       { label: 'Lemon Wheels', href: 'lemon-wheel.html', tags: ['lemon', 'wheel', 'wheels', 'citrus'] },
       { label: 'Orange Wheels', href: 'orange-wheel.html', tags: ['orange', 'wheel', 'wheels', 'citrus'] },
