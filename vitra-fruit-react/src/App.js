@@ -9,10 +9,10 @@ import Footer from './components/Footer';
 
 const paymentLogos = [
   { src: '/images/visa logo.webp', alt: 'Visa logo' },
-  { src: '/images/mastercard logo.jpeg', alt: 'Mastercard logo' },
-  { src: '/images/maestro logo.png', alt: 'Maestro logo' },
-  { src: '/images/samsung pay.png', alt: 'Samsung Pay logo' },
-  { src: '/images/snapscan logo.png', alt: 'SnapScan logo' },
+  { src: '/images/mastercard logo.webp', alt: 'Mastercard logo' },
+  { src: '/images/maestro logo.webp', alt: 'Maestro logo' },
+  { src: '/images/samsung pay.webp', alt: 'Samsung Pay logo' },
+  { src: '/images/snapscan logo.webp', alt: 'SnapScan logo' },
   { src: '/images/Zapper logo.webp', alt: 'Zapper logo' }
 ];
 

@@ -106,35 +106,38 @@ textarea:focus-visible {
 .hero {
   --hero-section-overlap: 0px;
   position: relative;
-  overflow: hidden;
   background: #ffffff;
   color: #fff;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: clamp(104px, 14vh, 160px) 20px clamp(60px, 10vh, 110px);
-  padding: clamp(104px, 14svh, 160px) 20px clamp(60px, 10svh, 110px);
+  height: 175vh;
   text-align: center;
+}
+
+.hero-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(104px, 14vh, 160px) 20px clamp(60px, 10vh, 110px);
+  padding: clamp(104px, 14svh, 160px) 20px clamp(60px, 10svh, 110px);
 }
 
-.hero-video {
+.hero-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-  transform-origin: center center;
-  will-change: transform;
-  filter: none;
+  display: block;
   z-index: 0;
   pointer-events: none;
   backface-visibility: hidden;
 }
 
-.hero::before {
+.hero-sticky::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -150,7 +153,7 @@ textarea:focus-visible {
   pointer-events: none;
 }
 
-.hero::after {
+.hero-sticky::after {
   content: '';
   position: absolute;
   left: 0;
