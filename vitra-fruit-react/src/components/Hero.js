@@ -53,7 +53,7 @@ function Hero() {
       const ch = canvas.height;
       const iw = frame.naturalWidth;
       const ih = frame.naturalHeight;
-      const scale = Math.max(cw / iw, ch / ih);
+      const scale = Math.min(cw / iw, ch / ih) * 0.85;
       const dw = iw * scale;
       const dh = ih * scale;
       const dx = (cw - dw) / 2;
