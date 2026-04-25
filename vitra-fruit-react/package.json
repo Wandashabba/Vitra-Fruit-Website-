@@ -6,7 +6,8 @@
     "node": "20.x"
   },
   "dependencies": {
-    "nodemailer": "^6.9.8",
+    "dotenv": "^17.4.2",
+    "nodemailer": "^6.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1"

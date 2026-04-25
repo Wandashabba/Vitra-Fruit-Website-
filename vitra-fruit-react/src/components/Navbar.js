@@ -26,7 +26,7 @@ function Navbar({ cartCount = 0 }) {
     () => [
       { label: "Citrus", categoryId: "citrus", href: "citrus.html" },
       { label: "Citrus Powders", categoryId: "citrus-powders", href: "shakers.html" },
-      { label: "Dried Fruits", categoryId: "dried-fruits", href: "dried-fruits.html" },
+      { label: "Dehydrated Fruits", categoryId: "dehydrated-fruits", href: "dehydrated-fruits.html" },
       { label: "Vegetable Powders", categoryId: "vegetable-powders", href: "vegetable-powders.html" },
       { label: "Lifestyle", categoryId: "lifestyle", href: "lifestyle.html" }
     ],
@@ -36,9 +36,8 @@ function Navbar({ cartCount = 0 }) {
     () => [
       { label: "Citrus Collection", href: "citrus.html", tags: ["citrus", "collection", "wheels", "slices"] },
       { label: "Citrus Powders", href: "shakers.html", tags: ["citrus", "powders", "shakers"] },
-      { label: "Dried Fruits", href: "dried-fruits.html", tags: ["dried", "fruits", "slices", "chips", "strips", "apple", "pear", "banana", "pineapple", "mango"] },
+      { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "dried", "fruits", "slices", "chips", "strips", "apple", "pear", "banana", "pineapple", "mango"] },
       { label: "Vegetable Powders", href: "vegetable-powders.html", tags: ["vegetable", "powders", "beetroot", "butternut", "carrot", "spinach"] },
-      { label: "Dehydrated Fruits", href: "dehydrated-fruits.html", tags: ["dehydrated", "fruits"] },
       { label: "Lifestyle", href: "lifestyle.html", tags: ["lifestyle", "teas", "juices"] },
       { label: "Lemon Wheels", href: "lemon-wheel.html", tags: ["lemon", "citrus", "wheel", "wheels"] },
       { label: "Orange Wheels", href: "orange-wheel.html", tags: ["orange", "citrus", "wheel", "wheels"] },

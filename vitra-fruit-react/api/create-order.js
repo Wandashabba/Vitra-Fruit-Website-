@@ -15,7 +15,7 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { billing, shipping, deliveryMethod, items, subtotal, discount, total } = req.body;
+    const { orderId: reqOrderId, billing, shipping, deliveryMethod, items, subtotal, discount, shippingFee, total } = req.body;
     const missingEnv = getMissingEnvVars();
     const publicSiteUrl = getPublicSiteUrl(req);
     if (!billing || !items || !items.length || !total) {
@@ -28,10 +28,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    // Generate a short, readable order ID
-    const timestamp = Date.now().toString(36).toUpperCase();
-    const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const orderId = `VF-${timestamp}-${random}`;
+    const orderId = reqOrderId || `VF-${Date.now().toString(36).toUpperCase()}`;
 
     // Build email transporter
     const transporter = nodemailer.createTransport({
@@ -59,7 +56,7 @@ module.exports = async function handler(req, res) {
     });
 
     // --- Customer confirmation email ---
-    const customerHtml = buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total });
+    const customerHtml = buildCustomerEmail({ orderId, billing, items, subtotal, discount, shippingFee, total });
 
     await transporter.sendMail({
       from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
@@ -295,16 +292,37 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
   return emailWrapper(content);
 }
 
-function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total }) {
-  const isCollection = deliveryMethod === 'collection';
-
+function buildCustomerEmail({ orderId, billing, items, subtotal, discount, shippingFee = 120, total }) {
   const discountRow = discount > 0
     ? `<tr><td style="padding:8px 0;font-size:14px;color:#607848;">Discount (10%)</td><td style="padding:8px 0;font-size:14px;color:#607848;text-align:right;font-weight:600;">-${formatCurrency(discount)}</td></tr>`
     : '';
 
-  const deliveryNote = isCollection
-    ? `<p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.7;">You've chosen <strong>collection</strong>. We'll let you know when your order is ready for pickup.</p>`
-    : `<p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.7;">Your order will be <strong>delivered</strong> to the address you provided. We'll share tracking details once it's dispatched.</p>`;
+  const today = new Date();
+  const minDelivery = new Date(today);
+  minDelivery.setDate(today.getDate() + 1);
+  const maxDelivery = new Date(today);
+  maxDelivery.setDate(today.getDate() + 3);
+  
+  const options = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+  const minDeliveryStr = minDelivery.toLocaleDateString('en-GB', options);
+  const maxDeliveryStr = maxDelivery.toLocaleDateString('en-GB', options);
+  const orderDateStr = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  const vat = total - (total / 1.15);
+
+  const addressData = billing;
+  const addressLines = [
+    `${addressData.firstName || ''} ${addressData.lastName || ''}`.trim(),
+    addressData.street || '',
+    addressData.apartment || '',
+    addressData.suburb || '',
+    `${addressData.town || ''}`,
+    `${addressData.province || ''}`,
+    `${addressData.postcode || ''}`,
+    'South Africa',
+    addressData.phone || '',
+    addressData.email || ''
+  ].filter(Boolean);
 
   const content = `
     <!-- Header -->
@@ -317,28 +335,33 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
     <!-- Greeting -->
     <tr>
       <td style="padding:32px 40px 0;">
-        <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#333;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Thank you for your order</h1>
-        <p style="margin:0 0 20px;font-size:13px;color:#c09828;font-weight:600;letter-spacing:0.04em;">${orderId}</p>
-        <p style="margin:0 0 8px;font-size:15px;color:#333;line-height:1.7;">
+        <h1 style="margin:0 0 20px;font-size:22px;font-weight:700;color:#333;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Thank you for your order</h1>
+        <p style="margin:0 0 20px;font-size:15px;color:#333;line-height:1.7;">
           Hi ${billing.firstName || 'there'},
         </p>
         <p style="margin:0 0 20px;font-size:14px;color:#555;line-height:1.7;">
-          We've received your order and it's being processed. You'll get a confirmation once your payment clears through PayFast.
+          Just to let you know — we’ve received your order, and it is now being processed.
         </p>
-        ${deliveryNote}
+        <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.7;">
+          The estimated delivery date is between <strong>${minDeliveryStr}</strong> and <strong>${maxDeliveryStr}</strong>.
+        </p>
+        <p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.7;">
+          Here’s a reminder of what you’ve ordered:
+        </p>
       </td>
     </tr>
 
     <!-- Items -->
     <tr>
       <td style="padding:0 40px;">
-        <p style="margin:0 0 10px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#c09828;font-weight:700;">Your Items</p>
+        <p style="margin:0 0 10px;font-size:18px;color:#333;font-weight:700;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Order summary</p>
+        <p style="margin:0 0 20px;font-size:13px;color:#c09828;font-weight:600;letter-spacing:0.04em;">Order ${orderId} (${orderDateStr})</p>
         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
           <thead>
             <tr>
-              <th style="border-bottom:2px solid #333;text-align:left;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Item</th>
-              <th style="border-bottom:2px solid #333;text-align:center;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Qty</th>
-              <th style="border-bottom:2px solid #333;text-align:right;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Total</th>
+              <th style="border-bottom:2px solid #333;text-align:left;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Product</th>
+              <th style="border-bottom:2px solid #333;text-align:center;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Quantity</th>
+              <th style="border-bottom:2px solid #333;text-align:right;padding:8px 0;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:#333;font-weight:700;">Price</th>
             </tr>
           </thead>
           <tbody>
@@ -353,23 +376,45 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
       <td style="padding:20px 40px 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
           <tr>
-            <td style="padding:8px 0;font-size:14px;color:#666;">Subtotal</td>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Subtotal:</td>
             <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
           ${discountRow}
           <tr>
-            <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total</td>
-            <td style="padding:12px 0;font-size:18px;font-weight:700;color:#c03030;text-align:right;border-top:2px solid #333;">${formatCurrency(total)}</td>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Shipping: Delivery fee</td>
+            <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(shippingFee)}</td>
+          </tr>
+          <tr>
+            <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total:</td>
+            <td style="padding:12px 0;font-size:18px;font-weight:700;color:#c03030;text-align:right;border-top:2px solid #333;">${formatCurrency(total)}<br/><span style="font-size:12px;font-weight:400;color:#666;">(includes ${formatCurrency(vat)} VAT)</span></td>
+          </tr>
+          <tr>
+            <td style="padding:12px 0;font-size:14px;color:#666;border-top:1px solid #e8e2d6;">Payment method:</td>
+            <td style="padding:12px 0;font-size:14px;color:#333;text-align:right;font-weight:600;border-top:1px solid #e8e2d6;">Payfast</td>
           </tr>
         </table>
+      </td>
+    </tr>
+
+    <!-- Billing Address -->
+    <tr>
+      <td style="padding:28px 40px 0;">
+        <p style="margin:0 0 10px;font-size:18px;color:#333;font-weight:700;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Billing address</p>
+        <p style="margin:0;font-size:14px;color:#555;line-height:1.7;">
+          ${addressLines.join('<br/>')}
+        </p>
       </td>
     </tr>
 
     <!-- Footer -->
     <tr>
       <td style="padding:32px 40px;border-top:1px solid #e8e2d6;margin-top:28px;">
-        <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#c09828;font-weight:700;">Questions about your order?</p>
-        <a href="mailto:orderinfo@vitrafruits.co.za" style="font-size:14px;color:#c03030;text-decoration:none;font-weight:600;">orderinfo@vitrafruits.co.za</a>
+        <p style="margin:0 0 20px;font-size:14px;color:#555;line-height:1.7;">
+          Thanks for using vitrafruits.co.za!
+        </p>
+        <p style="margin:0;font-size:14px;color:#333;font-weight:600;">
+          Vitra Fruits
+        </p>
       </td>
     </tr>`;
 

@@ -1,6 +1,6 @@
 # Vitra Fruit Website
 
-Premium Dried Fruits & Beverages E-commerce Website (React)
+Premium Dehydrated Fruits & Beverages E-commerce Website (React)
 
 ## Features
 
