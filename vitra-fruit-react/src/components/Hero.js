@@ -247,7 +247,6 @@ function Hero() {
 
         {/* Content overlay */}
         <motion.div
-          ref={contentRef}
           className="hero-content"
           style={{ opacity: contentOpacity }}
         >
@@ -257,7 +256,7 @@ function Hero() {
             style={{ y: kickerY }}
             variants={fadeUpVariants}
             initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
+            animate="visible"
             custom={0}
           >
             VitraFruits Collection
@@ -274,7 +273,7 @@ function Hero() {
                         className="hero-word"
                         variants={wordVariants}
                         initial="hidden"
-                        animate={isInView ? 'visible' : 'hidden'}
+                        animate="visible"
                         custom={i}
                       >
                         {word}
@@ -291,7 +290,7 @@ function Hero() {
                 className="hero-subtitle"
                 variants={fadeUpVariants}
                 initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
+                animate="visible"
                 custom={0.56}
               >
                 {heroSubtitle}
@@ -300,7 +299,7 @@ function Hero() {
                 className="hero-actions"
                 variants={fadeUpVariants}
                 initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
+                animate="visible"
                 custom={0.95}
               >
                 <motion.a 
