@@ -645,10 +645,7 @@
     if (firstTime && subtotal > 0) {
       discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
     }
-    const SHIPPING_FEE = 120;
-    const grandTotal = subtotal - discountAmount + SHIPPING_FEE;
-    const shippingEl = document.querySelector('[data-checkout-shipping]');
-    if (shippingEl) shippingEl.textContent = formatPrice(SHIPPING_FEE);
+    const grandTotal = subtotal - discountAmount;
 
     const vat = subtotal - subtotal / (1 + vatRate);
     if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
@@ -723,8 +720,9 @@
           if (payfastNote) payfastNote.textContent = '';
 
           try {
-            // Collection removed, delivery is default
-            const deliveryMethod = 'delivery';
+            // Get selected delivery method
+            const methodRadio = document.querySelector('input[name="deliveryMethodOptions"]:checked');
+            const deliveryMethod = methodRadio ? methodRadio.value : 'delivery';
             
             // Build billing and shipping data
             const bFirst = document.getElementById('billingFirstName')?.value.trim();
@@ -756,32 +754,25 @@
               };
             }
 
-            const paymentId = `VITRA-${Date.now()}`;
             const orderPayload = {
-              orderId: paymentId,
               billing: bData,
               shipping: sData,
               deliveryMethod,
               items: cart,
               subtotal: subtotal,
-              shippingFee: 120,
               discount: discountAmount,
               total: grandTotal
             };
 
-            // Save payload to send email after successful payment
-            localStorage.setItem('vitra_pending_order', JSON.stringify(orderPayload));
+            const { data, apiBase } = await createOrderRequest(orderPayload, apiBases);
             
             // Update PayFast fields before redirecting
-            setField('m_payment_id', paymentId);
+            setField('m_payment_id', data.orderId);
             setField('name_first', bFirst);
             setField('name_last', bLast);
             setField('email_address', bEmail);
             setField('amount', grandTotal.toFixed(2));
-            
-            const originUrl = window.location.origin || '';
-            const notifyBase = apiBases[0] || originUrl;
-            setField('notify_url', notifyBase + '/api/payfast-notify');
+            setField('notify_url', apiBase + '/api/payfast-notify');
 
             // Mark user as returning to prevent duplicate discounts
             markAsReturningUser();
@@ -816,16 +807,6 @@
         alertBox.style.border = '1px solid #10b981';
         alertBox.innerHTML = 'Thank you for your order! Your payment was successful and we are preparing your items. A confirmation email has been sent.';
         
-        // Send the order email now that payment is confirmed
-        const pending = localStorage.getItem('vitra_pending_order');
-        if (pending) {
-          try {
-            const { apiBases } = getCheckoutEndpoints();
-            createOrderRequest(JSON.parse(pending), apiBases).catch(e => console.error('Email error:', e));
-          } catch(e) {}
-          localStorage.removeItem('vitra_pending_order');
-        }
-
         // Clear cart now that it's paid
         if (canUseStorage) localStorage.removeItem(STORAGE_KEY);
         else memoryStore.cart = [];

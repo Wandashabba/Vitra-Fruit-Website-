@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "npm install --prefix vitra-fruit-react",
+  "buildCommand": "npm run build --prefix vitra-fruit-react",
+  "outputDirectory": "vitra-fruit-react/build"
+}

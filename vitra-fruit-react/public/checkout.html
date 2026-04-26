@@ -368,7 +368,19 @@
       <div class="checkout-grid">
         <section class="billing-details">
           
-          <div id="checkoutAlert" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; font-weight: 600; line-height: 1.5;"></div>
+          <div id="checkoutAlert" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; font-weight: 600; line-height: 1.5;"></div>          <div style="margin-bottom: 35px;">
+            <span style="display: block; font-weight: 700; margin-bottom: 12px; font-size: 0.95rem; color: #111;">Delivery Method <span style="color: #c03030;">*</span></span>
+            <div style="display: inline-flex; background: #f0f2f5; padding: 4px; border-radius: 99px; position: relative;">
+              <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #fff; background: var(--palette-orange, #E88020); box-shadow: 0 4px 12px rgba(232, 128, 32, 0.3);" id="labelDelivery">
+                <input type="radio" name="deliveryMethodOptions" value="delivery" checked style="display: none;" />
+                Delivery
+              </label>
+              <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #54618a; background: transparent; box-shadow: none;" id="labelCollection">
+                <input type="radio" name="deliveryMethodOptions" value="collection" style="display: none;" />
+                Collection
+              </label>
+            </div>
+          </div>
 
           <div id="billingDetailsSection">
             <h1>Billing details</h1>
@@ -485,7 +497,46 @@
         </section>
 
         <script>
-          // Delivery toggle logic removed for online only business
+          // Basic UI toggle for delivery methods
+          document.addEventListener('DOMContentLoaded', () => {
+            const radios = document.querySelectorAll('input[name="deliveryMethodOptions"]');
+            const labelDelivery = document.getElementById('labelDelivery');
+            const labelCollection = document.getElementById('labelCollection');
+            const deliverToDifferent = document.getElementById('deliverToDifferent');
+            const shippingSection = document.getElementById('shippingSection');
+
+            radios.forEach(radio => {
+              radio.addEventListener('change', (e) => {
+                if (e.target.value === 'collection') {
+                  labelCollection.style.color = '#fff';
+                  labelCollection.style.background = 'var(--palette-orange, #E88020)';
+                  labelCollection.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
+                  
+                  labelDelivery.style.color = '#54618a';
+                  labelDelivery.style.background = 'transparent';
+                  labelDelivery.style.boxShadow = 'none';
+                  
+                  // Hide shipping section completely if collection
+                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'none';
+                  if (shippingSection) shippingSection.style.display = 'none';
+                } else {
+                  labelDelivery.style.color = '#fff';
+                  labelDelivery.style.background = 'var(--palette-orange, #E88020)';
+                  labelDelivery.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
+                  
+                  labelCollection.style.color = '#54618a';
+                  labelCollection.style.background = 'transparent';
+                  labelCollection.style.boxShadow = 'none';
+
+                  // Restore shipping toggle
+                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'flex';
+                  if (deliverToDifferent && deliverToDifferent.checked && shippingSection) {
+                    shippingSection.style.display = 'grid';
+                  }
+                }
+              });
+            });
+          });
         </script>
 
         <aside class="order-summary">
@@ -502,10 +553,6 @@
             <div class="totals-line discount-row" data-checkout-discount-row style="display: none;">
               <span class="totals-label" style="font-style: italic; color: var(--text-muted);">Discount (10%)</span>
               <span data-checkout-discount style="color: #27ae60; font-weight: 700;">-R0.00</span>
-            </div>
-            <div class="totals-line">
-              <span class="totals-label">Shipping</span>
-              <span data-checkout-shipping>R120.00</span>
             </div>
             <div class="totals-line total-grand">
               <span class="totals-label">Total</span>

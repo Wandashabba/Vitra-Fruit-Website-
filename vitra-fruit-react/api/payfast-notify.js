@@ -56,7 +56,16 @@ module.exports = async function handler(req, res) {
       attachments,
     });
 
-    // Notify customer: Removed to avoid duplicate emails. Full receipt sent on return to checkout success.
+    // Notify customer: payment received
+    if (customerEmail) {
+      await transporter.sendMail({
+        from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
+        to: customerEmail,
+        subject: `Payment Confirmed — ${orderId}`,
+        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName }),
+        attachments,
+      });
+    }
 
     return res.status(200).send('OK');
   } catch (err) {
