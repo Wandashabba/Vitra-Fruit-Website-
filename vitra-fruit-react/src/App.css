@@ -279,6 +279,12 @@ textarea:focus-visible {
   will-change: transform, opacity, filter;
 }
 
+@media (min-width: 1100px) {
+  .hero-content {
+    top: 40px;
+  }
+}
+
 .btn {
   display: inline-block;
   padding: var(--space-2) calc(var(--space-4) + 6px);
