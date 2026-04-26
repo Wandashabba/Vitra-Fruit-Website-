@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(command -v cwebp)",
+      "Bash(command -v ffmpeg)",
+      "Bash(command -v magick)",
+      "Bash(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 \"c:/Users/tumom/Vitra-Fruit-Website-/vitra-fruit-react/public/images/ffffff-ezgif-19916cc776e06e67-webp-jpg/frame_000_delay-0.041s.jpg\")"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\tumom\\Vitra-Fruit-Website-\\vitra-fruit-react\\public\\images"
+    ]
+  }
+}

@@ -19,8 +19,8 @@ function AboutSection() {
           </div>
           <figure className="about-owner-image reveal-right">
             <img
-              src="/images/about-us-image-1200.jpeg"
-              srcSet="/images/about-us-image-800.jpeg 800w, /images/about-us-image-1200.jpeg 1200w"
+              src="/images/about-us-image-1200.webp"
+              srcSet="/images/about-us-image-800.webp 800w, /images/about-us-image-1200.webp 1200w"
               sizes="(max-width: 900px) 90vw, 520px"
               alt="VitraFruits founder with premium dehydrated products"
               loading="lazy"

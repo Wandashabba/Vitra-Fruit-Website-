@@ -11,7 +11,7 @@
       position: sticky;
       top: 0;
       z-index: 1400;
-      padding: 14px 16px 0;
+      padding: 0 16px;
       transition: transform 0.32s ease, opacity 0.32s ease;
       will-change: transform, opacity;
     }
@@ -510,6 +510,12 @@
     }
 
     @media (max-width: 1099px) {
+      #wrapper-navbar {
+        position: fixed;
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+      }
       .navbar-container {
         display: grid;
         grid-template-columns: 1fr auto 1fr;

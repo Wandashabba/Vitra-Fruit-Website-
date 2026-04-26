@@ -3,11 +3,11 @@ import '../product-hover-graphics.css';
 import aboutUsJpg from '../assets/images/about-us.jpg';
 import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
-import homepageOr from '../assets/images/OrangePleaser.png';
-import homepageLi from '../assets/images/Pleaser4.png';
-import grapefruitFront from '../assets/images/NewGrapefruitsSlices-Photoroom.png';
-import lemonFront from '../assets/images/LemonFront.png';
-import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.png';
+import homepageOr from '../assets/images/OrangePleaser.webp';
+import homepageLi from '../assets/images/Pleaser4.webp';
+import grapefruitFront from '../assets/images/NewGrapefruitsSlices-Photoroom.webp';
+import lemonFront from '../assets/images/LemonFront.webp';
+import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.webp';
 
 const favouriteProducts = [
   {

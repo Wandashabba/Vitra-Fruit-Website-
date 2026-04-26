@@ -1,7 +1,7 @@
 import React from 'react';
 
 const galleryImages = [1, 2, 3, 4, 5].map((imageNumber) => ({
-  src: `/images/picture${imageNumber}.jpeg`,
+  src: `/images/picture${imageNumber}.webp`,
   alt: `Vitra Fruit gallery image ${imageNumber}`
 }));
 

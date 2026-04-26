@@ -2,9 +2,8 @@
   const searchIndex = [
     { label: 'Citrus Collection', href: 'citrus.html', tags: ['citrus', 'collection', 'wheels', 'slices'] },
     { label: 'Citrus Powders', href: 'shakers.html', tags: ['citrus', 'powders', 'shakers'] },
-    { label: 'Dried Fruits', href: 'dried-fruits.html', tags: ['dried', 'fruits', 'apple', 'pear', 'pineapple', 'banana', 'mango'] },
+    { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'dried', 'fruits', 'apple', 'pear', 'pineapple', 'banana', 'mango'] },
     { label: 'Vegetable Powders', href: 'vegetable-powders.html', tags: ['vegetable', 'powders', 'beetroot', 'butternut', 'carrot', 'spinach'] },
-    { label: 'Dehydrated Fruits', href: 'dehydrated-fruits.html', tags: ['dehydrated', 'fruits'] },
     { label: 'Lifestyle', href: 'lifestyle.html', tags: ['lifestyle', 'teas', 'juices'] },
     { label: 'Lemon Wheels', href: 'lemon-wheel.html', tags: ['lemon', 'wheel', 'wheels', 'citrus'] },
     { label: 'Orange Wheels', href: 'orange-wheel.html', tags: ['orange', 'wheel', 'wheels', 'citrus'] },
