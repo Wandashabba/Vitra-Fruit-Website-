@@ -4,7 +4,6 @@ import {
   useScroll,
   useTransform,
   useSpring,
-  useInView,
 } from 'framer-motion';
 
 /* ── Config ── */
@@ -82,9 +81,6 @@ function Hero() {
 
   const contentOpacityRaw = useTransform(scrollYProgress, [0.65, 0.85], [1, 0]);
   const contentOpacity = useSpring(contentOpacityRaw, SPRING);
-
-  const contentRef = useRef(null);
-  const isInView = useInView(contentRef, { once: true, amount: 0.3 });
 
   const handleShopClick = (event) => {
     event.preventDefault();
