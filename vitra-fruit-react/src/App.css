@@ -231,7 +231,7 @@ textarea:focus-visible {
   letter-spacing: 0.01em;
   max-width: 12ch;
   color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.72), 0 3px 8px rgba(0, 0, 0, 0.65);
   text-align: left;
 }
 
@@ -268,7 +268,7 @@ textarea:focus-visible {
 /* Overflow-hidden clip for split-text word reveal */
 .hero-word-clip {
   display: inline-block;
-  overflow: hidden;
+  overflow: visible;
   vertical-align: bottom;
   padding-bottom: 0.06em;
 }
