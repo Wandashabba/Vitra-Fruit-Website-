@@ -225,13 +225,27 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
     </tr>
   `).join('');
 
-  const content = `
-    <tr>
-      <td style="padding:0 0 20px 0;">
-        <h1 style="margin:0 0 20px;font-size:24px;color:#333;font-weight:normal;">Vitra Fruit</h1>
-        <p style="margin:0 0 20px;font-size:16px;color:#333;"><strong>Good things are heading your way!</strong></p>
-        <p style="margin:0 0 20px;font-size:14px;color:#333;">Hi ${b.f || customerName || 'there'},</p>
-        <p style="margin:0 0 30px;font-size:14px;color:#333;">We have finished processing your order.</p>
+    const today = new Date();
+    const startDelivery = new Date(today);
+    startDelivery.setDate(today.getDate() + 1);
+    const endDelivery = new Date(today);
+    endDelivery.setDate(today.getDate() + 5);
+
+    const dateOptions = { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' };
+    const startDeliveryStr = startDelivery.toLocaleString('en-GB', dateOptions);
+    const endDeliveryStr = endDelivery.toLocaleString('en-GB', dateOptions);
+
+    const content = `
+      <tr>
+        <td style="padding:0 0 20px 0;">
+          <h1 style="margin:0 0 20px;font-size:24px;color:#333;font-weight:normal;">Vitra Fruit</h1>
+          <p style="margin:0 0 20px;font-size:16px;color:#333;"><strong>Good things are heading your way!</strong></p>
+          <p style="margin:0 0 20px;font-size:14px;color:#333;">Hi ${b.f || customerName || 'there'},</p>
+          <p style="margin:0 0 20px;font-size:14px;color:#333;">We have finished processing your order.</p>
+          
+          <p style="margin:0 0 30px;font-size:14px;color:#333;background:#f9f9f9;padding:15px;border-radius:8px;">
+            The estimated delivery date is between <strong>${startDeliveryStr}</strong> and <strong>${endDeliveryStr}</strong>. It must be 1-5 days delivery.
+          </p>
         
         <p style="margin:0 0 15px;font-size:14px;color:#333;">Here’s a reminder of what you’ve ordered:</p>
         
