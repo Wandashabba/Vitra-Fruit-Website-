@@ -35,6 +35,21 @@ module.exports = async function handler(req, res) {
       return res.status(200).send('OK');
     }
 
+    // Parse custom order data
+    let payloadStr = '';
+    if (data.custom_str1) payloadStr += data.custom_str1;
+    if (data.custom_str2) payloadStr += data.custom_str2;
+    if (data.custom_str3) payloadStr += data.custom_str3;
+    if (data.custom_str4) payloadStr += data.custom_str4;
+    if (data.custom_str5) payloadStr += data.custom_str5;
+
+    let orderData = null;
+    try {
+      if (payloadStr) orderData = JSON.parse(payloadStr);
+    } catch (e) {
+      console.error('ITN: Failed to parse custom payload', e);
+    }
+
     // Setup email
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST || 'smtp.gmail.com',
@@ -45,25 +60,14 @@ module.exports = async function handler(req, res) {
         pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
       },
     });
-    const attachments = await buildEmailAttachments(publicSiteUrl);
-
-    // Notify shop owner: payment confirmed
-    await transporter.sendMail({
-      from: `"Vitra Fruit Orders" <${process.env.SMTP_USER}>`,
-      to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
-      subject: `Payment Confirmed — ${orderId} — R${amountGross}`,
-      html: buildPaymentConfirmedShopEmail({ orderId, amountGross, customerName, customerEmail, data }),
-      attachments,
-    });
 
     // Notify customer: payment received
     if (customerEmail) {
       await transporter.sendMail({
         from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
         to: customerEmail,
-        subject: `Payment Confirmed — ${orderId}`,
-        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName }),
-        attachments,
+        subject: `Good things are heading your way! Order ${orderId}`,
+        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData }),
       });
     }
 
@@ -176,130 +180,117 @@ function emailWrapper(content) {
     <!DOCTYPE html>
     <html lang="en">
     <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-    <body style="margin:0;padding:0;background:#f5f0e8;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f5f0e8;">
-        <tr><td align="center" style="padding:32px 16px;">
-          <table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;width:100%;background:#ffffff;">
+    <body style="margin:0;padding:0;background:#ffffff;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;">
+        <tr><td align="center" style="padding:16px;">
+          <table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;width:100%;background:#ffffff;text-align:left;">
             ${content}
           </table>
-          <p style="margin:24px 0 0;font-size:12px;color:#999;text-align:center;">
-            &copy; ${new Date().getFullYear()} Vitra Fruit &middot; Proudly South African
-          </p>
         </td></tr>
       </table>
     </body>
     </html>`;
 }
 
-function buildPaymentConfirmedShopEmail({ orderId, amountGross, customerName, customerEmail, data }) {
-  const pfPaymentId = data.pf_payment_id || '';
-  const amountFee = data.amount_fee || '0.00';
-  const amountNet = data.amount_net || amountGross;
+function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData }) {
+  const dateStr = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const b = orderData?.b || {};
+  const items = orderData?.i || [];
+  const subtotal = orderData?.sub || amountGross;
+  const shipping = orderData?.sh || 0;
+  const discount = orderData?.d || 0;
+  
+  // Calculate VAT correctly for the display
+  const vat = (parseFloat(amountGross) - parseFloat(amountGross) / 1.15).toFixed(2);
+
+  const addressLines = [
+    `${b.f || ''} ${b.l || ''}`.trim(),
+    b.s || '',
+    b.t || '',
+    b.pr || '',
+    b.z || '',
+    b.p || '',
+    b.e || ''
+  ].filter(Boolean).join('<br/>');
+
+  const itemRows = items.map(item => `
+    <tr>
+      <td style="padding:8px 0;border-bottom:1px solid #eee;color:#333;font-size:14px;">
+        ${item.n}<br/>
+        &times;${item.q}
+      </td>
+      <td style="padding:8px 0;border-bottom:1px solid #eee;color:#333;text-align:right;font-size:14px;">
+        R${(item.p * item.q).toFixed(2)}
+      </td>
+    </tr>
+  `).join('');
 
   const content = `
-    <!-- Header -->
     <tr>
-      <td style="padding:32px 40px;border-bottom:3px solid #607848;">
-        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+      <td style="padding:0 0 20px 0;">
+        <h1 style="margin:0 0 20px;font-size:24px;color:#333;font-weight:normal;">Vitra Fruit</h1>
+        <p style="margin:0 0 20px;font-size:16px;color:#333;"><strong>Good things are heading your way!</strong></p>
+        <p style="margin:0 0 20px;font-size:14px;color:#333;">Hi ${b.f || customerName || 'there'},</p>
+        <p style="margin:0 0 30px;font-size:14px;color:#333;">We have finished processing your order.</p>
+        
+        <p style="margin:0 0 15px;font-size:14px;color:#333;">Here’s a reminder of what you’ve ordered:</p>
+        
+        <h2 style="margin:0 0 5px;font-size:18px;color:#333;font-weight:bold;">Order summary</h2>
+        <p style="margin:0 0 15px;font-size:14px;color:#333;">Order ${orderId} (${dateStr})</p>
+        
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:20px;">
+          <thead>
+            <tr>
+              <th style="text-align:left;border-bottom:2px solid #333;padding:8px 0;font-size:14px;">Product &amp; Quantity</th>
+              <th style="text-align:right;border-bottom:2px solid #333;padding:8px 0;font-size:14px;">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${itemRows}
+          </tbody>
+        </table>
+
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:30px;">
           <tr>
-            <td><img src="cid:vitra-logo" alt="Vitra Fruit" style="height:90px;border-radius:14px;" /></td>
-            <td style="text-align:right;">
-              <p style="margin:0;font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:#607848;font-weight:700;">Payment Update</p>
-            </td>
+            <td style="padding:4px 0;font-size:14px;color:#333;">Subtotal:</td>
+            <td style="padding:4px 0;font-size:14px;color:#333;text-align:right;">R${parseFloat(subtotal).toFixed(2)}</td>
+          </tr>
+          ${discount > 0 ? `
+          <tr>
+            <td style="padding:4px 0;font-size:14px;color:#333;">Discount:</td>
+            <td style="padding:4px 0;font-size:14px;color:#333;text-align:right;">-R${parseFloat(discount).toFixed(2)}</td>
+          </tr>` : ''}
+          <tr>
+            <td style="padding:4px 0;font-size:14px;color:#333;">Shipping:</td>
+            <td style="padding:4px 0;font-size:14px;color:#333;text-align:right;">${parseFloat(shipping) === 0 ? 'Free shipping' : 'R' + parseFloat(shipping).toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;font-size:16px;color:#333;font-weight:bold;">Total:</td>
+            <td style="padding:8px 0;font-size:16px;color:#333;text-align:right;font-weight:bold;">R${amountGross}</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="padding:0 0 10px 0;font-size:12px;color:#666;text-align:right;">(includes R${vat} VAT)</td>
           </tr>
         </table>
-      </td>
-    </tr>
 
-    <!-- Title -->
-    <tr>
-      <td style="padding:32px 40px 0;">
-        <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#333;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Payment Confirmed</h1>
-        <p style="margin:0 0 24px;font-size:13px;color:#c09828;font-weight:600;">${orderId}</p>
-      </td>
-    </tr>
-
-    <!-- Details -->
-    <tr>
-      <td style="padding:0 40px;">
-        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;border-bottom:1px solid #e8e2d6;">Customer</td>
-            <td style="padding:10px 0;font-size:14px;color:#333;text-align:right;font-weight:600;border-bottom:1px solid #e8e2d6;">${customerName || 'N/A'}</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;border-bottom:1px solid #e8e2d6;">Email</td>
-            <td style="padding:10px 0;font-size:14px;text-align:right;border-bottom:1px solid #e8e2d6;">
-              <a href="mailto:${customerEmail}" style="color:#c03030;text-decoration:none;font-weight:600;">${customerEmail || 'N/A'}</a>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;border-bottom:1px solid #e8e2d6;">Amount Paid</td>
-            <td style="padding:10px 0;font-size:16px;color:#607848;text-align:right;font-weight:700;">R${amountGross}</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#888;border-bottom:1px solid #e8e2d6;">PayFast Fee</td>
-            <td style="padding:10px 0;font-size:14px;color:#888;text-align:right;border-bottom:1px solid #e8e2d6;">R${amountFee}</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#666;border-bottom:1px solid #e8e2d6;">Net Amount</td>
-            <td style="padding:10px 0;font-size:14px;color:#333;text-align:right;font-weight:700;border-bottom:1px solid #e8e2d6;">R${amountNet}</td>
-          </tr>
-          <tr>
-            <td style="padding:10px 0;font-size:14px;color:#888;">PayFast Reference</td>
-            <td style="padding:10px 0;font-size:14px;color:#333;text-align:right;">${pfPaymentId}</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-
-    <!-- Note -->
-    <tr>
-      <td style="padding:28px 40px 32px;">
-        <p style="margin:0;font-size:14px;color:#555;line-height:1.7;">
-          Payment verified by PayFast. You can now prepare this order for ${data.item_description && data.item_description.includes('COLLECTION') ? 'collection' : 'dispatch'}.
-          Match this with the order details email sent earlier for the full address and item breakdown.
-        </p>
-      </td>
-    </tr>`;
-
-  return emailWrapper(content);
-}
-
-function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName }) {
-  const content = `
-    <!-- Header -->
-    <tr>
-      <td style="padding:32px 40px;text-align:center;border-bottom:3px solid #607848;">
-        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:90px;border-radius:14px;" />
-      </td>
-    </tr>
-
-    <!-- Content -->
-    <tr>
-      <td style="padding:32px 40px 0;">
-        <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#333;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Payment received</h1>
-        <p style="margin:0 0 24px;font-size:13px;color:#c09828;font-weight:600;">${orderId}</p>
-
-        <p style="margin:0 0 20px;font-size:15px;color:#333;line-height:1.7;">
-          Hi ${customerName || 'there'},
+        <p style="margin:0 0 5px;font-size:14px;color:#333;"><strong>Payment method:</strong> Payfast</p>
+        
+        <h2 style="margin:20px 0 10px;font-size:16px;color:#333;font-weight:bold;">Billing address</h2>
+        <p style="margin:0 0 30px;font-size:14px;color:#333;line-height:1.5;">
+          ${addressLines}
         </p>
 
-        <p style="margin:0 0 8px;font-size:14px;color:#555;line-height:1.7;">
-          Your payment of <strong style="color:#333;">R${amountGross}</strong> has been successfully received and confirmed.
+        <p style="margin:0 0 30px;font-size:14px;color:#333;">Thanks for shopping with us.</p>
+        
+        <p style="margin:0 0 5px;font-size:14px;color:#333;"><strong>Vitra Fruit</strong></p>
+        <p style="margin:0 0 20px;font-size:12px;color:#666;line-height:1.5;">
+          Thank you for shopping at Vitra Fruit!<br/><br/>
+          Need help?<br/>
+          WhatsApp: 078 404 5558<br/>
+          Mon-Fri: 8AM – 5PM<br/>
+          Email: info@vitrafruits.co.za<br/><br/>
+          Vitra Fruit | vitrafruits.co.za
         </p>
-
-        <p style="margin:0 0 0;font-size:14px;color:#555;line-height:1.7;">
-          We're now preparing your order. We'll be in touch with updates as soon as it's ready. If you have any questions, don't hesitate to reach out.
-        </p>
-      </td>
-    </tr>
-
-    <!-- Footer -->
-    <tr>
-      <td style="padding:32px 40px;border-top:1px solid #e8e2d6;margin-top:28px;">
-        <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#c09828;font-weight:700;">Questions about your order?</p>
-        <a href="mailto:orderinfo@vitrafruits.co.za" style="font-size:14px;color:#c03030;text-decoration:none;font-weight:600;">orderinfo@vitrafruits.co.za</a>
       </td>
     </tr>`;
 

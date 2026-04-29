@@ -484,10 +484,31 @@
       if (firstTime && subtotal > 0) {
         discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
       }
-      const grandTotal = subtotal - discountAmount;
+      const subtotalAfterDiscount = subtotal - discountAmount;
+      const shipping = subtotalAfterDiscount >= 850 ? 0 : 150;
+      const grandTotal = subtotalAfterDiscount + shipping;
 
       const vat = subtotal - subtotal / (1 + vatRate);
-      if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
+      
+      let shippingNote = '';
+      if (subtotalAfterDiscount >= 850) {
+        shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">✨ Free Artisan Shipping Unlocked!</div>';
+      } else {
+        const needed = 850 - subtotalAfterDiscount;
+        shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Artisan Shipping!</div>`;
+      }
+
+      if (subtotalEl) {
+        subtotalEl.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right;">
+            <span>${formatPrice(subtotal)} <span style="font-size: 0.8em; font-weight: 500;">(incl. VAT)</span></span>
+            <span style="font-size: 0.85em; color: var(--text-muted, #666); font-weight: 600;">
+              + ${shipping === 0 ? 'Free Shipping' : formatPrice(shipping) + ' Shipping'}
+            </span>
+            ${shippingNote}
+          </div>
+        `;
+      }
       if (discountRow) {
         if (firstTime && discountAmount > 0) {
           discountRow.style.display = 'flex';
@@ -645,18 +666,33 @@
     if (firstTime && subtotal > 0) {
       discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
     }
-    const grandTotal = subtotal - discountAmount;
+    const subtotalAfterDiscount = subtotal - discountAmount;
+    const shipping = subtotalAfterDiscount >= 850 ? 0 : 150; // Standard shipping or Free over R850
+    const grandTotal = subtotalAfterDiscount + shipping;
 
     const vat = subtotal - subtotal / (1 + vatRate);
-    if (subtotalEl) subtotalEl.textContent = `${formatPrice(subtotal)} (incl. VAT)`;
-    if (discountRow) {
-      if (firstTime && discountAmount > 0) {
-        discountRow.style.display = 'flex';
-        if (discountEl) discountEl.textContent = `-${formatPrice(discountAmount)}`;
-      } else {
-        discountRow.style.display = 'none';
-      }
+    
+    // Add free shipping progress indicator
+    let shippingNote = '';
+    if (subtotalAfterDiscount >= 850) {
+      shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">✨ Free Artisan Shipping Unlocked!</div>';
+    } else {
+      const needed = 850 - subtotalAfterDiscount;
+      shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Artisan Shipping!</div>`;
     }
+
+    if (subtotalEl) {
+      subtotalEl.innerHTML = `
+        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right;">
+          <span>${formatPrice(subtotal)} <span style="font-size: 0.8em; font-weight: 500;">(incl. VAT)</span></span>
+          <span style="font-size: 0.85em; color: var(--text-muted, #666); font-weight: 600;">
+            + ${shipping === 0 ? 'Free Shipping' : formatPrice(shipping) + ' Shipping'}
+          </span>
+          ${shippingNote}
+        </div>
+      `;
+    }
+    
     if (totalEl) totalEl.textContent = `${formatPrice(grandTotal)}`;
 
     if (payfastNote) {
@@ -695,6 +731,49 @@
       setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
       setField('name_last', billingLastName ? billingLastName.value.trim() : '');
       setField('email_address', billingEmail ? billingEmail.value.trim() : '');
+
+      const bFirst = billingFirstName ? billingFirstName.value.trim() : '';
+      const bLast = billingLastName ? billingLastName.value.trim() : '';
+      const bEmail = billingEmail ? billingEmail.value.trim() : '';
+      const bPhone = document.getElementById('billingPhone')?.value.trim() || '';
+      const bStreet = document.getElementById('billingStreet')?.value.trim() || '';
+      const bTown = document.getElementById('billingTown')?.value.trim() || '';
+      const bProv = document.getElementById('billingProvince')?.value.trim() || '';
+      const bPost = document.getElementById('billingPostcode')?.value.trim() || '';
+
+      const compactBilling = JSON.stringify({ f: bFirst, l: bLast, e: bEmail, p: bPhone, s: bStreet, t: bTown, pr: bProv, z: bPost });
+      const compactItems = JSON.stringify(cart.map(i => ({ n: i.name, q: i.quantity, p: i.price })));
+      
+      const chunkString = (str, len) => {
+        const size = Math.ceil(str.length / len);
+        const r = Array(size);
+        let offset = 0;
+        for (let i = 0; i < size; i++) {
+          r[i] = str.substring(offset, offset + len);
+          offset += len;
+        }
+        return r;
+      };
+      
+      const payloadStr = JSON.stringify({ b: JSON.parse(compactBilling), i: JSON.parse(compactItems), sub: subtotal, sh: shipping, d: discountAmount });
+      const chunks = chunkString(payloadStr, 250);
+      
+      const addHidden = (name, val) => {
+        let el = payfastForm.querySelector(`[name="${name}"]`);
+        if (!el) {
+          el = document.createElement('input');
+          el.type = 'hidden';
+          el.name = name;
+          payfastForm.appendChild(el);
+        }
+        el.value = val;
+      };
+
+      if(chunks[0]) addHidden('custom_str1', chunks[0]);
+      if(chunks[1]) addHidden('custom_str2', chunks[1]);
+      if(chunks[2]) addHidden('custom_str3', chunks[2]);
+      if(chunks[3]) addHidden('custom_str4', chunks[3]);
+      if(chunks[4]) addHidden('custom_str5', chunks[4]);
 
       if (!payfastForm.dataset.listenerAttached) {
         payfastForm.addEventListener('submit', async function (event) {
@@ -757,10 +836,11 @@
             const orderPayload = {
               billing: bData,
               shipping: sData,
-              deliveryMethod,
+              deliveryMethod: 'delivery',
               items: cart,
               subtotal: subtotal,
               discount: discountAmount,
+              shippingCost: shipping,
               total: grandTotal
             };
 

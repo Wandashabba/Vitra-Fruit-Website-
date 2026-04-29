@@ -376,16 +376,12 @@
       <div class="checkout-grid">
         <section class="billing-details">
           
-          <div id="checkoutAlert" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; font-weight: 600; line-height: 1.5;"></div>          <div style="margin-bottom: 35px;">
+          <div id="checkoutAlert" style="display: none; padding: 15px 20px; border-radius: 8px; margin-bottom: 30px; font-weight: 600; line-height: 1.5;"></div>          <div style="margin-bottom: 35px; display: none;">
             <span style="display: block; font-weight: 700; margin-bottom: 12px; font-size: 0.95rem; color: #111;">Delivery Method <span style="color: #c03030;">*</span></span>
             <div style="display: inline-flex; background: #f0f2f5; padding: 4px; border-radius: 99px; position: relative;">
               <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #fff; background: var(--palette-orange, #E88020); box-shadow: 0 4px 12px rgba(232, 128, 32, 0.3);" id="labelDelivery">
                 <input type="radio" name="deliveryMethodOptions" value="delivery" checked style="display: none;" />
                 Delivery
-              </label>
-              <label style="cursor: pointer; padding: 8px 24px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; transition: all 0.3s ease; color: #54618a; background: transparent; box-shadow: none;" id="labelCollection">
-                <input type="radio" name="deliveryMethodOptions" value="collection" style="display: none;" />
-                Collection
               </label>
             </div>
           </div>
@@ -505,46 +501,7 @@
         </section>
 
         <script>
-          // Basic UI toggle for delivery methods
-          document.addEventListener('DOMContentLoaded', () => {
-            const radios = document.querySelectorAll('input[name="deliveryMethodOptions"]');
-            const labelDelivery = document.getElementById('labelDelivery');
-            const labelCollection = document.getElementById('labelCollection');
-            const deliverToDifferent = document.getElementById('deliverToDifferent');
-            const shippingSection = document.getElementById('shippingSection');
-
-            radios.forEach(radio => {
-              radio.addEventListener('change', (e) => {
-                if (e.target.value === 'collection') {
-                  labelCollection.style.color = '#fff';
-                  labelCollection.style.background = 'var(--palette-orange, #E88020)';
-                  labelCollection.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
-                  
-                  labelDelivery.style.color = '#54618a';
-                  labelDelivery.style.background = 'transparent';
-                  labelDelivery.style.boxShadow = 'none';
-                  
-                  // Hide shipping section completely if collection
-                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'none';
-                  if (shippingSection) shippingSection.style.display = 'none';
-                } else {
-                  labelDelivery.style.color = '#fff';
-                  labelDelivery.style.background = 'var(--palette-orange, #E88020)';
-                  labelDelivery.style.boxShadow = '0 4px 12px rgba(232, 128, 32, 0.3)';
-                  
-                  labelCollection.style.color = '#54618a';
-                  labelCollection.style.background = 'transparent';
-                  labelCollection.style.boxShadow = 'none';
-
-                  // Restore shipping toggle
-                  if (deliverToDifferent) deliverToDifferent.parentElement.style.display = 'flex';
-                  if (deliverToDifferent && deliverToDifferent.checked && shippingSection) {
-                    shippingSection.style.display = 'grid';
-                  }
-                }
-              });
-            });
-          });
+          // Delivery logic removed
         </script>
 
         <aside class="order-summary">
@@ -601,10 +558,17 @@
                 <input type="hidden" name="item_description" value="" />
                 
                 <p data-checkout-note style="font-size: 0.75rem; color: #f26b6b; margin-bottom: 20px; font-weight: 600;"></p>
-                <button type="submit" class="place-order">Pay with PayFast</button>
+                <div style="margin-bottom: 20px; font-size: 0.8rem; display: flex; align-items: flex-start; gap: 10px;">
+                  <input type="checkbox" id="consentCheckbox" style="margin-top: 3px; cursor: pointer; width: 16px; height: 16px; accent-color: #f1b25a;" required />
+                  <label for="consentCheckbox" style="cursor: pointer; line-height: 1.4; color: var(--text-muted);">
+                    I agree to the <a href="/terms.html" style="color: #1c2550; font-weight: 600; text-decoration: underline;" target="_blank">Terms and Conditions</a>, 
+                    and understand my data will be used to process my order according to the Privacy Policy.
+                  </label>
+                </div>
+                <button type="submit" class="place-order" id="payfastBtn" disabled>Pay with PayFast</button>
              </form>
 
-             <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 25px; line-height: 1.5;">
+             <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 25px; line-height: 1.5; display: none;">
                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
              </p>
           </div>
@@ -761,16 +725,20 @@
 
     // Form Validation for PayFast button
     const billingForm = document.getElementById('billingForm');
-    const payfastBtn = document.querySelector('.place-order');
+    const payfastBtn = document.getElementById('payfastBtn');
+    const consentCheckbox = document.getElementById('consentCheckbox');
 
     function validateForm() {
-      const isValid = billingForm?.checkValidity();
+      const isFormValid = billingForm?.checkValidity();
+      const isConsentChecked = consentCheckbox?.checked;
+      
       if (payfastBtn) {
-        payfastBtn.disabled = !isValid;
+        payfastBtn.disabled = !(isFormValid && isConsentChecked);
       }
     }
 
     billingForm?.addEventListener('input', validateForm);
+    consentCheckbox?.addEventListener('change', validateForm);
     validateForm(); // initial check
   </script>
 </body>
