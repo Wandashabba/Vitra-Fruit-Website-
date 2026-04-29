@@ -810,8 +810,8 @@
       }
       .category-hero-media {
         justify-content: center;
-        width: 100%;
-        margin: 0 auto;
+        width: 100vw;
+        margin-left: calc(50% - 50vw);
         height: clamp(280px, 80vw, 480px);
       }
       .category-hero-video {
