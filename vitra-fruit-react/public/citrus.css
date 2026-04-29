@@ -413,7 +413,6 @@
     .category-hero .container {
       padding-right: 0;
       position: relative;
-      z-index: 1;
       height: 100%;
     }
     .category-hero-inner {
@@ -467,10 +466,10 @@
       height: 100%;
       display: block;
       object-fit: cover;
-      background: var(--citrus-hero-bg, #ffffff);
+      background: transparent;
       border-radius: 0;
       position: relative;
-      z-index: 1;
+      mix-blend-mode: multiply;
       -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 100%);
       mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 100%);
       -webkit-mask-repeat: no-repeat;
@@ -789,6 +788,7 @@
         margin: 0 auto;
         object-position: 50% 45%;
         transform: scale(1.08);
+        mix-blend-mode: multiply;
         -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
         mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 100%);
       }
