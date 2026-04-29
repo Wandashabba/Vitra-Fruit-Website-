@@ -58,16 +58,7 @@ module.exports = async function handler(req, res) {
       attachments,
     });
 
-    // --- Customer confirmation email ---
-    const customerHtml = buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total });
-
-    await transporter.sendMail({
-      from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
-      to: billing.email,
-      subject: `Order Received — ${orderId}`,
-      html: customerHtml,
-      attachments,
-    });
+    // --- Customer confirmation email removed (now handled after payment success) ---
 
     return res.status(200).json({ success: true, orderId });
   } catch (err) {
@@ -184,8 +175,8 @@ function emailWrapper(content) {
     <!DOCTYPE html>
     <html lang="en">
     <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-    <body style="margin:0;padding:0;background:#f5f0e8;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">
-      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#f5f0e8;">
+    <body style="margin:0;padding:0;background:#ffffff;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background:#ffffff;">
         <tr><td align="center" style="padding:32px 16px;">
           <table width="600" cellpadding="0" cellspacing="0" role="presentation" style="max-width:600px;width:100%;background:#ffffff;">
             ${content}
