@@ -329,19 +329,49 @@ function Navbar({ cartCount = 0 }) {
             </li>
           </ul>
 
-          <button
-            className={`navbar-toggler ${isOpen ? "is-open" : ""}`}
-            type="button"
-            aria-expanded={isOpen}
-            aria-label="Toggle navigation"
-            onClick={() => setIsOpen((current) => !current)}
-          >
-            <span className="navbar-toggler-icon">
-              <span className="toggler-line" />
-              <span className="toggler-line" />
-              <span className="toggler-line" />
-            </span>
-          </button>
+          <div className="navbar-mobile-start">
+            <button
+              className={`navbar-toggler ${isOpen ? "is-open" : ""}`}
+              type="button"
+              aria-expanded={isOpen}
+              aria-label="Toggle navigation"
+              onClick={() => setIsOpen((current) => !current)}
+            >
+              <span className="navbar-toggler-icon">
+                <span className="toggler-line" />
+                <span className="toggler-line" />
+                <span className="toggler-line" />
+              </span>
+            </button>
+            <a
+              className="nav-icon-link nav-shop-link"
+              href="#shop"
+              aria-label="Shop"
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToShop();
+              }}
+            >
+              <svg className="nav-shop-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M6 7h12l-1 12.2a2 2 0 0 1-2 1.8H9a2 2 0 0 1-2-1.8L6 7z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 7V5.2A3 3 0 0 1 12 2.2A3 3 0 0 1 15 5.2V7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
 
           <div className="navbar-actions">
             <button

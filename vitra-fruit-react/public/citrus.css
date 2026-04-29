@@ -773,7 +773,7 @@
       }
       .category-hero-copy {
         flex-basis: auto;
-        padding: 18px 0;
+        padding: 140px 0 18px;
         padding-right: 0;
         align-items: center;
       }

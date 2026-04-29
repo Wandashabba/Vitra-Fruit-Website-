@@ -108,9 +108,9 @@ textarea:focus-visible {
   position: relative;
   background: #ffffff;
   color: #fff;
-  height: 130vh;
+  height: 110vh;
   text-align: center;
-  margin-top: -80px;
+  margin-top: -130px;
 }
 
 .hero-sticky {
@@ -123,8 +123,8 @@ textarea:focus-visible {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 180px 20px clamp(60px, 10vh, 110px);
-  padding: 180px 20px clamp(60px, 10svh, 110px);
+  padding: clamp(40px, 7vh, 80px) 20px clamp(60px, 10vh, 110px);
+  padding: clamp(40px, 7svh, 80px) 20px clamp(60px, 10svh, 110px);
 }
 
 .hero-canvas {
@@ -230,8 +230,8 @@ textarea:focus-visible {
   font-weight: 700;
   letter-spacing: 0.01em;
   max-width: 12ch;
-  color: var(--palette-cream);
-  text-shadow: 0 16px 40px rgba(6, 10, 24, 0.6), 0 4px 12px rgba(6, 10, 24, 0.45);
+  color: #ffffff;
+  text-shadow: 0 10px 26px rgba(0, 0, 0, 0.72), 0 3px 8px rgba(0, 0, 0, 0.65);
   text-align: left;
 }
 
@@ -268,7 +268,7 @@ textarea:focus-visible {
 /* Overflow-hidden clip for split-text word reveal */
 .hero-word-clip {
   display: inline-block;
-  overflow: hidden;
+  overflow: visible;
   vertical-align: bottom;
   padding-bottom: 0.06em;
 }
@@ -277,6 +277,12 @@ textarea:focus-visible {
   display: inline-block;
   margin-bottom: 0;
   will-change: transform, opacity, filter;
+}
+
+@media (min-width: 1100px) {
+  .hero-content {
+    top: 40px;
+  }
 }
 
 .btn {
@@ -1351,6 +1357,11 @@ textarea:focus-visible {
 }
 
 @media (max-width: 768px) {
+  .hero-kicker {
+    position: relative;
+    top: -145px;
+  }
+
   .welcome-strip {
     padding: 44px 0;
   }
@@ -1811,6 +1822,8 @@ textarea:focus-visible {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    top: -145px;
   }
 
   .hero-copy-left,

@@ -36,7 +36,53 @@
     .qty-input { width: 45px; text-align: center; border: none; font-weight: 800; font-size: 1rem; font-family: inherit; }
     .btn-cart { flex: 1; padding: 18px 35px; background: linear-gradient(135deg, #c03030, #e88020); color: #f5f0e8; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.85rem; cursor: pointer; box-shadow: 0 10px 20px rgba(192, 48, 48, 0.3); transition: all 0.3s ease; }
     .btn-cart:hover { background: linear-gradient(135deg, #e88020, #c03030); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(232, 128, 32, 0.4); }
-    @media (max-width: 1000px) { .product-shell { grid-template-columns: 1fr; gap: 60px; } .product-media { padding: 18px 32px 24px; margin-top: -8px; } .product-media img { max-width: 180px; } .product-info h1 { font-size: 2.1rem; line-height: 1.1; margin-bottom: 15px; } }
+    @media (max-width: 1000px) {
+      .product-shell {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .product-media {
+        padding: 20px;
+        border-radius: 24px;
+        margin-top: 0;
+      }
+      .product-media img {
+        max-width: 180px;
+      }
+      .product-info h1 {
+        font-size: 3rem;
+      }
+      .product-page {
+        padding: 160px 0 50px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .product-shell {
+        gap: 12px;
+      }
+      .product-media {
+        padding: 16px 12px;
+        border-radius: 20px;
+      }
+      .product-media img {
+        max-width: 150px;
+      }
+      .product-info h1 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+      }
+      .product-page {
+        padding: 150px 0 40px;
+      }
+      .actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .btn-cart {
+        width: 100%;
+        text-align: center;
+      }
+    }
     .footer { background: linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)), image-set(url('/images/footer-960.avif') type('image/avif') 1x, url('/images/footer.avif') type('image/avif') 2x, url('/images/footer-960.webp') type('image/webp') 1x, url('/images/footer.webp') type('image/webp') 2x, url('/images/footer.jpg') type('image/jpeg') 1x); background-size: cover; background-position: center; background-repeat: no-repeat; color: #fff; padding: 2.2rem 20px 0.9rem; font-family: var(--font-body); margin-top: 60px; }
     .footer-content { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 1.4rem; text-align: center; }
     .footer-col h4 { margin-bottom: 0.8rem; color: #ffffff; font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
@@ -67,7 +113,15 @@
           <li class="nav-item"><a class="nav-link cart-link" href="cart.html"><svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" /><circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" /></svg><span>Cart</span><span class="nav-count" data-cart-count>0</span></a></li>
           <li class="nav-item nav-item-icon"><button class="nav-icon-button nav-search-button" type="button" aria-label="Search products" aria-expanded="false" aria-controls="nav-search-panel"><svg class="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></button></li>
         </ul>
-        <button class="navbar-toggler" type="button" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><span class="toggler-line"></span><span class="toggler-line"></span><span class="toggler-line"></span></span></button>
+        <div class="navbar-mobile-start">
+          <button class="navbar-toggler" type="button" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><span class="toggler-line"></span><span class="toggler-line"></span><span class="toggler-line"></span></span></button>
+                <a class="nav-icon-link nav-shop-link" href="index.html#shop" aria-label="Shop">
+            <svg class="nav-shop-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 7h12l-1 12.2a2 2 0 0 1-2 1.8H9a2 2 0 0 1-2-1.8L6 7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 7V5.2A3 3 0 0 1 12 2.2A3 3 0 0 1 15 5.2V7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+        </div>
         <div class="navbar-actions">
           <button class="nav-icon-button nav-search-button" type="button" aria-label="Search products" aria-expanded="false" aria-controls="nav-search-panel"><svg class="nav-search-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M16.3 16.3L21 21" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></button>
           <a class="nav-icon-link nav-cart-link" href="cart.html" aria-label="View cart"><svg class="nav-cart-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 5h2l1.3 7.3a2 2 0 0 0 2 1.7h7.2a2 2 0 0 0 1.9-1.4l1.4-4.8H7.2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /><circle cx="9.2" cy="18.4" r="1.4" fill="currentColor" /><circle cx="16.6" cy="18.4" r="1.4" fill="currentColor" /></svg><span class="nav-count" data-cart-count>0</span></a>

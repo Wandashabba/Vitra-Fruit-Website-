@@ -75,9 +75,6 @@ function Hero() {
   /* Canvas image: scale slightly (1.0 to 1.05) and rise faster on Y-axis */
   const canvasScaleRaw = useTransform(scrollYProgress, [0, 0.6], [1.0, 1.05]);
   const canvasScale = useSpring(canvasScaleRaw, SPRING);
-  
-  const canvasYRaw = useTransform(scrollYProgress, [0, 1], [0, -250]);
-  const canvasY = useSpring(canvasYRaw, SPRING);
 
   const contentOpacityRaw = useTransform(scrollYProgress, [0.65, 0.85], [1, 0]);
   const contentOpacity = useSpring(contentOpacityRaw, SPRING);
@@ -238,7 +235,7 @@ function Hero() {
           ref={canvasRef}
           className="hero-canvas"
           aria-hidden="true"
-          style={{ scale: canvasScale, y: canvasY }}
+          style={{ scale: canvasScale }}
         />
 
         {/* Content overlay */}
