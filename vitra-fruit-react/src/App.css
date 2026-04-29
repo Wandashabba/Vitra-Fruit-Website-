@@ -1359,7 +1359,7 @@ textarea:focus-visible {
 @media (max-width: 768px) {
   .hero-kicker {
     position: relative;
-    top: -120px;
+    top: -145px;
   }
 
   .welcome-strip {
@@ -1823,7 +1823,7 @@ textarea:focus-visible {
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    top: -120px;
+    top: -145px;
   }
 
   .hero-copy-left,

@@ -36,7 +36,53 @@
     .qty-input { width: 45px; text-align: center; border: none; font-weight: 800; font-size: 1rem; font-family: inherit; }
     .btn-cart { flex: 1; padding: 18px 35px; background: linear-gradient(135deg, #c03030, #e88020); color: #f5f0e8; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 999px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.85rem; cursor: pointer; box-shadow: 0 10px 20px rgba(192, 48, 48, 0.3); transition: all 0.3s ease; }
     .btn-cart:hover { background: linear-gradient(135deg, #e88020, #c03030); transform: translateY(-3px); box-shadow: 0 15px 30px rgba(232, 128, 32, 0.4); }
-    @media (max-width: 1000px) { .product-shell { grid-template-columns: 1fr; gap: 60px; } .product-media { padding: 18px 32px 24px; margin-top: -8px; } .product-media img { max-width: 240px; } .product-info h1 { font-size: 2.1rem; line-height: 1.1; margin-bottom: 15px; } }
+    @media (max-width: 1000px) {
+      .product-shell {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .product-media {
+        padding: 20px;
+        border-radius: 24px;
+        margin-top: 0;
+      }
+      .product-media img {
+        max-width: 240px;
+      }
+      .product-info h1 {
+        font-size: 3rem;
+      }
+      .product-page {
+        padding: 160px 0 50px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .product-shell {
+        gap: 12px;
+      }
+      .product-media {
+        padding: 16px 12px;
+        border-radius: 20px;
+      }
+      .product-media img {
+        max-width: 210px;
+      }
+      .product-info h1 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+      }
+      .product-page {
+        padding: 150px 0 40px;
+      }
+      .actions {
+        flex-direction: column;
+        gap: 12px;
+      }
+      .btn-cart {
+        width: 100%;
+        text-align: center;
+      }
+    }
     .footer { background: linear-gradient(135deg, rgba(128, 32, 80, 0.85), rgba(96, 120, 72, 0.75)), image-set(url('/images/footer-960.avif') type('image/avif') 1x, url('/images/footer.avif') type('image/avif') 2x, url('/images/footer-960.webp') type('image/webp') 1x, url('/images/footer.webp') type('image/webp') 2x, url('/images/footer.jpg') type('image/jpeg') 1x); background-size: cover; background-position: center; background-repeat: no-repeat; color: #fff; padding: 2.2rem 20px 0.9rem; font-family: var(--font-body); margin-top: 60px; }
     .footer-content { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 1.4rem; text-align: center; }
     .footer-col h4 { margin-bottom: 0.8rem; color: #ffffff; font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; }
