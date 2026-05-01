@@ -492,10 +492,10 @@
       
       let shippingNote = '';
       if (subtotalAfterDiscount >= 850) {
-        shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">✨ Free Artisan Shipping Unlocked!</div>';
+        shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">Free Shipping Unlocked!</div>';
       } else {
         const needed = 850 - subtotalAfterDiscount;
-        shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Artisan Shipping!</div>`;
+        shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Shipping!</div>`;
       }
 
       if (subtotalEl) {
@@ -675,10 +675,10 @@
     // Add free shipping progress indicator
     let shippingNote = '';
     if (subtotalAfterDiscount >= 850) {
-      shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">✨ Free Artisan Shipping Unlocked!</div>';
+      shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">Free Shipping Unlocked!</div>';
     } else {
       const needed = 850 - subtotalAfterDiscount;
-      shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Artisan Shipping!</div>`;
+      shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Shipping!</div>`;
     }
 
     if (subtotalEl) {
