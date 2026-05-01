@@ -580,3 +580,29 @@
 .mobile-nav {
   font-family: var(--font-body);
 }
+
+/* Product Form Styles (Global) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0 14px;
+}
+.field label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: #555e7d;
+}
+.select {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  background: #fff;
+  color: #1c2550;
+  appearance: auto;
+  -webkit-appearance: auto;
+}
