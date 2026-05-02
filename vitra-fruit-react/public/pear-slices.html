@@ -177,7 +177,7 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/PearSlices.png" alt="Dehydrated Pear Slices" />
+          <img src="/images/Pear.png" alt="Dehydrated Pear Slices" />
         </div>
         <div class="product-info">
           <h1>Dehydrated Pear Slices</h1>
@@ -234,7 +234,7 @@
       function addItemToCart(item) { const cart = loadCart(); const existing = cart.find((it) => it.id === item.id); if (existing) { existing.quantity = (existing.quantity || 0) + item.quantity; } else { cart.push(item); } saveCart(cart); }
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10)); const size = sizeSelect?.value || '100g'; const price = updatePrice();
-        addItemToCart({ id: `dehydrated-pear-slices__${size}`, name: 'Dehydrated Pear Slices', price, size, image: '/images/PearSlices.png', quantity: qty });
+        addItemToCart({ id: `dehydrated-pear-slices__${size}`, name: 'Dehydrated Pear Slices', price, size, image: '/images/Pear.png', quantity: qty });
         if (toastText) { toastText.textContent = 'Dehydrated Pear Slices added to cart'; }
         toast.classList.add('is-visible'); setTimeout(() => toast.classList.remove('is-visible'), 3000);
       });
