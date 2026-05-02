@@ -19,6 +19,29 @@
     html { scroll-behavior: smooth; scroll-padding-top: 120px; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     .product-page { padding: 0 0 80px; }
+    .product-disclaimer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 12px 0 0;
+      padding: 0;
+    }
+    .product-disclaimer-asterisk {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      line-height: 1;
+    }
+    .product-disclaimer-text {
+      font-size: 0.7rem;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      opacity: 0.75;
+    }
     .product-shell { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 80px; align-items: center; }
     .product-media { position: relative; display: flex; justify-content: center; align-items: center; background: var(--page-bg); border-radius: 40px; padding: 0px 60px 0; margin-top: -30px; transition: transform 0.2s ease; }
     .product-media img { width: 100%; max-width: 220px; height: auto; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.12)); z-index: 2; }
@@ -147,6 +170,10 @@
               <option value="200g" data-price="180">200g</option>
               <option value="1kg" data-price="980">1kg</option>
             </select>
+          </div>
+          <div class="product-disclaimer">
+            <span class="product-disclaimer-asterisk">*</span>
+            <p class="product-disclaimer-text">Product packaging may vary.</p>
           </div>
           <div class="divider"></div>
           <ul class="product-features">

@@ -21,6 +21,29 @@
       --text-main: #1c2550;
       --text-muted: #555e7d;
     }
+    .product-disclaimer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 12px 0 0;
+      padding: 0;
+    }
+    .product-disclaimer-asterisk {
+      flex-shrink: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      line-height: 1;
+    }
+    .product-disclaimer-text {
+      font-size: 0.7rem;
+      font-weight: 500;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      opacity: 0.75;
+    }
     body {
       font-family: var(--font-body);
       color: var(--text-main);
@@ -507,6 +530,10 @@
               <option value="100g" data-price="120">100g</option>
               <option value="1kg" data-price="580">1kg</option>
             </select>
+          </div>
+          <div class="product-disclaimer">
+            <span class="product-disclaimer-asterisk">*</span>
+            <p class="product-disclaimer-text">Product packaging may vary.</p>
           </div>
           <div class="divider"></div>
 
