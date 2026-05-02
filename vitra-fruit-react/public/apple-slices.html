@@ -410,7 +410,7 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/AppleSlices.png" alt="Dehydrated Apple Slices" />
+          <img src="/images/Apple.png" alt="Dehydrated Apple Slices" />
         </div>
         <div class="product-info">
           <h1>Dehydrated Apple Slices</h1>
@@ -554,7 +554,7 @@
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
         const size = sizeSelect?.value || '100g';
         const price = updatePrice();
-        addItemToCart({ id: `dehydrated-apple-slices__${size}`, name: 'Dehydrated Apple Slices', price, size, image: '/images/AppleSlices.png', quantity: qty });
+        addItemToCart({ id: `dehydrated-apple-slices__${size}`, name: 'Dehydrated Apple Slices', price, size, image: '/images/Apple.png', quantity: qty });
         if (toastText) { toastText.textContent = 'Dehydrated Apple Slices added to cart'; }
         toast.classList.add('is-visible');
         setTimeout(() => toast.classList.remove('is-visible'), 3000);
