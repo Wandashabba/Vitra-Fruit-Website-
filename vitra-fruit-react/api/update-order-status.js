@@ -50,7 +50,7 @@ module.exports = async function handler(req, res) {
     });
 
     await transporter.sendMail({
-      from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
+      from: `"VitraFruits" <${process.env.SMTP_USER}>`,
       to: customerEmail,
       subject,
       html,
@@ -106,7 +106,7 @@ function emailWrapper(content) {
             ${content}
           </table>
           <p style="margin:24px 0 0;font-size:12px;color:#999;text-align:center;">
-            &copy; ${new Date().getFullYear()} Vitra Fruit &middot; Proudly South African
+            &copy; ${new Date().getFullYear()} VitraFruits &middot; Proudly South African
           </p>
         </td></tr>
       </table>
@@ -155,7 +155,7 @@ function buildStatusEmail({ orderId, customerName, status, trackingNumber, track
     <!-- Header -->
     <tr>
       <td style="padding:32px 40px;text-align:center;border-bottom:3px solid ${config.accentColor};">
-        <img src="cid:vitra-logo" alt="Vitra Fruit" style="height:90px;border-radius:14px;" />
+        <img src="cid:vitra-logo" alt="VitraFruits" style="height:90px;border-radius:14px;" />
       </td>
     </tr>
 

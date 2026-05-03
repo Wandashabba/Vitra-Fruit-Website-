@@ -61,13 +61,16 @@ module.exports = async function handler(req, res) {
       },
     });
 
+    const attachments = await buildEmailAttachments(publicSiteUrl);
+
     // Notify customer: payment received
     if (customerEmail) {
       await transporter.sendMail({
-        from: `"Vitra Fruit" <${process.env.SMTP_USER}>`,
+        from: `"VitraFruits" <${process.env.SMTP_USER}>`,
         to: customerEmail,
         subject: `Good things are heading your way! Order ${orderId}`,
-        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData }),
+        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData, publicSiteUrl }),
+        attachments,
       });
     }
 
@@ -192,7 +195,7 @@ function emailWrapper(content) {
     </html>`;
 }
 
-function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData }) {
+function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData, publicSiteUrl }) {
   const dateStr = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   const b = orderData?.b || {};
   const items = orderData?.i || [];
@@ -238,13 +241,15 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
     const content = `
       <tr>
         <td style="padding:0 0 20px 0;">
-          <h1 style="margin:0 0 20px;font-size:24px;color:#333;font-weight:normal;">Vitra Fruit</h1>
+          <div style="margin:0 0 20px;">
+            <img src="cid:vitra-logo" alt="VitraFruits" width="150" style="display:block; max-width:100%; border-radius:12px;" />
+          </div>
           <p style="margin:0 0 20px;font-size:16px;color:#333;"><strong>Good things are heading your way!</strong></p>
           <p style="margin:0 0 20px;font-size:14px;color:#333;">Hi ${b.f || customerName || 'there'},</p>
           <p style="margin:0 0 20px;font-size:14px;color:#333;">We have finished processing your order.</p>
           
           <p style="margin:0 0 30px;font-size:14px;color:#333;background:#f9f9f9;padding:15px;border-radius:8px;">
-            The estimated delivery date is between <strong>${startDeliveryStr}</strong> and <strong>${endDeliveryStr}</strong>. It must be 1-5 days delivery.
+            The estimated delivery date is between <strong>${startDeliveryStr}</strong> and <strong>${endDeliveryStr}</strong>. It must take 1-5 days delivery.
           </p>
         
         <p style="margin:0 0 15px;font-size:14px;color:#333;">Here’s a reminder of what you’ve ordered:</p>
@@ -296,14 +301,14 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
 
         <p style="margin:0 0 30px;font-size:14px;color:#333;">Thanks for shopping with us.</p>
         
-        <p style="margin:0 0 5px;font-size:14px;color:#333;"><strong>Vitra Fruit</strong></p>
+        <p style="margin:0 0 5px;font-size:14px;color:#333;"><strong>VitraFruits</strong></p>
         <p style="margin:0 0 20px;font-size:12px;color:#666;line-height:1.5;">
-          Thank you for shopping at Vitra Fruit!<br/><br/>
+          Thank you for shopping at VitraFruits!<br/><br/>
           Need help?<br/>
           WhatsApp: 078 404 5558<br/>
           Mon-Fri: 8AM – 5PM<br/>
           Email: info@vitrafruits.co.za<br/><br/>
-          Vitra Fruit | vitrafruits.co.za
+          VitraFruits | vitrafruits.co.za
         </p>
       </td>
     </tr>`;
