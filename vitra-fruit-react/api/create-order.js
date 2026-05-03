@@ -33,34 +33,41 @@ module.exports = async function handler(req, res) {
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     const orderId = `VF-${timestamp}-${random}`;
 
-    // Build email transporter
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
-      },
-    });
+    // Attempt to send the shop owner notification email (non-blocking).
+    // The order must still succeed even if the mail server is temporarily unavailable.
+    let emailSent = false;
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587', 10),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
+        },
+        connectionTimeout: 10000, // 10s connect timeout
+        socketTimeout: 15000,     // 15s socket timeout
+      });
 
-    await transporter.verify();
-    const attachments = await buildEmailAttachments(publicSiteUrl);
+      await transporter.verify();
+      const attachments = await buildEmailAttachments(publicSiteUrl);
 
-    // --- Shop owner email ---
-    const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
+      const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
 
-    await transporter.sendMail({
-      from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
-      to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
-      subject: `New Order ${orderId} — ${deliveryMethod === 'collection' ? 'COLLECTION' : 'DELIVERY'} — R${total.toFixed(2)}`,
-      html: shopHtml,
-      attachments,
-    });
+      await transporter.sendMail({
+        from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
+        to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
+        subject: `New Order ${orderId} — ${deliveryMethod === 'collection' ? 'COLLECTION' : 'DELIVERY'} — R${total.toFixed(2)}`,
+        html: shopHtml,
+        attachments,
+      });
+      emailSent = true;
+    } catch (emailErr) {
+      // Log but don't fail the order — the customer must still be able to pay
+      console.error('Order notification email failed (non-blocking):', emailErr.message || emailErr);
+    }
 
-    // --- Customer confirmation email removed (now handled after payment success) ---
-
-    return res.status(200).json({ success: true, orderId });
+    return res.status(200).json({ success: true, orderId, emailSent });
   } catch (err) {
     console.error('Create order error:', err);
     return res.status(500).json({

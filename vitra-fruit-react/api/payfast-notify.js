@@ -50,28 +50,35 @@ module.exports = async function handler(req, res) {
       console.error('ITN: Failed to parse custom payload', e);
     }
 
-    // Setup email
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
-      },
-    });
-
-    const attachments = await buildEmailAttachments(publicSiteUrl);
-
-    // Notify customer: payment received
-    if (customerEmail) {
-      await transporter.sendMail({
-        from: `"VitraFruits" <${process.env.SMTP_USER}>`,
-        to: customerEmail,
-        subject: `Good things are heading your way! Order ${orderId}`,
-        html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData, publicSiteUrl }),
-        attachments,
+    // Setup email — use timeouts and graceful handling so transient
+    // DNS issues (e.g. EBUSY on mail.vitrafruits.co.za) don't break the ITN.
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT || '587', 10),
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
+        },
+        connectionTimeout: 10000, // 10s connect timeout
+        socketTimeout: 15000,     // 15s socket timeout
       });
+
+      const attachments = await buildEmailAttachments(publicSiteUrl);
+
+      // Notify customer: payment received
+      if (customerEmail) {
+        await transporter.sendMail({
+          from: `"VitraFruits" <${process.env.SMTP_USER}>`,
+          to: customerEmail,
+          subject: `Good things are heading your way! Order ${orderId}`,
+          html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData, publicSiteUrl }),
+          attachments,
+        });
+      }
+    } catch (emailErr) {
+      console.error('ITN: Customer confirmation email failed (non-blocking):', emailErr.message || emailErr);
     }
 
     return res.status(200).send('OK');
