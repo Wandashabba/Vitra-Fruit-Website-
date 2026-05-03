@@ -550,8 +550,8 @@
         margin: 0;
       }
       .navbar-logo img {
-        height: 58px;
-        border-radius: 12px;
+        height: 96px;
+        border-radius: 16px;
       }
       .navbar-actions {
         justify-self: end;
