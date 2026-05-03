@@ -751,26 +751,24 @@
         margin-left: auto;
       }
       .products-strip .product-grid {
-        grid-template-columns: minmax(0, 95vw);
+        grid-template-columns: minmax(0, 85vw);
       }
       .products-strip .product-card {
-        max-width: 95vw;
+        max-width: 85vw;
       }
       .products-strip .product-card img {
         width: 100% !important;
-        height: auto !important;
+        height: 280px !important;
         max-width: none !important;
         max-height: none !important;
         object-fit: contain !important;
         padding: 0;
-        transform: scale(1.4) !important;
       }
       .products-strip .slice-card-lime img {
-        width: 70% !important;
+        height: 220px !important;
       }
       .products-strip .bottle-media {
-        height: auto;
-        min-height: 200px;
+        height: 360px;
         padding-bottom: 52px;
         overflow: hidden;
       }
