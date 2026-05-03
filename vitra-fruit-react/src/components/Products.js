@@ -5,8 +5,7 @@ import aboutUsWebp from '../assets/images/about-us.webp';
 import aboutUsAvif from '../assets/images/about-us.avif';
 import homepageOr from '../assets/images/OrangePleaser.webp';
 import homepageLi from '../assets/images/Pleaser4.webp';
-import grapefruitFront from '../assets/images/NewGrapefruitsSlices-Photoroom.webp';
-import lemonFront from '../assets/images/LemonFront.webp';
+
 import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.webp';
 
 const favouriteProducts = [
@@ -15,7 +14,7 @@ const favouriteProducts = [
     note: 'Sweet and mellow',
     price: 'R120 - R580',
     href: 'lemon-slices.html',
-    imageSrc: lemonFront,
+    imageSrc: '/images/Lemon.png',
     imageAlt: 'Lemon product front',
     graphicVariant: 'grapefruit'
   },
@@ -33,7 +32,7 @@ const favouriteProducts = [
     note: 'Floral and vibrant',
     price: 'R120 - R580',
     href: 'grapefruit-slices.html',
-    imageSrc: grapefruitFront,
+    imageSrc: '/images/Grapefruit.png',
     imageAlt: 'Grapefruit product front',
     graphicVariant: 'grapefruit'
   },

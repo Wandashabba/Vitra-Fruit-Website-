@@ -659,10 +659,10 @@
     }
     /* Uniform sizing for dehydrated fruit product images — match citrus */
     .dried-product-img {
-      width: 100% !important;
-      height: 100% !important;
-      max-width: 220px !important;
-      max-height: 320px !important;
+      width: 115% !important;
+      height: 440px !important;
+      max-width: none !important;
+      max-height: none !important;
       object-fit: contain !important;
       object-position: center center !important;
       display: block !important;
