@@ -751,25 +751,27 @@
         margin-left: auto;
       }
       .products-strip .product-grid {
-        grid-template-columns: minmax(0, 320px);
+        grid-template-columns: minmax(0, 95vw);
       }
       .products-strip .product-card {
-        max-width: 320px;
+        max-width: 95vw;
       }
       .products-strip .product-card img {
         width: 100% !important;
-        height: 320px !important;
+        height: auto !important;
         max-width: none !important;
         max-height: none !important;
         object-fit: contain !important;
         padding: 0;
+        transform: scale(1.4) !important;
       }
       .products-strip .slice-card-lime img {
-        height: 240px !important;
+        width: 70% !important;
       }
       .products-strip .bottle-media {
-        height: 400px;
-        padding-bottom: 72px;
+        height: auto;
+        min-height: 200px;
+        padding-bottom: 52px;
         overflow: hidden;
       }
     }
