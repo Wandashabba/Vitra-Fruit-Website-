@@ -758,18 +758,21 @@
       }
       .products-strip .product-card img {
         width: 100% !important;
-        height: 280px !important;
+        height: auto !important;
         max-width: none !important;
         max-height: none !important;
         object-fit: contain !important;
         padding: 0;
       }
       .products-strip .slice-card-lime img {
-        height: 220px !important;
+        width: 40% !important;
+        margin: 0 auto;
+        display: block;
       }
       .products-strip .bottle-media {
-        height: 360px;
-        padding-bottom: 52px;
+        height: auto;
+        min-height: 0;
+        padding-bottom: 64px;
         overflow: hidden;
       }
     }
