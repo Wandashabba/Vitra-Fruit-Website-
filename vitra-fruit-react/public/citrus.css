@@ -660,6 +660,7 @@
       position: absolute;
       left: 50%;
       bottom: 14px;
+      z-index: 2;
       transform: translateX(-50%) translateY(10px) scale(0.985);
       opacity: 0;
       pointer-events: none;
@@ -756,12 +757,20 @@
         max-width: 320px;
       }
       .products-strip .product-card img {
-        height: 100%;
+        width: 100% !important;
+        height: 320px !important;
+        max-width: none !important;
+        max-height: none !important;
+        object-fit: contain !important;
         padding: 0;
       }
+      .products-strip .slice-card-lime img {
+        height: 240px !important;
+      }
       .products-strip .bottle-media {
-        height: clamp(340px, 82vw, 420px);
+        height: 400px;
         padding-bottom: 72px;
+        overflow: hidden;
       }
     }
     @media (max-width: 820px) {
