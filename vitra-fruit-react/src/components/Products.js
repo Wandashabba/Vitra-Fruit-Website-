@@ -201,21 +201,20 @@ function Products() {
           <p className="featured-kicker featured-kicker-top reveal">Our Story</p>
           <div className="featured-products-content founder-layout">
             <div className="founder-text reveal-left">
-              <h2>A Message from Our Founder</h2>
               <p className="featured-copy">
-                Long before sustainability became a global conversation, I understood that preservation protects dignity and extending shelf life protects families and reducing waste protects resources.
+                Long before sustainability became a global conversation, I understood that food preservation protects dignity, that extending shelf life protects families, and that reducing waste is essential.
               </p>
               <p className="featured-copy">
-                Years later, that foundation became VitraFruits. What was once a sun-drying in rural homesteads has evolved into a modern agro-processing business but the principles remain the same:
+                VitraFruits rescues surplus and imperfect products through a careful, slow dehydration process. We produce dehydrated citrus wheels, vegetable powders, and crisps, thoughtfully crafted and sold to health-conscious consumers. Our products contain no preservatives and no added sugar, remaining true to their natural integrity.
               </p>
               <p className="featured-copy">
-                VitraFruits is deeply personal to me because it reflects how I was raised. It reflects resilience, responsibility and the belief that food carries effort, labour, land, and rain. We honour all of that by ensuring it is not wasted.
+                VitraFruits is deeply personal to me because it does not only reflect how I was raised, it embodies resilience, responsibility, and the enduring belief that food carries effort, labour, land, and rain.
               </p>
               <p className="featured-copy">
-                Today, we transform fresh produce into premium dehydrated fruits, powders, crisps, and functional ingredients. But behind every product is a philosophy rooted in lived experience.
+                Our story, in every pack, is a philosophy rooted in lived experience and shaped by purpose.
               </p>
               <p className="featured-copy">
-                Reducing food waste is not a marketing message for VitraFruits. It is my story.
+                Reducing food waste is not merely a marketing message for VitraFruits, it is my story.
               </p>
               <div className="founder-signoff-block">
                 <p className="founder-signoff">
