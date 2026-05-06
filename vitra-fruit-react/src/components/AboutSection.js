@@ -11,7 +11,7 @@ function AboutSection() {
               VitraFruits is a proudly South African, black female-owned business founded in Cape Town, with roots from Pretoria. We produce premium dehydrated fruits, powders, crisps and functional ingredients that preserve flavour, quality and value.
             </p>
             <p className="featured-copy">
-              Our purpose is simple: reduce food waste through sustainable preservation while delivering versatile products for homes, food service and wellness-focused brands.
+              Our purpose is simple, reduce food waste through sustainable preservation while delivering versatile products for homes, food service and wellness-focused brands.
             </p>
             <p className="founder-quote">
               “Preserving flavour is how we honour the land, the labour, and the families behind every harvest.”
