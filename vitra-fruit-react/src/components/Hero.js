@@ -198,9 +198,36 @@ function Hero() {
       for (let i = 0; i < TOTAL_FRAMES; i += 1) {
         if (!priority.includes(i)) priority.push(i);
       }
-      priority.forEach((i) => {
-        queue[i].src = FRAME_PATH(i);
-      });
+
+      // Frame 0 paints the hero — load it immediately with high priority.
+      const firstIndex = priority[0];
+      queue[firstIndex].fetchPriority = 'high';
+      queue[firstIndex].src = FRAME_PATH(firstIndex);
+
+      // Defer the remaining frames until the browser is idle / page has loaded,
+      // so they don't compete with first-paint resources.
+      const loadRest = () => {
+        for (let p = 1; p < priority.length; p += 1) {
+          const i = priority[p];
+          queue[i].fetchPriority = 'low';
+          queue[i].src = FRAME_PATH(i);
+        }
+      };
+      if (document.readyState === 'complete') {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(loadRest, { timeout: 1500 });
+        } else {
+          setTimeout(loadRest, 0);
+        }
+      } else {
+        window.addEventListener('load', () => {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(loadRest, { timeout: 1500 });
+          } else {
+            setTimeout(loadRest, 0);
+          }
+        }, { once: true });
+      }
     };
 
     sizeCanvas();
