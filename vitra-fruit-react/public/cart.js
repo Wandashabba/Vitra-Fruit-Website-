@@ -248,10 +248,8 @@
 
   function updateCount(items) {
     const cart = items || loadCart();
-    console.log('[cart.js] Loading cart count. Items in cart:', cart);
     const total = cart.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
-    console.log('[cart.js] Computed total cart count:', total);
-    
+
     document.querySelectorAll(COUNT_SELECTOR).forEach((el) => {
       el.textContent = String(total);
       if (total > 0) {

@@ -81,8 +81,10 @@
       searchResults.classList.add('is-open');
     };
 
+    let searchDebounceTimer = null;
     searchInput.addEventListener('input', () => {
-      renderResults(searchInput.value);
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => renderResults(searchInput.value), 150);
     });
 
     searchForm.addEventListener('submit', (event) => {

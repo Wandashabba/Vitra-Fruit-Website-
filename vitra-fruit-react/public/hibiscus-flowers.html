@@ -7,7 +7,8 @@
   <meta name="description" content="Premium Hibiscus Flowers - 100% natural, perfect for teas and infusions." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" /></noscript>
   <link rel="stylesheet" href="nav-unified.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -158,7 +159,7 @@
     <div class="container">
       <div class="product-shell">
         <div class="product-media">
-          <img src="/images/HibiscusFlower.png" alt="Hibiscus Flowers" />
+          <picture><source srcset="/images/HibiscusFlower.webp" type="image/webp" /><img src="/images/HibiscusFlower.png" alt="Hibiscus Flowers" /></picture>
         </div>
         <div class="product-info">
           <h1>Hibiscus Flowers</h1>

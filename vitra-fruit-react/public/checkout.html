@@ -7,7 +7,8 @@
   <meta name="description" content="Complete your Vitra Fruit checkout and billing details." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" /></noscript>
   <link rel="stylesheet" href="nav-unified.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -552,7 +553,7 @@
 
          <div class="payment-box">
              <div class="payfast-branding">
-               <img src="/images/payfastlogo.png" alt="PayFast" />
+               <picture><source srcset="/images/payfastlogo.webp" type="image/webp" /><img src="/images/payfastlogo.png" alt="PayFast" /></picture>
                <span style="font-weight: 800; font-size: 0.9rem;">PayFast</span>
              </div>
              <p class="payment-desc">
@@ -560,8 +561,8 @@
              </p>
              <div class="payment-methods">
                <img src="/images/visa logo.webp" alt="Visa" />
-               <img src="/images/mastercard logo.jpeg" alt="Mastercard" />
-               <img src="/images/maestro logo.png" alt="Maestro" />
+               <picture><source srcset="/images/mastercard logo.webp" type="image/webp" /><img src="/images/mastercard logo.jpeg" alt="Mastercard" /></picture>
+               <picture><source srcset="/images/maestro logo.webp" type="image/webp" /><img src="/images/maestro logo.png" alt="Maestro" /></picture>
                <img src="/images/samsung pay.png" alt="Samsung Pay" />
                <img src="/images/Zapper logo.webp" alt="Zapper" />
                <img src="/images/snapscan logo.png" alt="SnapScan" />

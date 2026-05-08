@@ -7,7 +7,8 @@
   <meta name="description" content="Premium Dehydrated Pineapple Slices - 100% natural, no added sugar." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" /></noscript>
   <link rel="stylesheet" href="nav-unified.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -160,7 +161,7 @@
       <div class="product-shell">
         <div class="product-media">
           <div class="product-media-bg"></div>
-          <img src="/images/PineappleSlices.png" alt="Dehydrated Pineapple Slices" />
+          <picture><source srcset="/images/PineappleSlices.webp" type="image/webp" /><img src="/images/PineappleSlices.png" alt="Dehydrated Pineapple Slices" /></picture>
         </div>
         <div class="product-info">
           <h1>Dehydrated Pineapple Slices</h1>

@@ -17,7 +17,8 @@
   <meta name="twitter:image" content="https://vitrafruit.com/images/placeholder.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" /></noscript>
   <link rel="stylesheet" href="shop-products.css" />
   <link rel="stylesheet" href="citrus.css" />
   <link rel="stylesheet" href="nav-unified.css" />
@@ -250,13 +251,11 @@
       <div class="product-grid">
         <article class="product-card bottle-card shaker-card" data-shaker-types="shakers">
           <div class="bottle-media">
-            <img
-              src="/images/OrangePowder.png"
+            <picture><source srcset="/images/OrangePowder.webp" type="image/webp" /><img src="/images/OrangePowder.png"
               alt="Orange citrus powders product"
               loading="lazy"
               decoding="async"
-              style="width: 100%; height: 100%; object-fit: contain;"
-            />
+              style="width: 100%; height: 100%; object-fit: contain;" /></picture>
             <a class="bottle-cta" href="orange-powder.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -266,13 +265,11 @@
         </article>
         <article class="product-card bottle-card shaker-card" data-shaker-types="shakers">
           <div class="bottle-media">
-            <img
-              src="/images/GrapefruitPowder.png"
+            <picture><source srcset="/images/GrapefruitPowder.webp" type="image/webp" /><img src="/images/GrapefruitPowder.png"
               alt="Grapefruit citrus powders product"
               loading="lazy"
               decoding="async"
-              style="width: 100%; height: 100%; object-fit: contain;"
-            />
+              style="width: 100%; height: 100%; object-fit: contain;" /></picture>
             <a class="bottle-cta" href="grapefruit-powder.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -282,13 +279,11 @@
         </article>
         <article class="product-card bottle-card shaker-card" data-shaker-types="shakers">
           <div class="bottle-media">
-            <img
-              src="/images/LemonPowder.png"
+            <picture><source srcset="/images/LemonPowder.webp" type="image/webp" /><img src="/images/LemonPowder.png"
               alt="Lemon citrus powders product"
               loading="lazy"
               decoding="async"
-              style="width: 100%; height: 100%; object-fit: contain; padding: 8px;"
-            />
+              style="width: 100%; height: 100%; object-fit: contain; padding: 8px;" /></picture>
             <a class="bottle-cta" href="lemon-powder.html">Shop Now</a>
           </div>
           <div class="bottle-meta">
@@ -304,19 +299,19 @@
     <div class="container">
       <div class="contact-gallery" aria-label="Contact gallery">
         <figure class="contact-gallery-item">
-          <img src="/images/picture8.jpeg" alt="VitraFruits gallery image 1" loading="lazy" decoding="async" />
+          <picture><source srcset="/images/picture8.webp" type="image/webp" /><img src="/images/picture8.jpeg" alt="VitraFruits gallery image 1" loading="lazy" decoding="async" /></picture>
         </figure>
         <figure class="contact-gallery-item">
-          <img src="/images/picture1.jpeg" alt="VitraFruits gallery image 2" loading="lazy" decoding="async" />
+          <picture><source srcset="/images/picture1.webp" type="image/webp" /><img src="/images/picture1.jpeg" alt="VitraFruits gallery image 2" loading="lazy" decoding="async" /></picture>
         </figure>
         <figure class="contact-gallery-item">
-          <img src="/images/picture2.jpeg" alt="VitraFruits gallery image 3" loading="lazy" decoding="async" />
+          <picture><source srcset="/images/picture2.webp" type="image/webp" /><img src="/images/picture2.jpeg" alt="VitraFruits gallery image 3" loading="lazy" decoding="async" /></picture>
         </figure>
         <figure class="contact-gallery-item">
-          <img src="/images/picture3.jpeg" alt="VitraFruits gallery image 4" loading="lazy" decoding="async" />
+          <picture><source srcset="/images/picture3.webp" type="image/webp" /><img src="/images/picture3.jpeg" alt="VitraFruits gallery image 4" loading="lazy" decoding="async" /></picture>
         </figure>
         <figure class="contact-gallery-item">
-          <img src="/images/picture4.jpeg" alt="VitraFruits gallery image 5" loading="lazy" decoding="async" />
+          <picture><source srcset="/images/picture4.webp" type="image/webp" /><img src="/images/picture4.jpeg" alt="VitraFruits gallery image 5" loading="lazy" decoding="async" /></picture>
         </figure>
         <a href="contact.html" class="btn btn-contact-page">Contact Us</a>
       </div>
