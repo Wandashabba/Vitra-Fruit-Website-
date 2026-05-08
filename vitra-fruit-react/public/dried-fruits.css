@@ -626,12 +626,9 @@
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      padding: 0 0 52px 0;
+      padding: 0 0 70px 0;
       background: transparent;
       border-radius: 0;
-    }
-    .products-strip .wheel-card-lime .bottle-media {
-      padding-bottom: 38px;
     }
     .products-strip .product-card img {
       --img-scale: 1;
@@ -659,14 +656,14 @@
     }
     /* Uniform sizing for dehydrated fruit product images — match citrus */
     .dried-product-img {
-      width: 115% !important;
-      height: 440px !important;
+      width: 75% !important;
+      height: 75% !important;
       max-width: none !important;
       max-height: none !important;
       object-fit: contain !important;
       object-position: center center !important;
       display: block !important;
-      margin: 0 auto !important;
+      margin: auto auto 0 auto !important;
       padding: 0 !important;
       background: transparent !important;
       border-radius: 0 !important;
@@ -674,19 +671,7 @@
       -webkit-mask-image: none;
       mask-image: none;
       filter: none;
-    }
-
-    .product-card[data-dried-types="slices"] img,
-    .product-card[data-dried-types="chips"] img,
-    .product-card[data-dried-types="strips"] img {
-      width: 75% !important;
-      height: 75% !important;
-      margin: auto auto 0 auto !important;
-    }
-    .product-card[data-dried-types="slices"] .bottle-media,
-    .product-card[data-dried-types="chips"] .bottle-media,
-    .product-card[data-dried-types="strips"] .bottle-media {
-      padding-bottom: 70px;
+      transition: transform 0.2s ease;
     }
     .products-strip .bottle-cta {
       position: absolute;
