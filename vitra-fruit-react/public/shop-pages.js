@@ -335,9 +335,11 @@
   }
 
   if (searchInput) {
+    let searchDebounceTimer = null;
     searchInput.addEventListener('input', function (event) {
       searchQuery = event.target.value || '';
-      applySearch();
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(applySearch, 150);
     });
   }
 

@@ -14,6 +14,7 @@ function Navbar({ cartCount = 0 }) {
   const lastScrollY = useRef(0);
   const navbarRef = useRef(null);
   const searchInputRef = useRef(null);
+  const searchDebounceRef = useRef(null);
   const allLinks = useMemo(() => [...navLinks.left, ...navLinks.right], []);
   const sectionLinks = useMemo(
     () =>
@@ -279,7 +280,10 @@ function Navbar({ cartCount = 0 }) {
   const handleSearchChange = (event) => {
     const nextQuery = event.target.value;
     setSearchQuery(nextQuery);
-    triggerSearch(nextQuery);
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    searchDebounceRef.current = setTimeout(() => {
+      triggerSearch(nextQuery);
+    }, 150);
   };
 
   const normalizedQuery = searchQuery.trim().toLowerCase();
