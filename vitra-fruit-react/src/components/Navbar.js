@@ -1,8 +1,9 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import { navLinks } from "../data/siteContent";
-import logoJpg from "../assets/images/logo.jpg";
-import logoWebp from "../assets/images/logo.webp";
-import logoAvif from "../assets/images/logo.avif";
+
+const logoJpg = "/images/logo.jpg";
+const logoWebp = "/images/logo.webp";
+const logoAvif = "/images/logo.avif";
 
 function Navbar({ cartCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);

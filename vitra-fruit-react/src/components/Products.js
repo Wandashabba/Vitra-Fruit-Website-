@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import '../product-hover-graphics.css';
-import aboutUsJpg from '../assets/images/about-us.jpg';
-import aboutUsWebp from '../assets/images/about-us.webp';
-import aboutUsAvif from '../assets/images/about-us.avif';
-import homepageOr from '../assets/images/OrangePleaser.webp';
-import homepageLi from '../assets/images/Pleaser4.webp';
 
-import proudlySALogo from '../assets/images/ProudlySA_Member_Logo 2.webp';
+const aboutUsJpg = '/images/about-us.jpg';
+const aboutUsWebp = '/images/about-us.webp';
+const aboutUsAvif = '/images/about-us.avif';
+const homepageOr = '/images/OrangePleaser.webp';
+const homepageLi = '/images/Pleaser4.webp';
+const proudlySALogo = '/images/ProudlySA_Member_Logo 2.webp';
 
 const favouriteProducts = [
   {
