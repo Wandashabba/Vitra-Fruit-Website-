@@ -73,23 +73,21 @@ function getPublicSiteUrl(req) {
   return 'https://vitra-fruit-website-vyda.vercel.app';
 }
 
+let cachedLogoAttachment = null;
+
 async function buildEmailAttachments(publicSiteUrl) {
-  const assets = [{ filename: 'logo.jpg', cid: 'vitra-logo' }];
-  const attachments = await Promise.all(
-    assets.map(async ({ filename, cid }) => {
-      try {
-        const response = await fetch(`${publicSiteUrl}/images/${filename}`);
-        if (!response.ok) throw new Error(`Image fetch failed for ${filename}`);
-        const contentType = response.headers.get('content-type') || undefined;
-        const content = Buffer.from(await response.arrayBuffer());
-        return { filename, cid, content, contentType };
-      } catch (err) {
-        console.warn('Email image skipped:', err.message);
-        return null;
-      }
-    })
-  );
-  return attachments.filter(Boolean);
+  if (cachedLogoAttachment) return [cachedLogoAttachment];
+  try {
+    const response = await fetch(`${publicSiteUrl}/images/logo.jpg`);
+    if (!response.ok) throw new Error(`Image fetch failed for logo.jpg`);
+    const contentType = response.headers.get('content-type') || undefined;
+    const content = Buffer.from(await response.arrayBuffer());
+    cachedLogoAttachment = { filename: 'logo.jpg', cid: 'vitra-logo', content, contentType };
+    return [cachedLogoAttachment];
+  } catch (err) {
+    console.warn('Email image skipped:', err.message);
+    return [];
+  }
 }
 
 /* ── Email builder ──────────────────────────────────────────── */
