@@ -72,7 +72,7 @@ Vitra-Fruit-Website-/
 
 ```bash
 git clone https://github.com/wandashabba/Vitra-Fruit-Website.git
-cd Vitra-Fruit-Website/vitra-fruit-react
+cd Vitra-Fruit-Website/apps
 ```
 
 ### Install dependencies
@@ -108,12 +108,12 @@ npm run build
 
 ## Vercel Deployment
 
-Deploy the `vitra-fruit-react` folder itself as the Vercel project root. This app includes static pages in `public/` and serverless functions in `vitra-fruit-react/api/`, so both need to live in the same Vercel project.
+Deploy the `apps` folder itself as the Vercel project root. This app includes static pages in `public/` and serverless functions in `apps/web/api/`, so both need to live in the same Vercel project.
 
-1. In Vercel, create a new project and set the Root Directory to `vitra-fruit-react`.
+1. In Vercel, create a new project and set the Root Directory to `apps`.
 2. Leave the build command as `npm run build`.
 3. Leave the output directory as `build`.
-4. Add the environment variables from `vitra-fruit-react/.env.example` in the Vercel project settings.
+4. Add the environment variables from `apps/web/.env.example` in the Vercel project settings.
 5. Deploy, then verify the backend is live by opening `/api/health` on the deployed domain.
 
 Expected backend checks after deploy:
