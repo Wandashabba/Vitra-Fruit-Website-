@@ -1,60 +1,108 @@
 # Vitra Fruit Website
 
-Premium Dehydrated Fruits & Beverages E-commerce Website (React)
+Premium Dehydrated Fruits & Beverages E-commerce platform built with React and deployed on Vercel.
+---
+
+## Overview
+
+Vitra Fruit is a modern e-commerce web platform focused on showcasing and selling premium dehydrated fruits and beverages through a responsive and accessible shopping experience.
+
+The application is built using React and deployed on Vercel with a GitHub-based workflow. The repository is structured with maintainability, scalability, and deployment automation in mind, following modern DevOps and frontend engineering practices.
+---
+
+## Architecture
+
+```text
+User
+  ↓
+Custom Domain (GoDaddy DNS)
+  ↓
+Vercel Edge Network
+  ↓
+React Frontend + Serverless API Functions
+  ↓
+GitHub Repository
+  ↓
+GitHub Actions CI Pipeline
+```
+---
 
 ## Features
 
 - Responsive design (mobile, tablet, desktop)
-- Product catalog with categories
+- Product catalog with category grouping
 - Shopping cart functionality
-- Contact form
+- Contact and customer engagement forms
 - Smooth scrolling navigation
 - Interactive product tabs
 - Modern UI with purple/teal color scheme
 - Optimized images (AVIF, WebP, fallbacks)
 - Accessibility compliant
+- Serverless API endpoints
+- Vercel deployment integration
 
-## Structure
+---
+## Repository Structure
 
-```
+```text
 Vitra-Fruit-Website-/
-├── vitra-fruit-react/
-│   ├── public/
-│   │   ├── images/          # Product images
-│   │   ├── index.html       # HTML template
-│   │   └── *.html           # Additional pages
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── data/            # Site content data
-│   │   ├── assets/          # Static assets
-│   │   ├── App.js           # Main app component
-│   │   ├── App.css          # Global styles
-│   │   └── index.js         # Entry point
-│   └── package.json
+├── apps/
+│   ├── web/                 
+│   │   ├── api/             # Serverless API functions
+│   │   ├── public/      
+│   │   └── src/
+│   │   │   ├── components/      # React components
+│   │   │   ├── data/            # Site content data
+│   │   │   ├── assets/          # Static assets
+│   │   │   ├── App.js           # Main app component
+│   │   │   ├── App.css          # Global styles
+│   │   │   └── index.js         # Entry point
+│   │   ├── .env.example
+│   │   └── package.json
+├── .github/
+│   └── workflows/
 └── README.md
 ```
+---
+## Local Development
 
-## Setup
+### Clone the repository
 
-1. Navigate to the React app:
-   ```bash
-   cd vitra-fruit-react
-   ```
+```bash
+git clone https://github.com/wandashabba/Vitra-Fruit-Website.git
+cd Vitra-Fruit-Website/vitra-fruit-react
+```
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+### Install dependencies
 
-3. Start development server:
-   ```bash
-   npm start
-   ```
+```bash
+npm install
+```
 
-4. Build for production:
-   ```bash
-   npm run build
-   ```
+### Configure environment variables
+
+Create a local environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Update environment values as required.
+
+### Start the developement server
+
+```bash
+npm start
+```
+
+## Production Build
+
+Generate an optimized production build:
+
+```bash
+npm run build
+```
+---
 
 ## Vercel Deployment
 
@@ -91,35 +139,24 @@ const favouriteProducts = [
   }
 ];
 ```
+## CI/CD
 
-### Changing Colors
+GitHub Actions is used for continuous integration and deployment validation.
 
-Edit CSS variables in `src/App.css`:
+Pipeline responsibilities include:
 
-```css
-:root {
-  --primary-color: #5533ff;
-  --secondary-color: #17a2b8;
-  --nav-accent: #f6b25f;
-}
+- Dependency installation
+- Build validation
+- Linting
+- Deployment verification
+
+Workflow definitions are located in:
+
+```text
+.github/workflows/
 ```
 
-### Navigation Links
-
-Update navigation in `src/data/siteContent.js`:
-
-```javascript
-export const navLinks = {
-  left: [
-    { label: 'Home', href: '#home' },
-    { label: 'Shop Now', href: '#shop' }
-  ],
-  right: [
-    { label: 'Contact', href: '/contact.html' },
-    { label: 'Cart', href: '/account.html' }
-  ]
-};
-```
+---
 
 ## Browser Support
 

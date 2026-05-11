@@ -1,5 +1,5 @@
 require('dotenv').config();
-const handler = require('./api/payfast-notify.js');
+const handler = require('./web/api/payfast-notify.js');
 
 (async () => {
   console.log('Sending test payment confirmation email...');
