@@ -1,6 +1,6 @@
 # Vitra Fruit Website
 
-Premium Dehydrated Fruits & Beverages E-commerce platform built with React and deployed on Vercel.
+Premium Dehydrated Fruits & Vegetables E-commerce platform built with React and deployed on Vercel.
 
 ---
 
