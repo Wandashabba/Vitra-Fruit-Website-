@@ -3,11 +3,14 @@ name: Vitra Fruit CI
 on:
   push:
     branches:
-      - main
+      - dev
+      - uat
+      - prod
 
   pull_request:
     branches:
-      - main
+      - dev
+      - uat
 
 jobs:
   build:
@@ -41,3 +44,63 @@ jobs:
 
       - name: Build application
         run: npm run build
+
+  Dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/dev'
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install --g vercel@latest
+
+      - name: Deploy to Dev
+        run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --env=dev
+
+  UAT:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/uat'
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Vercel CLI
+        run: npm install --g vercel@latest
+
+      - name: Deploy to UAT
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --env=uat
+
+  Prod:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/prod'
+
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Install Vercel CLI
+        run: npm install --g vercel@latest
+
+      - name: Pull Vercel Production Config
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy to Prod
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --env=prod
+

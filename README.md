@@ -1,13 +1,15 @@
 # Vitra Fruit Website
 
 Premium Dehydrated Fruits & Beverages E-commerce platform built with React and deployed on Vercel.
+
 ---
 
 ## Overview
 
 Vitra Fruit is a modern e-commerce web platform focused on showcasing and selling premium dehydrated fruits and beverages through a responsive and accessible shopping experience.
 
-The application is built using React and deployed on Vercel with a GitHub-based workflow. The repository is structured with maintainability, scalability, and deployment automation in mind, following modern DevOps and frontend engineering practices.
+The system is built using React and deployed on Vercel, using GitHub Actions for CI/CD. The architecture prioritizes scalability, maintainability, and clean separation between UI, data, and API logic.
+
 ---
 
 ## Architecture
@@ -60,7 +62,7 @@ Vitra-Fruit-Website-/
 │   │   ├── .env.example
 │   │   └── package.json
 ├── .github/
-│   └── workflows/
+│   └── workflows/               # CI/CD pipelines
 └── README.md
 ```
 ---
