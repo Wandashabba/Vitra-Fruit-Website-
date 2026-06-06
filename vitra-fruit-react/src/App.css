@@ -2369,7 +2369,7 @@ textarea:focus-visible {
 
 /* ── Chatbot — Premium Design ──────────────────────────────────── */
 
-/* FAB — pill button with label */
+/* FAB — compact circle */
 .chatbot-fab {
   position: fixed;
   bottom: 28px;
@@ -2377,22 +2377,21 @@ textarea:focus-visible {
   z-index: 9999;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 20px 0 6px;
+  justify-content: center;
+  width: 52px;
   height: 52px;
   background: linear-gradient(135deg, #2A1508 0%, #4A2010 100%);
-  color: #F5F0E8;
+  color: var(--palette-gold);
   border: 1px solid rgba(192, 152, 40, 0.35);
-  border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.28), 0 1px 4px rgba(0,0,0,0.18);
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.26), 0 1px 4px rgba(0,0,0,0.16);
   cursor: pointer;
-  transition: transform 0.22s cubic-bezier(0.22,1,0.36,1), box-shadow 0.22s ease;
-  font-family: var(--font-body);
+  transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease;
 }
 
 .chatbot-fab:hover {
-  transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 8px 28px rgba(0,0,0,0.32), 0 2px 6px rgba(0,0,0,0.2);
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
 .chatbot-fab:focus-visible {
@@ -2400,46 +2399,18 @@ textarea:focus-visible {
   outline-offset: 3px;
 }
 
-.chatbot-fab--open {
-  padding: 0;
-  width: 52px;
-  justify-content: center;
-}
-
-.chatbot-fab-inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  background: rgba(192, 152, 40, 0.18);
-  border-radius: 50%;
-  flex-shrink: 0;
-  color: var(--palette-gold);
-}
-
-.chatbot-fab-label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  color: #F5F0E8;
-}
-
-/* Pulse ring on FAB to draw attention on first load */
+/* Subtle pulse ring */
 .chatbot-fab::before {
   content: '';
   position: absolute;
   inset: -4px;
-  border-radius: 999px;
-  border: 2px solid rgba(192, 152, 40, 0.4);
+  border-radius: 50%;
+  border: 2px solid rgba(192, 152, 40, 0.35);
   animation: chatbot-pulse 2.8s ease-out infinite;
   pointer-events: none;
 }
 
-.chatbot-fab--open::before {
-  display: none;
-}
+.chatbot-fab--open::before { display: none; }
 
 @keyframes chatbot-pulse {
   0%   { opacity: 1; transform: scale(1); }
@@ -2770,10 +2741,9 @@ textarea:focus-visible {
   .chatbot-fab {
     right: 84px;
     bottom: 20px;
+    width: 46px;
     height: 46px;
-    padding: 0 14px 0 6px;
   }
-  .chatbot-fab--open { width: 46px; padding: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

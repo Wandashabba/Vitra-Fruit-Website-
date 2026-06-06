@@ -246,11 +246,9 @@ export default function Chatbot() {
         aria-label={isOpen ? 'Close assistant' : 'Ask Madre — product assistant'}
         aria-expanded={isOpen}
         aria-haspopup="dialog"
+        title={isOpen ? 'Close' : 'Ask Madre'}
       >
-        <span className="chatbot-fab-inner">
-          {isOpen ? <CloseIcon /> : <SparkIcon />}
-        </span>
-        {!isOpen && <span className="chatbot-fab-label">Ask Madre</span>}
+        {isOpen ? <CloseIcon /> : <SparkIcon />}
       </button>
     </>
   );
