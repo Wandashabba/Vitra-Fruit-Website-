@@ -159,9 +159,7 @@ function verifyWithPayFast(data) {
 
     request.on('error', (err) => {
       console.error('PayFast verification request error:', err);
-      // If verification fails due to network, allow the payment
-      // (the order email was already sent in create-order)
-      resolve(true);
+      resolve(false);
     });
 
     request.write(postData);

@@ -350,12 +350,8 @@ function Navbar({ cartCount = 0 }) {
             </button>
             <a
               className="nav-icon-link nav-shop-link"
-              href="#shop"
-              aria-label="Shop"
-              onClick={(event) => {
-                event.preventDefault();
-                scrollToShop();
-              }}
+              href="cart.html"
+              aria-label="View cart"
             >
               <svg className="nav-shop-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path
