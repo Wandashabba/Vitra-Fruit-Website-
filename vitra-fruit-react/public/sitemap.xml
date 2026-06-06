@@ -152,6 +152,16 @@
 
   <!-- Info pages -->
   <url>
+    <loc>https://vitrafruits.co.za/faq.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://vitrafruits.co.za/returns.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://vitrafruits.co.za/contact.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
