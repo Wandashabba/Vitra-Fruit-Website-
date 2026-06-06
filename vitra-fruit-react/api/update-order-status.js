@@ -1,7 +1,17 @@
 const nodemailer = require('nodemailer');
 
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const allowedOrigins = [
+    'https://vitrafruits.co.za',
+    'https://www.vitrafruits.co.za',
+    'https://vitrafruit.com',
+    'https://www.vitrafruit.com',
+  ];
+  const origin = req.headers.origin || '';
+  const isVercel = origin.endsWith('.vercel.app');
+  if (allowedOrigins.includes(origin) || isVercel) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 

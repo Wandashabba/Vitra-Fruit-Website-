@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Keep transactional/utility pages out of search results
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /account.html
+Disallow: /dried-fruits.html
+
+Sitemap: https://vitrafruits.co.za/sitemap.xml

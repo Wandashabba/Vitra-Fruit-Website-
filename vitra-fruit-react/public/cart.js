@@ -834,7 +834,7 @@
             const orderPayload = {
               billing: bData,
               shipping: sData,
-              deliveryMethod: 'delivery',
+              deliveryMethod: deliveryMethod,
               items: cart,
               subtotal: subtotal,
               discount: discountAmount,

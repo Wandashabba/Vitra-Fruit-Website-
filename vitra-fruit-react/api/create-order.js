@@ -1,8 +1,17 @@
 const nodemailer = require('nodemailer');
 
 module.exports = async function handler(req, res) {
-  // Allow CORS for same-site requests
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const allowedOrigins = [
+    'https://vitrafruits.co.za',
+    'https://www.vitrafruits.co.za',
+    'https://vitrafruit.com',
+    'https://www.vitrafruit.com',
+  ];
+  const origin = req.headers.origin || '';
+  const isVercel = origin.endsWith('.vercel.app');
+  if (allowedOrigins.includes(origin) || isVercel) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -20,6 +29,13 @@ module.exports = async function handler(req, res) {
     const publicSiteUrl = getPublicSiteUrl(req);
     if (!billing || !items || !items.length || !total) {
       return res.status(400).json({ error: 'Missing required order data' });
+    }
+
+    // Server-side price validation — recompute total from known prices
+    const priceValidation = validateOrderTotal({ items, discount, deliveryMethod, total });
+    if (!priceValidation.valid) {
+      console.error('Price validation failed:', priceValidation.reason);
+      return res.status(400).json({ error: 'Order total could not be verified. Please refresh and try again.' });
     }
 
     if (missingEnv.length) {
@@ -74,6 +90,79 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+/* ── Server-side price catalogue ──────────────────────────────── */
+
+const PRODUCT_PRICES = {
+  // Citrus wheels
+  'dehydrated orange wheels': { default: 200 },
+  'dehydrated lemon wheels': { default: 200 },
+  'dehydrated lime wheels': { default: 200 },
+  'dehydrated grapefruit wheels': { default: 200 },
+  // Citrus slices — price by size
+  'dehydrated lemon slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
+  'dehydrated lime slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
+  'dehydrated orange slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
+  'dehydrated grapefruit slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
+  // Apple / Pear
+  'dehydrated apple slices': { '100g': 100, '200g': 180 },
+  'dehydrated pear slices': { '100g': 100, '200g': 180 },
+  // Banana chips
+  'dehydrated banana chips': { '100g': 80, '200g': 150 },
+  // Pineapple
+  'dehydrated pineapple slices': { '100g': 120, '200g': 220 },
+  // Mango
+  'dehydrated mango strips': { '100g': 130, '200g': 240 },
+  // Fruit strips
+  'fruit strips': { default: 80 },
+  // Powders
+  'lemon powder': { default: 120 },
+  'orange powder': { default: 120 },
+  'grapefruit powder': { default: 120 },
+  'beetroot powder': { default: 130 },
+  'butternut powder': { default: 130 },
+  'carrot powder': { default: 130 },
+  'spinach powder': { default: 130 },
+  // Hibiscus
+  'hibiscus flowers': { default: 100 },
+};
+
+const SHIPPING_COST = 150;
+const FIRST_ORDER_DISCOUNT_RATE = 0.10;
+
+function lookupPrice(name, size) {
+  const key = (name || '').toLowerCase().trim();
+  const entry = PRODUCT_PRICES[key];
+  if (!entry) return null;
+  if (entry.default !== undefined) return entry.default;
+  const sizeKey = (size || '').toLowerCase().trim();
+  return entry[sizeKey] ?? null;
+}
+
+function validateOrderTotal({ items, discount, deliveryMethod, total }) {
+  let computedSubtotal = 0;
+  for (const item of items) {
+    const unitPrice = lookupPrice(item.name, item.size);
+    if (unitPrice === null) {
+      // Unknown product — skip strict validation for this item but trust the others
+      computedSubtotal += Number(item.price || 0) * Number(item.quantity || 1);
+      continue;
+    }
+    computedSubtotal += unitPrice * Number(item.quantity || 1);
+  }
+
+  const isFirstOrder = discount > 0;
+  const computedDiscount = isFirstOrder ? Math.round(computedSubtotal * FIRST_ORDER_DISCOUNT_RATE * 100) / 100 : 0;
+  const shipping = deliveryMethod === 'collection' ? 0 : SHIPPING_COST;
+  const computedTotal = computedSubtotal - computedDiscount + shipping;
+
+  const tolerance = 1.00; // allow R1 rounding difference
+  const diff = Math.abs(computedTotal - Number(total));
+  if (diff > tolerance) {
+    return { valid: false, reason: `Submitted total R${total} differs from server-computed R${computedTotal.toFixed(2)}` };
+  }
+  return { valid: true };
+}
 
 function getMissingEnvVars() {
   const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ORDER_EMAIL_TO'];
