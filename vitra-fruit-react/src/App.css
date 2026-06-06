@@ -2447,9 +2447,9 @@ textarea:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 16px 18px;
-  background: linear-gradient(135deg, #1C0D04 0%, #3A1A08 100%);
+  background: var(--palette-red);
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(192,152,40,0.2);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
 .chatbot-header-left {
@@ -2463,9 +2463,9 @@ textarea:focus-visible {
   height: 44px;
   border-radius: 12px;
   overflow: hidden;
-  border: 1.5px solid rgba(192,152,40,0.5);
+  border: 1.5px solid rgba(255,255,255,0.4);
   flex-shrink: 0;
-  background: #2A1508;
+  background: var(--palette-cream);
 }
 
 .chatbot-header-avatar img {
@@ -2569,8 +2569,8 @@ textarea:focus-visible {
   width: 22px;
   height: 22px;
   border-radius: 6px;
-  background: linear-gradient(135deg, #2A1508, #4A2010);
-  color: var(--palette-gold);
+  background: var(--palette-red);
+  color: #fff;
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -2589,17 +2589,17 @@ textarea:focus-visible {
 
 .chatbot-bubble--bot {
   background: #fff;
-  color: #2A1508;
+  color: var(--text-color);
   border-radius: 4px 16px 16px 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   border-left: 3px solid var(--palette-dark-gold);
 }
 
 .chatbot-bubble--user {
-  background: linear-gradient(135deg, #2A1508 0%, #4A2010 100%);
-  color: #F5F0E8;
+  background: var(--palette-red);
+  color: #fff;
   border-radius: 16px 16px 4px 16px;
-  box-shadow: 0 2px 8px rgba(42,21,8,0.2);
+  box-shadow: 0 2px 8px rgba(192,48,48,0.2);
 }
 
 /* Dots loader */
@@ -2681,7 +2681,7 @@ textarea:focus-visible {
   padding: 7px 0;
   font-family: var(--font-body);
   font-size: 0.875rem;
-  color: #2A1508;
+  color: var(--text-color);
   outline: none;
 }
 
@@ -2694,8 +2694,8 @@ textarea:focus-visible {
   justify-content: center;
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, #2A1508, #4A2010);
-  color: var(--palette-gold);
+  background: var(--palette-red);
+  color: #fff;
   border: none;
   border-radius: 9px;
   cursor: pointer;
