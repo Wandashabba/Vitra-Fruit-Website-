@@ -1,4 +1,5 @@
 const OpenAI = require('openai');
+// Using Groq's OpenAI-compatible API (free tier, no credit card required)
 
 const SYSTEM_PROMPT = `You are Madre, a warm and knowledgeable product assistant for VitraFruits — a South African brand selling premium dehydrated fruits, citrus wheels/slices, dried fruits, vegetable powders, and citrus powders.
 
@@ -48,12 +49,15 @@ module.exports = async function handler(req, res) {
     return res.status(400).json({ error: 'messages array is required' });
   }
 
-  if (!process.env.OPENAI_API_KEY) {
-    console.error('Missing OPENAI_API_KEY');
+  if (!process.env.GROQ_API_KEY) {
+    console.error('Missing GROQ_API_KEY');
     return res.status(500).json({ error: 'Chat service is not configured.' });
   }
 
-  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  const client = new OpenAI({
+    apiKey: process.env.GROQ_API_KEY,
+    baseURL: 'https://api.groq.com/openai/v1',
+  });
   const trimmed = messages.slice(-10).map(({ role, content }) => ({ role, content }));
 
   try {
@@ -62,7 +66,7 @@ module.exports = async function handler(req, res) {
     res.setHeader('Connection', 'keep-alive');
 
     const stream = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'llama-3.1-8b-instant',
       max_tokens: 400,
       stream: true,
       messages: [
