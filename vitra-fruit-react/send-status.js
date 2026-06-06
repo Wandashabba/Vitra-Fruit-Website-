@@ -47,7 +47,13 @@ if (args.length < 3) {
 const [status, orderId, customerEmail, customerName, trackingNumber, trackingUrl] = args;
 
 const SITE_URL = process.env.SITE_URL || 'https://vitra-fruit-website-vyda.vercel.app';
-const ADMIN_SECRET = process.env.ADMIN_SECRET || 'vitra-admin-2024';
+const ADMIN_SECRET = process.env.ADMIN_SECRET;
+
+if (!ADMIN_SECRET) {
+  console.error('Error: ADMIN_SECRET environment variable is not set.');
+  console.error('Run: ADMIN_SECRET=your_secret node send-status.js ...');
+  process.exit(1);
+}
 
 async function sendStatusUpdate() {
   const url = `${SITE_URL}/api/update-order-status`;
