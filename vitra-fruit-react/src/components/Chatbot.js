@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 const OPENING_MESSAGE = {
   role: 'assistant',
-  content: "Hello! I'm Vitra, your personal product guide. Ask me about our products, what works for cocktails, baking, gifting — or anything about your order.",
+  content: "Hello! I'm Madre, your personal product guide. Ask me about our products, what works for cocktails, baking, gifting — or anything about your order.",
 };
 
 const WA_LINK = 'https://wa.me/27679414223';
@@ -164,7 +164,7 @@ export default function Chatbot() {
   return (
     <>
       {isOpen && (
-        <div className="chatbot-window" role="dialog" aria-modal="true" aria-label="Vitra product assistant">
+        <div className="chatbot-window" role="dialog" aria-modal="true" aria-label="Madre product assistant">
 
           {/* Header */}
           <div className="chatbot-header">
@@ -176,7 +176,7 @@ export default function Chatbot() {
                 </picture>
               </div>
               <div className="chatbot-header-text">
-                <p className="chatbot-title">Vitra</p>
+                <p className="chatbot-title">Madre</p>
                 <p className="chatbot-subtitle">
                   <span className="chatbot-status-dot" aria-hidden="true" />
                   Product Assistant
@@ -243,14 +243,14 @@ export default function Chatbot() {
       <button
         className={`chatbot-fab ${isOpen ? 'chatbot-fab--open' : ''}`}
         onClick={() => setIsOpen((prev) => !prev)}
-        aria-label={isOpen ? 'Close assistant' : 'Ask Vitra — product assistant'}
+        aria-label={isOpen ? 'Close assistant' : 'Ask Madre — product assistant'}
         aria-expanded={isOpen}
         aria-haspopup="dialog"
       >
         <span className="chatbot-fab-inner">
           {isOpen ? <CloseIcon /> : <SparkIcon />}
         </span>
-        {!isOpen && <span className="chatbot-fab-label">Ask Vitra</span>}
+        {!isOpen && <span className="chatbot-fab-label">Ask Madre</span>}
       </button>
     </>
   );
