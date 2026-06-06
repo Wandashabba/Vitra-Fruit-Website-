@@ -113,9 +113,19 @@ function App() {
       </section>
       <section className="instagram-strip" aria-label="Follow us on Instagram">
         <div className="instagram-strip-inner">
-          <p className="instagram-strip-text">
-            Follow us on Instagram for recipes, inspiration & behind the scenes
-          </p>
+          <div className="instagram-strip-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" strokeWidth="1.6"/>
+              <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.6"/>
+              <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div className="instagram-strip-copy">
+            <p className="instagram-strip-eyebrow">Find us on Instagram</p>
+            <p className="instagram-strip-text">
+              Recipes, cocktail inspo & behind the scenes
+            </p>
+          </div>
           <a
             className="instagram-strip-link"
             href="https://www.instagram.com/vitrafruits/"
