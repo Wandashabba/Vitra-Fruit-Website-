@@ -2252,6 +2252,90 @@ textarea:focus-visible {
   }
 }
 
+/* ── Testimonials ────────────────────────────────────────────────── */
+.testimonials-section {
+  background: var(--palette-cream);
+  padding: 80px 0;
+}
+
+.testimonials-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--palette-dark-gold);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.testimonials-heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--palette-red);
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.testimonial-card {
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.testimonial-stars {
+  color: var(--palette-gold);
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+.testimonial-quote {
+  font-style: italic;
+  font-size: 0.97rem;
+  color: var(--text-color);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.testimonial-name {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--palette-dark-gold);
+}
+
+.testimonial-location {
+  font-size: 0.82rem;
+  color: #888;
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 900px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+}
+
 /* WhatsApp float button */
 .wa-float {
   position: fixed;

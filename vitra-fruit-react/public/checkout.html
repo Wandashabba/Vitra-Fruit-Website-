@@ -231,6 +231,28 @@
       filter: grayscale(1);
     }
 
+    /* Checkout progress stepper */
+    .checkout-steps { margin: 0 0 28px; }
+    .steps-list { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0; }
+    .step { display: flex; align-items: center; flex: 1; }
+    .step:not(:last-child)::after { content: ''; flex: 1; height: 2px; background: #DED0A8; margin: 0 4px; }
+    .step-inner { display: flex; flex-direction: column; align-items: center; gap: 4px; text-decoration: none; }
+    .step-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; border: 2px solid #DED0A8; color: #999; background: #fff; flex-shrink: 0; }
+    .step-circle svg { width: 16px; height: 16px; }
+    .step-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #999; white-space: nowrap; }
+    .step--done .step-circle { background: #F5F0E8; border-color: #C09828; color: #C09828; }
+    .step--done .step-label { color: #C09828; }
+    .step--done:not(:last-child)::after { background: #C09828; }
+    .step--active .step-circle { background: #C03030; border-color: #C03030; color: #fff; }
+    .step--active .step-label { color: #C03030; font-weight: 800; }
+    .checkout-back-link { margin: 0 0 24px; }
+    .checkout-back-link a { font-size: 13px; color: #C03030; text-decoration: none; font-weight: 600; }
+    .checkout-back-link a:hover { text-decoration: underline; }
+    @media (max-width: 480px) {
+      .step-label { display: none; }
+      .step-circle { width: 28px; height: 28px; font-size: 12px; }
+    }
+
     @media (max-width: 1000px) {
       .checkout-grid { grid-template-columns: 1fr; }
       .order-summary { position: static; }
@@ -407,6 +429,31 @@
 
   <main class="checkout-page">
     <div class="container">
+      <nav class="checkout-steps" aria-label="Checkout progress">
+        <ol class="steps-list">
+          <li class="step step--done">
+            <a href="cart.html" class="step-inner" aria-label="Back to Cart">
+              <span class="step-circle">
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><polyline points="3,8 6.5,12 13,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <span class="step-label">Cart</span>
+            </a>
+          </li>
+          <li class="step step--active" aria-current="step">
+            <span class="step-inner">
+              <span class="step-circle">2</span>
+              <span class="step-label">Details</span>
+            </span>
+          </li>
+          <li class="step step--upcoming">
+            <span class="step-inner">
+              <span class="step-circle">3</span>
+              <span class="step-label">Payment</span>
+            </span>
+          </li>
+        </ol>
+      </nav>
+      <p class="checkout-back-link"><a href="cart.html">← Back to cart</a></p>
       <div class="checkout-grid">
         <section class="billing-details">
           

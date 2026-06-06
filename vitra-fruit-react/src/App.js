@@ -5,6 +5,7 @@ import Hero from './components/Hero';
 import Products from './components/Products';
 import Contact from './components/Contact';
 import AboutSection from './components/AboutSection';
+import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
 
 const paymentLogos = [
@@ -82,6 +83,7 @@ function App() {
       <main id="main-content">
         <Hero />
         <Products />
+        <Testimonials />
         <Contact />
         <AboutSection />
       </main>
