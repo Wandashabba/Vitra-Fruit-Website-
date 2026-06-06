@@ -2251,3 +2251,115 @@ textarea:focus-visible {
     transition: none;
   }
 }
+
+/* WhatsApp float button */
+.wa-float {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.wa-float:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.wa-float svg {
+  width: 30px;
+  height: 30px;
+  fill: #fff;
+}
+
+/* Instagram strip */
+/* Instagram strip */
+.instagram-strip {
+  background: var(--palette-cream);
+  border-top: 1px solid var(--palette-tan);
+  border-bottom: 1px solid var(--palette-tan);
+  padding: 28px 24px;
+}
+
+.instagram-strip-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.instagram-strip-icon {
+  flex-shrink: 0;
+  color: var(--palette-dark-gold);
+  display: flex;
+  align-items: center;
+}
+
+.instagram-strip-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.instagram-strip-copy {
+  flex: 1;
+  min-width: 160px;
+}
+
+.instagram-strip-eyebrow {
+  margin: 0 0 2px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--palette-dark-gold);
+}
+
+.instagram-strip-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  font-family: var(--font-body);
+}
+
+.instagram-strip-link {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 10px 24px;
+  background: transparent;
+  border: 2px solid var(--palette-red);
+  color: var(--palette-red);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.instagram-strip-link:hover {
+  background: var(--palette-red);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .instagram-strip-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  .instagram-strip-copy {
+    min-width: unset;
+  }
+}
