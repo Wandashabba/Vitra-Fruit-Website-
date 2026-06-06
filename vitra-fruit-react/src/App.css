@@ -2380,22 +2380,22 @@ textarea:focus-visible {
   justify-content: center;
   width: 52px;
   height: 52px;
-  background: linear-gradient(135deg, #2A1508 0%, #4A2010 100%);
-  color: var(--palette-gold);
-  border: 1px solid rgba(192, 152, 40, 0.35);
+  background: var(--palette-red);
+  color: #fff;
+  border: none;
   border-radius: 50%;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.26), 0 1px 4px rgba(0,0,0,0.16);
+  box-shadow: 0 4px 16px rgba(192, 48, 48, 0.35), 0 1px 4px rgba(0,0,0,0.12);
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.22,1,0.36,1), box-shadow 0.2s ease;
 }
 
 .chatbot-fab:hover {
   transform: translateY(-2px) scale(1.06);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  box-shadow: 0 8px 24px rgba(192, 48, 48, 0.45);
 }
 
 .chatbot-fab:focus-visible {
-  outline: 2px solid var(--palette-gold);
+  outline: 2px solid var(--palette-red);
   outline-offset: 3px;
 }
 
@@ -2405,7 +2405,7 @@ textarea:focus-visible {
   position: absolute;
   inset: -4px;
   border-radius: 50%;
-  border: 2px solid rgba(192, 152, 40, 0.35);
+  border: 2px solid rgba(192, 48, 48, 0.35);
   animation: chatbot-pulse 2.8s ease-out infinite;
   pointer-events: none;
 }
