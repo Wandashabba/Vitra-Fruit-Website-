@@ -131,9 +131,10 @@ export default function Chatbot() {
             const parsed = JSON.parse(payload);
             if (parsed.text) {
               accumulated += parsed.text;
+              const snapshot = accumulated;
               setMessages((prev) => {
                 const next = [...prev];
-                next[next.length - 1] = { role: 'assistant', content: accumulated };
+                next[next.length - 1] = { role: 'assistant', content: snapshot };
                 return next;
               });
             }
