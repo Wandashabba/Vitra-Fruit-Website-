@@ -50,25 +50,44 @@ module.exports = async function handler(req, res) {
       console.error('ITN: Failed to parse custom payload', e);
     }
 
-    // Setup email — use timeouts and graceful handling so transient
-    // DNS issues (e.g. EBUSY on mail.vitrafruits.co.za) don't break the ITN.
+    // Email transport — timeouts so SMTP problems can never hang the ITN.
+    const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+      port: smtpPort,
+      secure: smtpPort === 465, // TLS-on-connect for 465, STARTTLS otherwise
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
+      },
+      connectionTimeout: 10000, // 10s connect timeout
+      socketTimeout: 15000,     // 15s socket timeout
+    });
+    const attachments = await buildEmailAttachments(publicSiteUrl);
+
+    // 1) Notify shop: payment received. Independent try/catch — a failure here
+    //    must not stop the customer confirmation, and vice versa.
     try {
-      const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
-        port: smtpPort,
-        secure: smtpPort === 465, // TLS-on-connect for 465, STARTTLS otherwise
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
-        },
-        connectionTimeout: 10000, // 10s connect timeout
-        socketTimeout: 15000,     // 15s socket timeout
+      await transporter.sendMail({
+        from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
+        to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
+        subject: `Payment received — Order ${orderId} — R${amountGross}`,
+        html: buildShopPaymentReceivedEmail({
+          orderId,
+          pfPaymentId: data.pf_payment_id,
+          amountGross,
+          customerName,
+          customerEmail,
+          orderData,
+        }),
+        attachments,
       });
+    } catch (emailErr) {
+      console.error('ITN: Shop payment-received email failed (non-blocking):', emailErr.message || emailErr);
+    }
 
-      const attachments = await buildEmailAttachments(publicSiteUrl);
-
-      // Notify customer: payment received
+    // 2) Notify customer: payment received
+    try {
       if (customerEmail) {
         await transporter.sendMail({
           from: `"VitraFruits" <${process.env.SMTP_USER}>`,
@@ -241,7 +260,7 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
           <p style="margin:0 0 20px;font-size:14px;color:#333;">We have finished processing your order.</p>
           
           <p style="margin:0 0 30px;font-size:14px;color:#333;background:#f9f9f9;padding:15px;border-radius:8px;">
-            The estimated delivery date is between <strong>${startDeliveryStr}</strong> and <strong>${endDeliveryStr}</strong>. It must take 1-5 days delivery.
+            The estimated delivery date is between <strong>${startDeliveryStr}</strong> and <strong>${endDeliveryStr}</strong> (1&ndash;5 business days).
           </p>
         
         <p style="margin:0 0 15px;font-size:14px;color:#333;">Here’s a reminder of what you’ve ordered:</p>
@@ -307,3 +326,62 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
 
   return emailWrapper(content);
 }
+
+function buildShopPaymentReceivedEmail({ orderId, pfPaymentId, amountGross, customerName, customerEmail, orderData }) {
+  const dateStr = new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' });
+  const b = orderData && orderData.b ? orderData.b : null;
+  const items = (orderData && orderData.i) || [];
+  const subtotal = orderData ? orderData.sub : null;
+  const shipping = orderData ? orderData.sh : null;
+  const discount = (orderData && orderData.d) || 0;
+
+  const itemRows = items.map((item) => `
+    <tr>
+      <td style="padding:8px 0;border-bottom:1px solid #eee;color:#333;font-size:14px;">${item.n} &times;${item.q}</td>
+      <td style="padding:8px 0;border-bottom:1px solid #eee;color:#333;text-align:right;font-size:14px;">R${(Number(item.p) * Number(item.q)).toFixed(2)}</td>
+    </tr>`).join('');
+
+  const totalsRows = `
+    ${subtotal != null ? `<tr><td style="padding:4px 0;font-size:14px;color:#333;">Subtotal:</td><td style="padding:4px 0;font-size:14px;color:#333;text-align:right;">R${Number(subtotal).toFixed(2)}</td></tr>` : ''}
+    ${discount > 0 ? `<tr><td style="padding:4px 0;font-size:14px;color:#607848;">Discount:</td><td style="padding:4px 0;font-size:14px;color:#607848;text-align:right;">-R${Number(discount).toFixed(2)}</td></tr>` : ''}
+    ${shipping != null ? `<tr><td style="padding:4px 0;font-size:14px;color:#333;">Shipping:</td><td style="padding:4px 0;font-size:14px;color:#333;text-align:right;">${Number(shipping) === 0 ? 'Free / Collection' : 'R' + Number(shipping).toFixed(2)}</td></tr>` : ''}
+    <tr><td style="padding:8px 0;font-size:16px;color:#333;font-weight:bold;">Paid:</td><td style="padding:8px 0;font-size:16px;color:#c03030;text-align:right;font-weight:bold;">R${amountGross}</td></tr>`;
+
+  const addressHtml = b
+    ? `<p style="margin:0 0 20px;font-size:14px;color:#333;line-height:1.7;">
+         ${[`${b.f || ''} ${b.l || ''}`.trim(), b.s, b.t, b.pr, b.z, b.p, b.e].filter(Boolean).join('<br/>')}
+       </p>`
+    : `<p style="margin:0 0 20px;font-size:14px;color:#c03030;font-weight:600;">
+         Delivery address was not transmitted with this payment.
+         Retrieve it from the PayFast dashboard: Transactions &rarr; ${orderId} &rarr; custom_str fields.
+       </p>`;
+
+  const content = `
+    <tr>
+      <td style="padding:0 0 20px 0;">
+        <div style="margin:0 0 20px;">
+          <img src="cid:vitra-logo" alt="VitraFruits" width="150" style="display:block;max-width:100%;border-radius:12px;" />
+        </div>
+        <h1 style="margin:0 0 6px;font-size:20px;color:#333;">Payment received &mdash; Order ${orderId}</h1>
+        <p style="margin:0 0 20px;font-size:13px;color:#888;">${dateStr}${pfPaymentId ? ` &middot; PayFast payment ${pfPaymentId}` : ''}</p>
+        <p style="margin:0 0 20px;font-size:14px;color:#333;">
+          <strong>${customerName || 'A customer'}</strong> has paid <strong>R${amountGross}</strong> via PayFast.
+          This order is confirmed and ready to fulfil.
+        </p>
+        ${items.length ? `
+        <h2 style="margin:0 0 10px;font-size:16px;color:#333;">Items</h2>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:16px;">${itemRows}</table>` : ''}
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-bottom:24px;">${totalsRows}</table>
+        <h2 style="margin:0 0 10px;font-size:16px;color:#333;">Deliver to</h2>
+        ${addressHtml}
+        <h2 style="margin:0 0 10px;font-size:16px;color:#333;">Customer contact</h2>
+        <p style="margin:0 0 20px;font-size:14px;color:#333;">
+          ${customerEmail ? `<a href="mailto:${customerEmail}" style="color:#c03030;text-decoration:none;">${customerEmail}</a>` : 'No email provided'}${b && b.p ? `<br/>${b.p}` : ''}
+        </p>
+      </td>
+    </tr>`;
+
+  return emailWrapper(content);
+}
+
+module.exports.buildShopPaymentReceivedEmail = buildShopPaymentReceivedEmail;
