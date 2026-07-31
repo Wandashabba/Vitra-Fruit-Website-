@@ -4,8 +4,6 @@ module.exports = async function handler(req, res) {
   const allowedOrigins = [
     'https://vitrafruits.co.za',
     'https://www.vitrafruits.co.za',
-    'https://vitrafruit.com',
-    'https://www.vitrafruit.com',
   ];
   const origin = req.headers.origin || '';
   const isVercel = origin.endsWith('.vercel.app');

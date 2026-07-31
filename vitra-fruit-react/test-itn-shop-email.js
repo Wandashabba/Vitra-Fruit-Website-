@@ -43,5 +43,16 @@ if (!/PayFast dashboard/i.test(fallbackHtml)) {
   process.exit(1);
 }
 
+const emptyB = { f: '', l: '', e: '', p: '', s: '', t: '', pr: '', z: '' };
+const emptyBHtml = build({
+  orderId: 'VF-TEST-1234', pfPaymentId: '999999', amountGross: '366.00',
+  customerName: 'X', customerEmail: 'x@example.com',
+  orderData: { b: emptyB, i: [], sub: null, sh: null, d: 0 },
+});
+if (!/PayFast dashboard/i.test(emptyBHtml)) {
+  console.error('FAIL: fallback note missing when billing payload is all-empty');
+  process.exit(1);
+}
+
 console.log('PASS: ITN shop email template');
 process.exit(0);

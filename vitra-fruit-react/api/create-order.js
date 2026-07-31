@@ -4,8 +4,6 @@ module.exports = async function handler(req, res) {
   const allowedOrigins = [
     'https://vitrafruits.co.za',
     'https://www.vitrafruits.co.za',
-    'https://vitrafruit.com',
-    'https://www.vitrafruit.com',
   ];
   const origin = req.headers.origin || '';
   const isVercel = origin.endsWith('.vercel.app');
@@ -146,6 +144,7 @@ const PRODUCT_PRICES = {
 };
 
 const SHIPPING_COST = 150;
+const FREE_SHIPPING_THRESHOLD = 850; // matches cart.js — free delivery at/above this after discount
 const FIRST_ORDER_DISCOUNT_RATE = 0.10;
 
 function lookupPrice(name, size) {
@@ -171,7 +170,9 @@ function validateOrderTotal({ items, discount, deliveryMethod, total }) {
 
   const isFirstOrder = discount > 0;
   const computedDiscount = isFirstOrder ? Math.round(computedSubtotal * FIRST_ORDER_DISCOUNT_RATE * 100) / 100 : 0;
-  const shipping = deliveryMethod === 'collection' ? 0 : SHIPPING_COST;
+  const shipping = deliveryMethod === 'collection' || (computedSubtotal - computedDiscount) >= FREE_SHIPPING_THRESHOLD
+    ? 0
+    : SHIPPING_COST;
   const computedTotal = computedSubtotal - computedDiscount + shipping;
 
   const tolerance = 1.00; // allow R1 rounding difference

@@ -334,7 +334,8 @@ function buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName
 
 function buildShopPaymentReceivedEmail({ orderId, pfPaymentId, amountGross, customerName, customerEmail, orderData }) {
   const dateStr = new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' });
-  const b = orderData && orderData.b ? orderData.b : null;
+  const rawB = orderData && orderData.b ? orderData.b : null;
+  const b = rawB && Object.values(rawB).some((v) => String(v == null ? '' : v).trim() !== '') ? rawB : null;
   const items = (orderData && orderData.i) || [];
   const subtotal = orderData ? orderData.sub : null;
   const shipping = orderData ? orderData.sh : null;

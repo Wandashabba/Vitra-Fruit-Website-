@@ -857,6 +857,29 @@
             // 307-redirects /api/*, and PayFast may not follow redirects).
             setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
 
+            // Rebuild the PayFast custom payload from the freshly-read form
+            // values — the page-load build ran before the customer had typed
+            // their address, which left custom_str1-5 with empty billing data.
+            const payloadB = {
+              f: bData.firstName || '', l: bData.lastName || '',
+              e: bData.email || '', p: bData.phone || '',
+              s: (sData && sData.street) || bData.street || '',
+              t: (sData && sData.town) || bData.town || '',
+              pr: bData.province || '',
+              z: (sData && sData.postcode) || bData.postcode || ''
+            };
+            const freshPayloadStr = JSON.stringify({
+              b: payloadB,
+              i: cart.map(i => ({ n: i.name, q: i.quantity, p: i.price })),
+              sub: subtotal, sh: shipping, d: discountAmount
+            });
+            const freshChunks = chunkString(freshPayloadStr, 250);
+            addHidden('custom_str1', freshChunks[0] || '');
+            addHidden('custom_str2', freshChunks[1] || '');
+            addHidden('custom_str3', freshChunks[2] || '');
+            addHidden('custom_str4', freshChunks[3] || '');
+            addHidden('custom_str5', freshChunks[4] || '');
+
             // Mark user as returning to prevent duplicate discounts
             markAsReturningUser();
 
