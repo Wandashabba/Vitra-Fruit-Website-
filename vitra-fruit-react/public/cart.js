@@ -844,7 +844,7 @@
               total: grandTotal
             };
 
-            const { data, apiBase } = await createOrderRequest(orderPayload, apiBases);
+            const { data } = await createOrderRequest(orderPayload, apiBases);
             
             // Update PayFast fields before redirecting
             setField('m_payment_id', data.orderId);
