@@ -1,7 +1,13 @@
 // Verifies SMTP connection + auth using values from .env.
 // Does NOT send any email — transporter.verify() only does EHLO/AUTH.
 // Run: node test-smtp-connection.js
-require('dotenv').config();
+// Minimal .env loader — dotenv is not hoisted in this install.
+const fs = require('fs');
+const path = require('path');
+for (const line of fs.readFileSync(path.join(__dirname, '.env'), 'utf8').split('\n')) {
+  const m = line.match(/^([A-Z_][A-Z0-9_]*)=(.*)$/);
+  if (m && process.env[m[1]] === undefined) process.env[m[1]] = m[2].trim();
+}
 const nodemailer = require('nodemailer');
 
 const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
