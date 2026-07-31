@@ -53,10 +53,11 @@ module.exports = async function handler(req, res) {
     // The order must still succeed even if the mail server is temporarily unavailable.
     let emailSent = false;
     try {
+      const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
       const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.SMTP_PORT || '587', 10),
-        secure: false,
+        host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+        port: smtpPort,
+        secure: smtpPort === 465, // TLS-on-connect for 465, STARTTLS otherwise
         auth: {
           user: process.env.SMTP_USER,
           pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
