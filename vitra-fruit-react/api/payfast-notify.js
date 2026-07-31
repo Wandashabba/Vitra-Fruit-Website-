@@ -65,10 +65,13 @@ module.exports = async function handler(req, res) {
     });
     const attachments = await buildEmailAttachments(publicSiteUrl);
 
-    // 1) Notify shop: payment received. Independent try/catch — a failure here
-    //    must not stop the customer confirmation, and vice versa.
-    try {
-      await transporter.sendMail({
+    // Send both notifications concurrently — they are independent, and running
+    // them in parallel keeps worst-case handler time within the serverless
+    // budget so the ITN 200 ACK is never starved (a late ACK makes PayFast
+    // retry and duplicate the emails).
+    const sends = [
+      // 1) Notify shop: payment received
+      transporter.sendMail({
         from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
         to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
         subject: `Payment received — Order ${orderId} — R${amountGross}`,
@@ -81,25 +84,27 @@ module.exports = async function handler(req, res) {
           orderData,
         }),
         attachments,
-      });
-    } catch (emailErr) {
-      console.error('ITN: Shop payment-received email failed (non-blocking):', emailErr.message || emailErr);
-    }
+      }).catch((emailErr) => {
+        console.error('ITN: Shop payment-received email failed (non-blocking):', emailErr.message || emailErr);
+      }),
+    ];
 
     // 2) Notify customer: payment received
-    try {
-      if (customerEmail) {
-        await transporter.sendMail({
+    if (customerEmail) {
+      sends.push(
+        transporter.sendMail({
           from: `"VitraFruits" <${process.env.SMTP_USER}>`,
           to: customerEmail,
           subject: `Good things are heading your way! Order ${orderId}`,
           html: buildPaymentConfirmedCustomerEmail({ orderId, amountGross, customerName, orderData, publicSiteUrl }),
           attachments,
-        });
-      }
-    } catch (emailErr) {
-      console.error('ITN: Customer confirmation email failed (non-blocking):', emailErr.message || emailErr);
+        }).catch((emailErr) => {
+          console.error('ITN: Customer confirmation email failed (non-blocking):', emailErr.message || emailErr);
+        })
+      );
     }
+
+    await Promise.all(sends);
 
     return res.status(200).send('OK');
   } catch (err) {
