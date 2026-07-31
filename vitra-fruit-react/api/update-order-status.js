@@ -4,8 +4,6 @@ module.exports = async function handler(req, res) {
   const allowedOrigins = [
     'https://vitrafruits.co.za',
     'https://www.vitrafruits.co.za',
-    'https://vitrafruit.com',
-    'https://www.vitrafruit.com',
   ];
   const origin = req.headers.origin || '';
   const isVercel = origin.endsWith('.vercel.app');
@@ -38,14 +36,17 @@ module.exports = async function handler(req, res) {
       return res.status(400).json({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
 
+    const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: parseInt(process.env.SMTP_PORT || '587', 10),
-      secure: false,
+      host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+      port: smtpPort,
+      secure: smtpPort === 465, // TLS-on-connect for 465, STARTTLS otherwise
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
       },
+      connectionTimeout: 10000,
+      socketTimeout: 15000,
     });
 
     const publicSiteUrl = getPublicSiteUrl(req);

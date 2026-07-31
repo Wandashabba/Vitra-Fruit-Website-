@@ -4,8 +4,6 @@ module.exports = async function handler(req, res) {
   const allowedOrigins = [
     'https://vitrafruits.co.za',
     'https://www.vitrafruits.co.za',
-    'https://vitrafruit.com',
-    'https://www.vitrafruit.com',
   ];
   const origin = req.headers.origin || '';
   const isVercel = origin.endsWith('.vercel.app');
@@ -49,26 +47,27 @@ module.exports = async function handler(req, res) {
     const random = Math.random().toString(36).substring(2, 6).toUpperCase();
     const orderId = `VF-${timestamp}-${random}`;
 
-    // Attempt to send the shop owner notification email (non-blocking).
-    // The order must still succeed even if the mail server is temporarily unavailable.
-    let emailSent = false;
+    // Send the shop owner notification email. This is BLOCKING by design:
+    // orders have no persistence other than email, so if the shop cannot be
+    // notified, the customer must not be sent to PayFast to pay for an order
+    // nobody can see or fulfil.
+    const smtpPort = parseInt(process.env.SMTP_PORT || '587', 10);
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST || 'smtpout.secureserver.net',
+      port: smtpPort,
+      secure: smtpPort === 465, // TLS-on-connect for 465, STARTTLS otherwise
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
+      },
+      connectionTimeout: 10000, // 10s connect timeout
+      socketTimeout: 15000,     // 15s socket timeout
+    });
+
+    const attachments = await buildEmailAttachments(publicSiteUrl);
+    const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
+
     try {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST || 'smtp.gmail.com',
-        port: parseInt(process.env.SMTP_PORT || '587', 10),
-        secure: false,
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS ? process.env.SMTP_PASS.replace(/\s+/g, '') : '',
-        },
-        connectionTimeout: 10000, // 10s connect timeout
-        socketTimeout: 15000,     // 15s socket timeout
-      });
-
-      const attachments = await buildEmailAttachments(publicSiteUrl);
-
-      const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
-
       await transporter.sendMail({
         from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
         to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
@@ -76,13 +75,30 @@ module.exports = async function handler(req, res) {
         html: shopHtml,
         attachments,
       });
-      emailSent = true;
     } catch (emailErr) {
-      // Log but don't fail the order — the customer must still be able to pay
-      console.error('Order notification email failed (non-blocking):', emailErr.message || emailErr);
+      console.error('Order notification email failed — blocking checkout:', emailErr.message || emailErr);
+      return res.status(502).json({
+        error: "We couldn't process your order right now. Please try again in a few minutes, or WhatsApp us on 078 404 5558.",
+      });
     }
 
-    return res.status(200).json({ success: true, orderId, emailSent });
+    // Customer "order received" email — best-effort; a failure here must not
+    // block the sale (the shop already has the order).
+    try {
+      if (billing.email) {
+        await transporter.sendMail({
+          from: `"VitraFruits" <${process.env.SMTP_USER}>`,
+          to: billing.email,
+          subject: `We've received your order ${orderId} — VitraFruits`,
+          html: buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total }),
+          attachments,
+        });
+      }
+    } catch (emailErr) {
+      console.error('Customer order-received email failed (non-blocking):', emailErr.message || emailErr);
+    }
+
+    return res.status(200).json({ success: true, orderId, emailSent: true });
   } catch (err) {
     console.error('Create order error:', err);
     return res.status(500).json({
@@ -108,14 +124,23 @@ const PRODUCT_PRICES = {
   'dehydrated apple slices': { '100g': 100, '200g': 180 },
   'dehydrated pear slices': { '100g': 100, '200g': 180 },
   // Banana chips
-  'dehydrated banana chips': { '100g': 80, '200g': 150 },
+  'dehydrated banana chips': { '100g': 100, '200g': 180 },
   // Pineapple
   'dehydrated pineapple slices': { '100g': 120, '200g': 220 },
   // Mango
-  'dehydrated mango strips': { '100g': 130, '200g': 240 },
+  'dehydrated mango strips': { '100g': 100, '200g': 160 },
   // Fruit strips
   'fruit strips': { default: 80 },
-  // Powders
+  // Citrus powders — product pages sell these under the plural name at R140
+  'dehydrated lemon powders': { default: 140 },
+  'dehydrated orange powders': { default: 140 },
+  'dehydrated grapefruit powders': { default: 140 },
+  // Vegetable powders — plural name, priced by size
+  'beetroot powders': { '150g': 160, '500g': 380 },
+  'butternut powders': { '150g': 160, '500g': 380 },
+  'carrot powders': { '150g': 160, '500g': 380 },
+  'spinach powders': { '150g': 160, '500g': 380 },
+  // Legacy singular keys — old carts before the rename
   'lemon powder': { default: 120 },
   'orange powder': { default: 120 },
   'grapefruit powder': { default: 120 },
@@ -124,10 +149,11 @@ const PRODUCT_PRICES = {
   'carrot powder': { default: 130 },
   'spinach powder': { default: 130 },
   // Hibiscus
-  'hibiscus flowers': { default: 100 },
+  'hibiscus flowers': { '100g': 100, '200g': 180, '1kg': 980 },
 };
 
 const SHIPPING_COST = 150;
+const FREE_SHIPPING_THRESHOLD = 850; // matches cart.js — free delivery at/above this after discount
 const FIRST_ORDER_DISCOUNT_RATE = 0.10;
 
 function lookupPrice(name, size) {
@@ -153,7 +179,9 @@ function validateOrderTotal({ items, discount, deliveryMethod, total }) {
 
   const isFirstOrder = discount > 0;
   const computedDiscount = isFirstOrder ? Math.round(computedSubtotal * FIRST_ORDER_DISCOUNT_RATE * 100) / 100 : 0;
-  const shipping = deliveryMethod === 'collection' ? 0 : SHIPPING_COST;
+  const shipping = deliveryMethod === 'collection' || (computedSubtotal - computedDiscount) >= FREE_SHIPPING_THRESHOLD
+    ? 0
+    : SHIPPING_COST;
   const computedTotal = computedSubtotal - computedDiscount + shipping;
 
   const tolerance = 1.00; // allow R1 rounding difference
