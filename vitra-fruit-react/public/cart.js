@@ -317,12 +317,10 @@
     const origin = window.location.origin || '';
     const candidateApiBases = [
       origin,
-      'https://vitrafruit.com',
-      'https://www.vitrafruit.com',
-      'https://vitrafruits.co.za',
-      'https://www.vitrafruits.co.za'
+      'https://www.vitrafruits.co.za',
+      'https://vitrafruits.co.za'
     ];
-    const returnBase = origin || 'https://vitrafruit.com';
+    const returnBase = origin || 'https://www.vitrafruits.co.za';
     const apiBases = candidateApiBases
       .filter(Boolean)
       .filter((base, index, list) => list.indexOf(base) === index);
@@ -347,12 +345,16 @@
         }
 
         const errText = await response.text();
-        lastError = new Error(`Failed to create order (${response.status}) via ${base}: ${errText}`);
+        let serverMessage = '';
+        try { serverMessage = JSON.parse(errText).error || ''; } catch (parseErr) { /* body was not JSON */ }
 
         if (response.status === 404) {
+          lastError = new Error(`Failed to create order (404) via ${base}`);
           continue;
         }
 
+        lastError = new Error(serverMessage || `Failed to create order (${response.status}) via ${base}`);
+        if (serverMessage) lastError.isServerMessage = true;
         throw lastError;
       } catch (err) {
         lastError = err;
@@ -724,7 +726,7 @@
       setField('item_description', description);
       setField('return_url', returnBase + '/checkout.html?status=success');
       setField('cancel_url', returnBase + '/checkout.html?status=cancel');
-      setField('notify_url', '');
+      setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
       setField('m_payment_id', `VITRA-${Date.now()}`);
       setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
       setField('name_last', billingLastName ? billingLastName.value.trim() : '');
@@ -850,7 +852,10 @@
             setField('name_last', bLast);
             setField('email_address', bEmail);
             setField('amount', grandTotal.toFixed(2));
-            setField('notify_url', apiBase + '/api/payfast-notify');
+            // Pinned to the canonical host: PayFast's server-to-server callback
+            // must not depend on the customer's browsing origin (the apex domain
+            // 307-redirects /api/*, and PayFast may not follow redirects).
+            setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
 
             // Mark user as returning to prevent duplicate discounts
             markAsReturningUser();
@@ -862,7 +867,9 @@
             console.error('Checkout error:', err);
             if (payfastNote) {
               payfastNote.style.color = '#c53b56';
-              payfastNote.textContent = `Oops, something went wrong saving your order: ${err.message}. Please try again.`;
+              payfastNote.textContent = err && err.isServerMessage
+                ? err.message
+                : 'Oops, something went wrong saving your order. Please try again.';
             }
             if (payfastButton) {
               payfastButton.disabled = false;
