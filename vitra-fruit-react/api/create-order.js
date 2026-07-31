@@ -124,14 +124,23 @@ const PRODUCT_PRICES = {
   'dehydrated apple slices': { '100g': 100, '200g': 180 },
   'dehydrated pear slices': { '100g': 100, '200g': 180 },
   // Banana chips
-  'dehydrated banana chips': { '100g': 80, '200g': 150 },
+  'dehydrated banana chips': { '100g': 100, '200g': 180 },
   // Pineapple
   'dehydrated pineapple slices': { '100g': 120, '200g': 220 },
   // Mango
-  'dehydrated mango strips': { '100g': 130, '200g': 240 },
+  'dehydrated mango strips': { '100g': 100, '200g': 160 },
   // Fruit strips
   'fruit strips': { default: 80 },
-  // Powders
+  // Citrus powders — product pages sell these under the plural name at R140
+  'dehydrated lemon powders': { default: 140 },
+  'dehydrated orange powders': { default: 140 },
+  'dehydrated grapefruit powders': { default: 140 },
+  // Vegetable powders — plural name, priced by size
+  'beetroot powders': { '150g': 160, '500g': 380 },
+  'butternut powders': { '150g': 160, '500g': 380 },
+  'carrot powders': { '150g': 160, '500g': 380 },
+  'spinach powders': { '150g': 160, '500g': 380 },
+  // Legacy singular keys — old carts before the rename
   'lemon powder': { default: 120 },
   'orange powder': { default: 120 },
   'grapefruit powder': { default: 120 },
@@ -140,7 +149,7 @@ const PRODUCT_PRICES = {
   'carrot powder': { default: 130 },
   'spinach powder': { default: 130 },
   // Hibiscus
-  'hibiscus flowers': { default: 100 },
+  'hibiscus flowers': { '100g': 100, '200g': 180, '1kg': 980 },
 };
 
 const SHIPPING_COST = 150;
