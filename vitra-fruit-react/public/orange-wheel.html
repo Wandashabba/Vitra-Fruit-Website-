@@ -549,7 +549,7 @@
           <div class="actions">
             <div class="qty-picker">
               <button class="qty-btn" type="button" onclick="this.nextElementSibling.stepDown()">-</button>
-              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
+              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="10">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
             <button class="btn-cart" type="button" id="addToCartBtn" data-price="200.00">
@@ -680,7 +680,29 @@
         updateCartDisplay();
       }
 
+      // Online orders are capped at 10 packs; bigger orders go by email.
       function addItemToCart(item) {
+        const inCart = loadCart().reduce((sum, it) => sum + (it.quantity || 0), 0);
+        if (inCart + item.quantity > 10) {
+          const left = Math.max(0, 10 - inCart);
+          const note = document.querySelector('.cart-toast-text');
+          const box = document.getElementById('cartToast');
+          if (note) {
+            note.textContent = left > 0
+              ? `You can add ${left} more. For orders over 10 items, email orderinfo@vitrafruits.co.za`
+              : 'For orders over 10 items, please email orderinfo@vitrafruits.co.za';
+          }
+          if (box) {
+            box.classList.add('is-visible');
+            setTimeout(() => box.classList.remove('is-visible'), 6000);
+          }
+          return false;
+        }
+        addItemToCartUnchecked(item);
+        return true;
+      }
+
+      function addItemToCartUnchecked(item) {
         const cart = loadCart();
         const existing = cart.find((it) => it.id === item.id);
         if (existing) {
@@ -695,14 +717,14 @@
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
         const size = sizeSelect?.value || '200g';
         const price = updatePrice();
-        addItemToCart({
+        if (!addItemToCart({
           id: `dehydrated-orange-wheels__${size}`,
           name: 'Dehydrated Orange Wheels',
           price,
           size,
           image: '/images/OrangePleaser.png',
           quantity: qty
-        });
+        })) return;
 
         if (toastText) {
           toastText.textContent = 'Dehydrated Orange Wheels added to cart';

@@ -3,7 +3,12 @@
   const VAT_KEY = 'vitra_vat_rate';
   const COUNT_SELECTOR = '[data-cart-count]';
   const BAG_COUNT_SELECTOR = '[data-cart-bag-count]';
-  const DEFAULT_MAX_QTY = 100;
+  const DEFAULT_MAX_QTY = 10;
+  // Online orders are capped at 10 packs in total; bigger orders go by email.
+  const MAX_ORDER_ITEMS = 10;
+  const ORDER_LIMIT_MESSAGE = 'Online orders are limited to 10 items. For larger orders, please email orderinfo@vitrafruits.co.za';
+  const SHIPPING_FEE = 190;
+  const FREE_SHIPPING_FROM = 850;
   const memoryStore = { cart: [], vatRate: 0.15 };
   const canUseStorage = (function () {
     try {
@@ -118,11 +123,11 @@
     if (name.includes('lime slices')) {
       const normalizedSize = size || '100g';
       const limeSliceSizes = {
-        '100g': 120,
+        '100g': 160,
         '1kg': 580, // matches the lime-slices product page and the other citrus 1kg prices
       };
       next.size = normalizedSize;
-      next.price = limeSliceSizes[normalizedSize] || 120;
+      next.price = limeSliceSizes[normalizedSize] || 160;
       return next;
     }
 
@@ -346,8 +351,15 @@
     throw lastError || new Error('Could not reach any order API endpoint.');
   }
 
+  function countItems(cart) {
+    return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+  }
+
   function addItem({ id, name, image, price, size, quantity, maxQty }) {
     const cart = loadCart();
+    const room = MAX_ORDER_ITEMS - countItems(cart);
+    if (room <= 0) return false;
+    quantity = Math.min(room, quantity || 1);
     const limit = Math.max(1, Math.min(DEFAULT_MAX_QTY, maxQty || DEFAULT_MAX_QTY));
     const qty = Math.max(1, Math.min(limit, quantity || 1));
     const existing = cart.find((item) => item.id === id);
@@ -358,6 +370,7 @@
       cart.push({ id, name, image, price, size, quantity: qty, maxQty: limit });
     }
     saveCart(cart);
+    return true;
   }
 
   function attachAddToCart() {
@@ -397,6 +410,9 @@
     let vatRate = 0.15;
     // VAT rate locked at 0.15
 
+    const limitNote = document.querySelector('[data-cart-limit-note]');
+    const checkoutLink = document.querySelector('[data-cart-checkout]');
+
     function render() {
       const cart = loadCart();
       tableBody.innerHTML = '';
@@ -417,11 +433,22 @@
       }
 
       let subtotal = 0;
+      const itemCount = countItems(cart);
+      const overLimit = itemCount > MAX_ORDER_ITEMS;
+      if (limitNote) {
+        limitNote.hidden = !overLimit && itemCount < MAX_ORDER_ITEMS;
+        limitNote.textContent = ORDER_LIMIT_MESSAGE;
+      }
+      if (checkoutLink) {
+        checkoutLink.style.pointerEvents = overLimit ? 'none' : '';
+        checkoutLink.style.opacity = overLimit ? '0.5' : '';
+        checkoutLink.setAttribute('aria-disabled', overLimit ? 'true' : 'false');
+      }
 
       cart.forEach((item) => {
         const itemLimit = Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY));
         const canDecrement = item.quantity > 1;
-        const canIncrement = item.quantity < itemLimit;
+        const canIncrement = item.quantity < itemLimit && itemCount < MAX_ORDER_ITEMS;
         const row = document.createElement('tr');
         row.innerHTML = `
           <td class="cart-cell cart-cell-remove">
@@ -454,7 +481,7 @@
         subtotal += item.price * item.quantity;
       });
 
-      const shipping = subtotal >= 850 ? 0 : 150;
+      const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : SHIPPING_FEE;
       const grandTotal = subtotal + shipping;
 
       const vat = subtotal - subtotal / (1 + vatRate);
@@ -508,7 +535,8 @@
       const item = cart.find((entry) => entry.id === itemId);
       if (!item) return;
 
-      const limit = Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY));
+      const limit = Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY,
+        (item.quantity || 1) + Math.max(0, MAX_ORDER_ITEMS - countItems(cart))));
       const nextQty = Math.max(1, Math.min(limit, (item.quantity || 1) + stepValue));
       item.quantity = nextQty;
       saveCart(cart);
@@ -522,7 +550,10 @@
       if (!itemId) return;
       const cart = loadCart();
       const item = cart.find((entry) => entry.id === itemId);
-      const limit = item ? Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY)) : DEFAULT_MAX_QTY;
+      const limit = item
+        ? Math.max(1, Math.min(DEFAULT_MAX_QTY, item.maxQty || DEFAULT_MAX_QTY,
+          (item.quantity || 1) + Math.max(0, MAX_ORDER_ITEMS - countItems(cart))))
+        : DEFAULT_MAX_QTY;
       const nextQty = Math.max(1, Math.min(limit, parseInt(target.value || '1', 10)));
       if (item) {
         item.quantity = nextQty;
@@ -616,7 +647,7 @@
       subtotal += item.price * item.quantity;
     });
 
-    const shipping = subtotal >= 850 ? 0 : 150; // Standard shipping or Free over R850
+    const shipping = subtotal >= FREE_SHIPPING_FROM ? 0 : SHIPPING_FEE;
     const grandTotal = subtotal + shipping;
 
     const vat = subtotal - subtotal / (1 + vatRate);
@@ -644,15 +675,20 @@
     
     if (totalEl) totalEl.textContent = `${formatPrice(grandTotal)}`;
 
+    const overLimit = countItems(cart) > MAX_ORDER_ITEMS;
     if (payfastNote) {
-      payfastNote.textContent = '';
+      payfastNote.textContent = overLimit ? ORDER_LIMIT_MESSAGE : '';
     }
     if (payfastButton) {
-      payfastButton.disabled = false;
-      payfastButton.removeAttribute('aria-disabled');
+      payfastButton.disabled = overLimit;
+      if (overLimit) {
+        payfastButton.setAttribute('aria-disabled', 'true');
+      } else {
+        payfastButton.removeAttribute('aria-disabled');
+      }
     }
 
-    if (payfastForm) {
+    if (payfastForm && !overLimit) {
       const setField = (name, value) => {
         const field = payfastForm.querySelector(`[name="${name}"]`);
         if (field) {
@@ -683,6 +719,10 @@
 
           if (!cart.length) {
             if (payfastNote) payfastNote.textContent = 'Please add items to your cart to checkout.';
+            return;
+          }
+          if (countItems(cart) > MAX_ORDER_ITEMS) {
+            if (payfastNote) payfastNote.textContent = ORDER_LIMIT_MESSAGE;
             return;
           }
 

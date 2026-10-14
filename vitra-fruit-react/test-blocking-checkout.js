@@ -23,10 +23,10 @@ const req = {
     },
     shipping: null,
     deliveryMethod: 'delivery',
-    // 2 x Lemon Slices 100g @ R120 = R240, +R150 shipping = R390
+    // 2 x Lemon Slices 100g @ R120 = R240, +R190 shipping = R430
     items: [{ name: 'Dehydrated Lemon Slices', size: '100g', price: 120, quantity: 2 }],
     subtotal: 240,
-    total: 390,
+    total: 430,
   },
 };
 

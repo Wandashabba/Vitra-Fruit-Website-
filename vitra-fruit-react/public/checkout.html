@@ -820,7 +820,9 @@
       const isConsentChecked = consentCheckbox?.checked;
       
       if (payfastBtn) {
-        payfastBtn.disabled = !(isFormValid && isConsentChecked);
+        // cart.js locks the button (aria-disabled) for an empty or over-limit cart
+        const lockedByCart = payfastBtn.getAttribute('aria-disabled') === 'true';
+        payfastBtn.disabled = lockedByCart || !(isFormValid && isConsentChecked);
       }
     }
 

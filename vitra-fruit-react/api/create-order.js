@@ -351,6 +351,10 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
             <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
           <tr>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Delivery</td>
+            <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${total - subtotal > 0 ? formatCurrency(total - subtotal) : 'Free'}</td>
+          </tr>
+          <tr>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total</td>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#c03030;text-align:right;border-top:2px solid #333;">${formatCurrency(total)}</td>
           </tr>
@@ -435,6 +439,10 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
           <tr>
             <td style="padding:8px 0;font-size:14px;color:#666;">Subtotal</td>
             <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Delivery</td>
+            <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${total - subtotal > 0 ? formatCurrency(total - subtotal) : 'Free'}</td>
           </tr>
           <tr>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total</td>

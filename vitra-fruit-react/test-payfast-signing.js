@@ -64,14 +64,14 @@ function check(label, ok) {
         phone: '0800000000', street: '1 Test St', town: 'Cape Town', province: 'Western Cape', postcode: '8000',
       },
       items: [{ name: 'Dehydrated Lemon Slices', size: '100g', price: 1, quantity: 2 }],
-      total: 390,
+      total: 430,
     },
   };
   const orderRes = mockRes();
   await createOrder(orderReq, orderRes);
   check('create-order succeeds', orderRes.statusCode === 200);
   const pf = orderRes.body && orderRes.body.payfast;
-  check('server sets the amount from its catalogue, not the client price', pf && pf.amount === '390.00');
+  check('server sets the amount from its catalogue, not the client price', pf && pf.amount === '430.00');
   check('order emails escape customer HTML', sent.every((m) => !m.html.includes('<b>Customer</b>')));
 
   const itn = (overrides) => ({
@@ -115,6 +115,25 @@ function check(label, ok) {
   const badQty = mockRes();
   await createOrder({ ...orderReq, body: { ...orderReq.body, items: [{ name: 'Fruit Strips', quantity: -3 }], total: 0 } }, badQty);
   check('negative quantities are rejected', badQty.statusCode === 400);
+
+  const tooMany = mockRes();
+  await createOrder({ ...orderReq, body: { ...orderReq.body, items: [
+    { name: 'Dehydrated Lime Slices', size: '100g', quantity: 6 },
+    { name: 'Fruit Strips', quantity: 5 },
+  ], total: 1360 } }, tooMany);
+  check('orders over 10 items are sent to email', tooMany.statusCode === 400 && /orderinfo@vitrafruits\.co\.za/.test(tooMany.body.error));
+
+  const ten = mockRes();
+  await createOrder({ ...orderReq, body: { ...orderReq.body, items: [
+    { name: 'Dehydrated Lime Slices', size: '100g', quantity: 5 },
+    { name: 'Fruit Strips', quantity: 5 },
+  ], total: 1200 } }, ten);
+  check('exactly 10 items is allowed (lime 100g at R160)', ten.statusCode === 200 && ten.body.payfast.amount === '1200.00');
+
+  const small = mockRes();
+  await createOrder({ ...orderReq, body: { ...orderReq.body, items: [{ name: 'Fruit Strips', quantity: 1 }], total: 270 } }, small);
+  check('delivery is R190 under R850', small.statusCode === 200 && small.body.payfast.amount === '270.00');
+  check('order email shows the delivery line', sent.some((m) => /Delivery<\/td>[\s\S]*?R190\.00/.test(m.html)));
 
   if (failures) {
     console.error(`FAIL: ${failures} check(s) failed`);

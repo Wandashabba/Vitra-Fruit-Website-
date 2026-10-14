@@ -1,5 +1,5 @@
 const OpenAI = require('openai');
-const { applyCors, describeCatalogue, FREE_SHIPPING_THRESHOLD, SHIPPING_COST } = require('./_lib/shop');
+const { applyCors, describeCatalogue, FREE_SHIPPING_THRESHOLD, SHIPPING_COST, MAX_ORDER_ITEMS } = require('./_lib/shop');
 const { createRateLimiter } = require('./_lib/rate-limit');
 // Using Groq's OpenAI-compatible API (free tier, no credit card required)
 
@@ -34,7 +34,7 @@ ${describeCatalogue()}
 
 All products: 100% natural, no preservatives, no added sugar. Proudly South African. 12-month shelf life unopened. Store in cool, dry place.
 Shipping is a R${SHIPPING_COST} flat rate, with free delivery on orders of R${FREE_SHIPPING_THRESHOLD} or more.
-Wholesale available — email orderinfo@vitrafruits.co.za.
+Online orders are limited to ${MAX_ORDER_ITEMS} items; larger orders and wholesale go through email — orderinfo@vitrafruits.co.za.
 
 Keep answers friendly, concise (2-4 sentences max), and warm. You are chatting with a customer on the website.`;
 

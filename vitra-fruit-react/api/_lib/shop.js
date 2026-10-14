@@ -12,7 +12,7 @@ const PRODUCT_PRICES = {
   'dehydrated grapefruit wheels': { default: 200 },
   // Citrus slices — price by size
   'dehydrated lemon slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  'dehydrated lime slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
+  'dehydrated lime slices': { '100g': 160, '1kg': 580 },
   'dehydrated orange slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
   'dehydrated grapefruit slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
   // Apple / Pear
@@ -39,9 +39,10 @@ const PRODUCT_PRICES = {
   'hibiscus flowers': { '100g': 100, '200g': 180, '1kg': 980 },
 };
 
-const SHIPPING_COST = 150;
+const SHIPPING_COST = 190;
 const FREE_SHIPPING_THRESHOLD = 850; // matches cart.js — free delivery at/above this subtotal
-const MAX_QTY = 100; // matches cart.js DEFAULT_MAX_QTY
+const MAX_QTY = 10; // matches cart.js DEFAULT_MAX_QTY
+const MAX_ORDER_ITEMS = 10; // matches cart.js; bigger orders go through email
 const MAX_LINES = 50;
 
 function lookupPrice(name, size) {
@@ -79,6 +80,11 @@ function priceOrder(items) {
       price: unitPrice,
     });
     subtotal += unitPrice * quantity;
+  }
+
+  const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+  if (itemCount > MAX_ORDER_ITEMS) {
+    return { error: `Online orders are limited to ${MAX_ORDER_ITEMS} items. For larger orders, please email orderinfo@vitrafruits.co.za` };
   }
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
@@ -161,6 +167,7 @@ function safeEqual(a, b) {
 module.exports = {
   PRODUCT_PRICES,
   SHIPPING_COST,
+  MAX_ORDER_ITEMS,
   FREE_SHIPPING_THRESHOLD,
   lookupPrice,
   priceOrder,

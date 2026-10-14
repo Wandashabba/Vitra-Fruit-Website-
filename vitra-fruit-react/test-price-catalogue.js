@@ -14,7 +14,7 @@ process.env.PUBLIC_SITE_URL = 'https://www.vitrafruits.co.za';
 
 const handler = require('./api/create-order.js');
 
-const SHIPPING = 150;
+const SHIPPING = 190;
 const scenarios = [
   { label: 'Banana Chips 200g', item: { name: 'Dehydrated Banana Chips', size: '200g', price: 180, quantity: 1 } },
   { label: 'Mango Strips 200g', item: { name: 'Dehydrated Mango Strips', size: '200g', price: 160, quantity: 1 } },
