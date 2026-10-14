@@ -133,7 +133,7 @@
   "@type": "Product",
   "name": "Dehydrated Mango Strips",
   "description": "Tropical dehydrated mango strips with intense natural flavour and chewy texture.",
-  "image": "https://vitrafruits.co.za/images/MangoStrips.webp",
+  "image": "https://www.vitrafruits.co.za/images/MangoStrips.webp",
   "brand": {
     "@type": "Brand",
     "name": "VitraFruits"
@@ -144,7 +144,7 @@
     "lowPrice": 130,
     "highPrice": 240,
     "availability": "https://schema.org/InStock",
-    "url": "https://vitrafruits.co.za/mango-strips.html"
+    "url": "https://www.vitrafruits.co.za/mango-strips.html"
   }
 }
 </script>
@@ -214,7 +214,7 @@
           <div class="actions">
             <div class="qty-picker">
               <button class="qty-btn" type="button" onclick="this.nextElementSibling.stepDown()">-</button>
-              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
+              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="10">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
             <button class="btn-cart" type="button" id="addToCartBtn">Add to cart</button>
@@ -224,7 +224,7 @@
     </div>
   </main>
 
-  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-col"><h4>Customer Service</h4><ul><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="shipping.html">Shipping Costs</a></li><li><a href="terms.html">Terms and Conditions</a></li></ul><a class="footer-social-link" href="https://www.instagram.com/vitrafruits/" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg><span>@Vitrafruits</span></a></div></div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p></div></div></footer>
+  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-col"><h4>Customer Service</h4><ul><li><a href="account.html">My account</a></li><li><a href="contact.html">Contact Us</a></li><li><a href="shipping.html">Shipping Costs</a></li><li><a href="terms.html">Terms and Conditions</a></li><li><a href="privacy.html">Privacy Policy</a></li></ul><a class="footer-social-link" href="https://www.instagram.com/vitrafruits/" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.75 2h8.5A5.75 5.75 0 0 1 22 7.75v8.5A5.75 5.75 0 0 1 16.25 22h-8.5A5.75 5.75 0 0 1 2 16.25v-8.5A5.75 5.75 0 0 1 7.75 2Zm0 1.5A4.25 4.25 0 0 0 3.5 7.75v8.5a4.25 4.25 0 0 0 4.25 4.25h8.5a4.25 4.25 0 0 0 4.25-4.25v-8.5A4.25 4.25 0 0 0 16.25 3.5h-8.5Zm9.75 2.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 1.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z" /></svg><span>@Vitrafruits</span></a></div></div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> VitraFruits. All Rights Reserved. Developed by Wanda Shabangu</p></div></div></footer>
 
   <div class="cart-toast" id="cartToast"><span class="cart-toast-icon">✓</span><span class="cart-toast-text">Added to cart</span></div>
 
@@ -244,10 +244,32 @@
       sizeSelect?.addEventListener('change', updatePrice); updatePrice();
       function loadCart() { try { const raw = localStorage.getItem('vitra_cart'); const parsed = raw ? JSON.parse(raw) : []; return Array.isArray(parsed) ? parsed : []; } catch (err) { return []; } }
       function saveCart(items) { try { localStorage.setItem('vitra_cart', JSON.stringify(items)); } catch (err) {} updateCartDisplay(); }
-      function addItemToCart(item) { const cart = loadCart(); const existing = cart.find((it) => it.id === item.id); if (existing) { existing.quantity = (existing.quantity || 0) + item.quantity; } else { cart.push(item); } saveCart(cart); }
+      // Online orders are capped at 10 packs; bigger orders go by email.
+      function addItemToCart(item) {
+        const inCart = loadCart().reduce((sum, it) => sum + (it.quantity || 0), 0);
+        if (inCart + item.quantity > 10) {
+          const left = Math.max(0, 10 - inCart);
+          const note = document.querySelector('.cart-toast-text');
+          const box = document.getElementById('cartToast');
+          if (note) {
+            note.textContent = left > 0
+              ? `You can add ${left} more. For orders over 10 items, email orderinfo@vitrafruits.co.za`
+              : 'For orders over 10 items, please email orderinfo@vitrafruits.co.za';
+          }
+          if (box) {
+            box.classList.add('is-visible');
+            setTimeout(() => box.classList.remove('is-visible'), 6000);
+          }
+          return false;
+        }
+        addItemToCartUnchecked(item);
+        return true;
+      }
+
+      function addItemToCartUnchecked(item) { const cart = loadCart(); const existing = cart.find((it) => it.id === item.id); if (existing) { existing.quantity = (existing.quantity || 0) + item.quantity; } else { cart.push(item); } saveCart(cart); }
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10)); const size = sizeSelect?.value || '100g'; const price = updatePrice();
-        addItemToCart({ id: `dehydrated-mango-strips__${size}`, name: 'Dehydrated Mango Strips', price, size, image: '/images/MangoStrips.png', quantity: qty });
+        if (!addItemToCart({ id: `dehydrated-mango-strips__${size}`, name: 'Dehydrated Mango Strips', price, size, image: '/images/MangoStrips.png', quantity: qty })) return;
         if (toastText) { toastText.textContent = 'Dehydrated Mango Strips added to cart'; }
         toast.classList.add('is-visible'); setTimeout(() => toast.classList.remove('is-visible'), 3000);
       });

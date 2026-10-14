@@ -1,31 +1,27 @@
 const nodemailer = require('nodemailer');
+const { applyCors, safeEqual, escapeHtml } = require('./_lib/shop');
 
 module.exports = async function handler(req, res) {
-  const allowedOrigins = [
-    'https://vitrafruits.co.za',
-    'https://www.vitrafruits.co.za',
-  ];
-  const origin = req.headers.origin || '';
-  const isVercel = origin.endsWith('.vercel.app');
-  if (allowedOrigins.includes(origin) || isVercel) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  applyCors(req, res, 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Simple secret-key auth
-  const secret = process.env.ADMIN_SECRET;
-  const provided = (req.headers.authorization || '').replace('Bearer ', '').trim();
+  // Simple secret-key auth — fails closed when ADMIN_SECRET is not configured
+  const secret = String(process.env.ADMIN_SECRET || '');
+  if (!secret) {
+    console.error('Missing ADMIN_SECRET');
+    return res.status(401).json({ error: 'Unauthorized. Provide a valid Bearer token.' });
+  }
+  const provided = String(req.headers.authorization || '').replace(/^Bearer\s+/i, '').trim();
 
-  if (!secret || provided !== secret) {
+  if (!safeEqual(provided, secret)) {
     return res.status(401).json({ error: 'Unauthorized. Provide a valid Bearer token.' });
   }
 
   try {
-    const { orderId, customerEmail, customerName, status, trackingNumber, trackingUrl } = req.body;
+    const { orderId, customerEmail, customerName, status, trackingNumber, trackingUrl } = req.body || {};
 
     if (!orderId || !customerEmail || !status) {
       return res.status(400).json({ error: 'Missing required fields: orderId, customerEmail, status' });
@@ -71,7 +67,7 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ success: true, message: `Status email "${status}" sent to ${customerEmail}` });
   } catch (err) {
     console.error('Update order status error:', err);
-    return res.status(500).json({ error: err && err.message ? err.message : 'Failed to send status email' });
+    return res.status(500).json({ error: 'Failed to send status email' });
   }
 };
 
@@ -123,10 +119,13 @@ function emailWrapper(content) {
     </html>`;
 }
 
-function buildStatusEmail({ orderId, customerName, status, trackingNumber, trackingUrl }) {
+function buildStatusEmail({ orderId: rawOrderId, customerName: rawName, status, trackingNumber, trackingUrl }) {
+  // Subjects are plain text; everything interpolated into HTML is escaped
+  const orderId = escapeHtml(rawOrderId);
+  const customerName = escapeHtml(rawName);
   const configs = {
     preparing: {
-      subject: `Your order is being prepared — ${orderId}`,
+      subject: `Your order is being prepared — ${rawOrderId}`,
       accentColor: '#c09828',
       title: 'Your order is being prepared',
       body: `<p style="margin:0 0 16px;font-size:14px;color:#555;line-height:1.7;">
@@ -137,7 +136,7 @@ function buildStatusEmail({ orderId, customerName, status, trackingNumber, track
             </p>`,
     },
     ready_collection: {
-      subject: `Your order is ready for collection — ${orderId}`,
+      subject: `Your order is ready for collection — ${rawOrderId}`,
       accentColor: '#607848',
       title: 'Your order is ready for collection',
       body: `<p style="margin:0 0 16px;font-size:14px;color:#555;line-height:1.7;">
@@ -151,7 +150,7 @@ function buildStatusEmail({ orderId, customerName, status, trackingNumber, track
             </p>`,
     },
     shipped: {
-      subject: `Your order has been shipped — ${orderId}`,
+      subject: `Your order has been shipped — ${rawOrderId}`,
       accentColor: '#607848',
       title: 'Your order is on its way',
       body: buildShippedBody(orderId, trackingNumber, trackingUrl),
@@ -196,12 +195,14 @@ function buildStatusEmail({ orderId, customerName, status, trackingNumber, track
   };
 }
 
-function buildShippedBody(orderId, trackingNumber, trackingUrl) {
+function buildShippedBody(orderId, rawTrackingNumber, rawTrackingUrl) {
   let trackingBlock = '';
 
-  if (trackingNumber) {
-    const trackingLink = trackingUrl
-      ? `<a href="${trackingUrl}" style="color:#c03030;text-decoration:none;font-weight:600;" target="_blank">${trackingNumber}</a>`
+  if (rawTrackingNumber) {
+    const trackingNumber = escapeHtml(rawTrackingNumber);
+    const safeUrl = /^https?:\/\//i.test(String(rawTrackingUrl || '').trim()) ? escapeHtml(String(rawTrackingUrl).trim()) : '';
+    const trackingLink = safeUrl
+      ? `<a href="${safeUrl}" style="color:#c03030;text-decoration:none;font-weight:600;" target="_blank">${trackingNumber}</a>`
       : `<strong style="color:#333;">${trackingNumber}</strong>`;
 
     trackingBlock = `

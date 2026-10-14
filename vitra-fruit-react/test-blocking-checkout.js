@@ -7,6 +7,7 @@ process.env.SMTP_PORT = '587';
 process.env.SMTP_USER = 'orderinfo@vitrafruits.co.za';
 process.env.SMTP_PASS = 'not-a-real-password';
 process.env.ORDER_EMAIL_TO = 'orderinfo@vitrafruits.co.za';
+process.env.ORDER_SIGNING_SECRET = 'test-signing-secret';
 process.env.PUBLIC_SITE_URL = 'https://www.vitrafruits.co.za';
 
 const handler = require('./api/create-order.js');
@@ -22,11 +23,10 @@ const req = {
     },
     shipping: null,
     deliveryMethod: 'delivery',
-    // 2 x Lemon Slices 100g @ R120 = R240, -10% (R24), +R150 shipping = R366
+    // 2 x Lemon Slices 100g @ R120 = R240, +R190 shipping = R430
     items: [{ name: 'Dehydrated Lemon Slices', size: '100g', price: 120, quantity: 2 }],
     subtotal: 240,
-    discount: 24,
-    total: 366,
+    total: 430,
   },
 };
 

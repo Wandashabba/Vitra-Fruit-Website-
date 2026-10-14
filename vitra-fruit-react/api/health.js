@@ -1,7 +1,7 @@
+const { applyCors } = require('./_lib/shop');
+
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  applyCors(req, res, 'GET, OPTIONS');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -22,6 +22,7 @@ module.exports = async function handler(req, res) {
       smtpUser: Boolean(String(process.env.SMTP_USER || '').trim()),
       smtpPass: Boolean(String(process.env.SMTP_PASS || '').trim()),
       orderEmailTo: Boolean(String(process.env.ORDER_EMAIL_TO || '').trim()),
+      orderSigningSecret: Boolean(String(process.env.ORDER_SIGNING_SECRET || '').trim()),
       payfastSandbox: String(process.env.PAYFAST_SANDBOX || 'false')
     }
   });

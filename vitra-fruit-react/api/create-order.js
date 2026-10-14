@@ -1,17 +1,17 @@
 const nodemailer = require('nodemailer');
 
+const {
+  priceOrder,
+  escapeHtml,
+  applyCors,
+  signOrder,
+} = require('./_lib/shop');
+
+const PAYLOAD_CHUNK = 250;   // PayFast custom_str fields hold 255 chars each
+const PAYLOAD_CHUNKS = 4;    // custom_str1-4 carry the order, custom_str5 its signature
+
 module.exports = async function handler(req, res) {
-  const allowedOrigins = [
-    'https://vitrafruits.co.za',
-    'https://www.vitrafruits.co.za',
-  ];
-  const origin = req.headers.origin || '';
-  const isVercel = origin.endsWith('.vercel.app');
-  if (allowedOrigins.includes(origin) || isVercel) {
-    res.setHeader('Access-Control-Allow-Origin', origin);
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  applyCors(req, res, 'POST, OPTIONS');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -22,23 +22,36 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { billing, shipping, deliveryMethod, items, subtotal, discount, total } = req.body;
+    const body = req.body || {};
+    const billing = cleanContact(body.billing);
+    const shipping = body.shipping ? cleanContact(body.shipping) : null;
+    // Checkout only offers delivery; never trust a client claim of collection.
+    const deliveryMethod = 'delivery';
     const missingEnv = getMissingEnvVars();
     const publicSiteUrl = getPublicSiteUrl(req);
-    if (!billing || !items || !items.length || !total) {
-      return res.status(400).json({ error: 'Missing required order data' });
+
+    if (!billing || !billing.firstName || !isEmail(billing.email)) {
+      return res.status(400).json({ error: 'Please enter your name and a valid email address.' });
     }
 
-    // Server-side price validation — recompute total from known prices
-    const priceValidation = validateOrderTotal({ items, discount, deliveryMethod, total });
-    if (!priceValidation.valid) {
-      console.error('Price validation failed:', priceValidation.reason);
+    // Price the order from the server catalogue; client-sent prices are ignored.
+    const priced = priceOrder(body.items);
+    if (priced.error) {
+      return res.status(400).json({ error: priced.error });
+    }
+    const { lines: items, subtotal, shipping: shippingCost, total } = priced;
+
+    // A stale cart (prices changed since it was filled) should be refreshed
+    // rather than silently charged a different amount.
+    if (Math.abs(Number(body.total) - total) > 1) {
+      console.error(`Price validation failed: submitted R${body.total}, server R${total.toFixed(2)}`);
       return res.status(400).json({ error: 'Order total could not be verified. Please refresh and try again.' });
     }
 
     if (missingEnv.length) {
+      console.error('Missing server configuration:', missingEnv.join(', '));
       return res.status(500).json({
-        error: `Missing server configuration: ${missingEnv.join(', ')}`
+        error: "We couldn't process your order right now. Please try again in a few minutes, or WhatsApp us on 078 404 5558.",
       });
     }
 
@@ -65,13 +78,13 @@ module.exports = async function handler(req, res) {
     });
 
     const attachments = await buildEmailAttachments(publicSiteUrl);
-    const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total });
+    const shopHtml = buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, total });
 
     try {
       await transporter.sendMail({
         from: `"VitraFruits Orders" <${process.env.SMTP_USER}>`,
         to: process.env.ORDER_EMAIL_TO || process.env.SMTP_USER,
-        subject: `New Order ${orderId} — ${deliveryMethod === 'collection' ? 'COLLECTION' : 'DELIVERY'} — R${total.toFixed(2)}`,
+        subject: `New Order ${orderId} — DELIVERY — R${total.toFixed(2)}`,
         html: shopHtml,
         attachments,
       });
@@ -85,115 +98,91 @@ module.exports = async function handler(req, res) {
     // Customer "order received" email — best-effort; a failure here must not
     // block the sale (the shop already has the order).
     try {
-      if (billing.email) {
-        await transporter.sendMail({
-          from: `"VitraFruits" <${process.env.SMTP_USER}>`,
-          to: billing.email,
-          subject: `We've received your order ${orderId} — VitraFruits`,
-          html: buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total }),
-          attachments,
-        });
-      }
+      await transporter.sendMail({
+        from: `"VitraFruits" <${process.env.SMTP_USER}>`,
+        to: billing.email,
+        subject: `We've received your order ${orderId} — VitraFruits`,
+        html: buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, total }),
+        attachments,
+      });
     } catch (emailErr) {
       console.error('Customer order-received email failed (non-blocking):', emailErr.message || emailErr);
     }
 
-    return res.status(200).json({ success: true, orderId, emailSent: true });
+    return res.status(200).json({
+      success: true,
+      orderId,
+      emailSent: true,
+      payfast: buildPayfastFields({ orderId, billing, shipping, items, subtotal, shippingCost, total }),
+    });
   } catch (err) {
     console.error('Create order error:', err);
-    return res.status(500).json({
-      error: err && err.message ? err.message : 'Failed to process order. Please try again.'
-    });
+    return res.status(500).json({ error: 'Failed to process order. Please try again.' });
   }
 };
 
-/* ── Server-side price catalogue ──────────────────────────────── */
+/* ── Input cleaning ───────────────────────────────────────────── */
 
-const PRODUCT_PRICES = {
-  // Citrus wheels
-  'dehydrated orange wheels': { default: 200 },
-  'dehydrated lemon wheels': { default: 200 },
-  'dehydrated lime wheels': { default: 200 },
-  'dehydrated grapefruit wheels': { default: 200 },
-  // Citrus slices — price by size
-  'dehydrated lemon slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  'dehydrated lime slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  'dehydrated orange slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  'dehydrated grapefruit slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  // Apple / Pear
-  'dehydrated apple slices': { '100g': 100, '200g': 180 },
-  'dehydrated pear slices': { '100g': 100, '200g': 180 },
-  // Banana chips
-  'dehydrated banana chips': { '100g': 100, '200g': 180 },
-  // Pineapple
-  'dehydrated pineapple slices': { '100g': 120, '200g': 220 },
-  // Mango
-  'dehydrated mango strips': { '100g': 100, '200g': 160 },
-  // Fruit strips
-  'fruit strips': { default: 80 },
-  // Citrus powders — product pages sell these under the plural name at R140
-  'dehydrated lemon powders': { default: 140 },
-  'dehydrated orange powders': { default: 140 },
-  'dehydrated grapefruit powders': { default: 140 },
-  // Vegetable powders — plural name, priced by size
-  'beetroot powders': { '150g': 160, '500g': 380 },
-  'butternut powders': { '150g': 160, '500g': 380 },
-  'carrot powders': { '150g': 160, '500g': 380 },
-  'spinach powders': { '150g': 160, '500g': 380 },
-  // Legacy singular keys — old carts before the rename
-  'lemon powder': { default: 120 },
-  'orange powder': { default: 120 },
-  'grapefruit powder': { default: 120 },
-  'beetroot powder': { default: 130 },
-  'butternut powder': { default: 130 },
-  'carrot powder': { default: 130 },
-  'spinach powder': { default: 130 },
-  // Hibiscus
-  'hibiscus flowers': { '100g': 100, '200g': 180, '1kg': 980 },
-};
+const CONTACT_FIELDS = ['firstName', 'lastName', 'email', 'phone', 'street', 'apartment', 'suburb', 'town', 'province', 'postcode'];
 
-const SHIPPING_COST = 150;
-const FREE_SHIPPING_THRESHOLD = 850; // matches cart.js — free delivery at/above this after discount
-const FIRST_ORDER_DISCOUNT_RATE = 0.10;
-
-function lookupPrice(name, size) {
-  const key = (name || '').toLowerCase().trim();
-  const entry = PRODUCT_PRICES[key];
-  if (!entry) return null;
-  if (entry.default !== undefined) return entry.default;
-  const sizeKey = (size || '').toLowerCase().trim();
-  return entry[sizeKey] ?? null;
+function cleanContact(data) {
+  if (!data || typeof data !== 'object') return null;
+  const out = {};
+  for (const key of CONTACT_FIELDS) {
+    out[key] = String(data[key] == null ? '' : data[key]).trim().slice(0, 120);
+  }
+  return out;
 }
 
-function validateOrderTotal({ items, discount, deliveryMethod, total }) {
-  let computedSubtotal = 0;
-  for (const item of items) {
-    const unitPrice = lookupPrice(item.name, item.size);
-    if (unitPrice === null) {
-      // Unknown product — skip strict validation for this item but trust the others
-      computedSubtotal += Number(item.price || 0) * Number(item.quantity || 1);
-      continue;
-    }
-    computedSubtotal += unitPrice * Number(item.quantity || 1);
+function isEmail(value) {
+  return typeof value === 'string' && value.length <= 254 && /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(value);
+}
+
+/* ── PayFast fields ───────────────────────────────────────────── */
+// The order summary rides along in custom_str1-4 so the ITN handler can email
+// it after payment; custom_str5 is an HMAC over the order id, amount and that
+// summary, which payfast-notify checks before confirming the order.
+
+function buildPayfastFields({ orderId, billing, shipping, items, subtotal, shippingCost, total }) {
+  const ship = shipping && shipping.street ? shipping : null;
+  const b = {
+    f: billing.firstName, l: billing.lastName, e: billing.email, p: billing.phone,
+    s: (ship && ship.street) || billing.street,
+    t: (ship && ship.town) || billing.town,
+    pr: billing.province,
+    z: (ship && ship.postcode) || billing.postcode,
+  };
+  const i = items.map((item) => ({ n: item.size ? `${item.name} ${item.size}` : item.name, q: item.quantity, p: item.price }));
+
+  const limit = PAYLOAD_CHUNK * PAYLOAD_CHUNKS;
+  let payload = JSON.stringify({ b, i, sub: subtotal, sh: shippingCost });
+  if (payload.length > limit) {
+    // Very large carts: the full item list is already in the order email.
+    payload = JSON.stringify({ b, i: [], it: items.length, sub: subtotal, sh: shippingCost });
+  }
+  if (payload.length > limit) {
+    payload = JSON.stringify({ b: {}, i: [], it: items.length, sub: subtotal, sh: shippingCost });
   }
 
-  const isFirstOrder = discount > 0;
-  const computedDiscount = isFirstOrder ? Math.round(computedSubtotal * FIRST_ORDER_DISCOUNT_RATE * 100) / 100 : 0;
-  const shipping = deliveryMethod === 'collection' || (computedSubtotal - computedDiscount) >= FREE_SHIPPING_THRESHOLD
-    ? 0
-    : SHIPPING_COST;
-  const computedTotal = computedSubtotal - computedDiscount + shipping;
-
-  const tolerance = 1.00; // allow R1 rounding difference
-  const diff = Math.abs(computedTotal - Number(total));
-  if (diff > tolerance) {
-    return { valid: false, reason: `Submitted total R${total} differs from server-computed R${computedTotal.toFixed(2)}` };
+  const amount = total.toFixed(2);
+  const fields = {
+    m_payment_id: orderId,
+    amount,
+    item_name: 'Vitra Fruit Products',
+    item_description: items
+      .map((item) => `${item.name}${item.size ? ` ${item.size}` : ''}${item.quantity > 1 ? ` x${item.quantity}` : ''}`)
+      .join(', ')
+      .slice(0, 255),
+  };
+  for (let n = 0; n < PAYLOAD_CHUNKS; n++) {
+    fields[`custom_str${n + 1}`] = payload.slice(n * PAYLOAD_CHUNK, (n + 1) * PAYLOAD_CHUNK);
   }
-  return { valid: true };
+  fields.custom_str5 = signOrder(orderId, amount, payload);
+  return fields;
 }
 
 function getMissingEnvVars() {
-  const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ORDER_EMAIL_TO'];
+  const required = ['SMTP_HOST', 'SMTP_PORT', 'SMTP_USER', 'SMTP_PASS', 'ORDER_EMAIL_TO', 'ORDER_SIGNING_SECRET'];
   return required.filter((key) => !String(process.env[key] || '').trim());
 }
 
@@ -246,7 +235,7 @@ function buildItemRows(items) {
       return `
         <tr>
           <td style="padding:12px 0;border-bottom:1px solid #e8e2d6;font-size:14px;color:#333;">
-            ${item.name || 'Product'}${size}
+            ${escapeHtml(item.name || 'Product')}${escapeHtml(size)}
           </td>
           <td style="padding:12px 0;border-bottom:1px solid #e8e2d6;font-size:14px;color:#555;text-align:center;">
             ${item.quantity}
@@ -274,7 +263,7 @@ function addressBlock(label, data) {
     <div style="margin-bottom:16px;">
       <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#c09828;font-weight:700;">${label}</p>
       <p style="margin:0;font-size:14px;color:#333;line-height:1.7;">
-        ${lines.join('<br/>')}
+        ${lines.map(escapeHtml).join('<br/>')}
       </p>
     </div>`;
 }
@@ -299,13 +288,9 @@ function emailWrapper(content) {
     </html>`;
 }
 
-function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, discount, total }) {
+function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, subtotal, total }) {
   const isCollection = deliveryMethod === 'collection';
   const dateStr = new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' });
-
-  const discountRow = discount > 0
-    ? `<tr><td style="padding:8px 0;font-size:14px;color:#607848;">Discount (10%)</td><td style="padding:8px 0;font-size:14px;color:#607848;text-align:right;font-weight:600;">-${formatCurrency(discount)}</td></tr>`
-    : '';
 
   const deliveryAddress = !isCollection
     ? addressBlock('Delivery Address', shipping || billing)
@@ -365,7 +350,10 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
             <td style="padding:8px 0;font-size:14px;color:#666;">Subtotal</td>
             <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
-          ${discountRow}
+          <tr>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Delivery</td>
+            <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${total - subtotal > 0 ? formatCurrency(total - subtotal) : 'Free'}</td>
+          </tr>
           <tr>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total</td>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#c03030;text-align:right;border-top:2px solid #333;">${formatCurrency(total)}</td>
@@ -386,8 +374,8 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
       <td style="padding:0 40px 32px;">
         <p style="margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;color:#c09828;font-weight:700;">Customer Contact</p>
         <p style="margin:0;font-size:14px;color:#333;">
-          <a href="mailto:${billing.email}" style="color:#c03030;text-decoration:none;">${billing.email}</a><br/>
-          ${billing.phone || 'No phone provided'}
+          <a href="mailto:${escapeHtml(billing.email)}" style="color:#c03030;text-decoration:none;">${escapeHtml(billing.email)}</a><br/>
+          ${escapeHtml(billing.phone) || 'No phone provided'}
         </p>
       </td>
     </tr>`;
@@ -395,12 +383,8 @@ function buildShopEmail({ orderId, billing, shipping, deliveryMethod, items, sub
   return emailWrapper(content);
 }
 
-function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, discount, total }) {
+function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal, total }) {
   const isCollection = deliveryMethod === 'collection';
-
-  const discountRow = discount > 0
-    ? `<tr><td style="padding:8px 0;font-size:14px;color:#607848;">Discount (10%)</td><td style="padding:8px 0;font-size:14px;color:#607848;text-align:right;font-weight:600;">-${formatCurrency(discount)}</td></tr>`
-    : '';
 
   const deliveryNote = isCollection
     ? `<p style="margin:0 0 24px;font-size:14px;color:#555;line-height:1.7;">You've chosen <strong>collection</strong>. We'll let you know when your order is ready for pickup.</p>`
@@ -420,7 +404,7 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
         <h1 style="margin:0 0 6px;font-size:22px;font-weight:700;color:#333;font-family:'Montserrat','Segoe UI',Arial,sans-serif;">Thank you for your order</h1>
         <p style="margin:0 0 20px;font-size:13px;color:#c09828;font-weight:600;letter-spacing:0.04em;">${orderId}</p>
         <p style="margin:0 0 8px;font-size:15px;color:#333;line-height:1.7;">
-          Hi ${billing.firstName || 'there'},
+          Hi ${escapeHtml(billing.firstName) || 'there'},
         </p>
         <p style="margin:0 0 20px;font-size:14px;color:#555;line-height:1.7;">
           We've received your order and it's being processed. You'll get a confirmation once your payment clears through PayFast.
@@ -456,7 +440,10 @@ function buildCustomerEmail({ orderId, billing, deliveryMethod, items, subtotal,
             <td style="padding:8px 0;font-size:14px;color:#666;">Subtotal</td>
             <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${formatCurrency(subtotal)}</td>
           </tr>
-          ${discountRow}
+          <tr>
+            <td style="padding:8px 0;font-size:14px;color:#666;">Delivery</td>
+            <td style="padding:8px 0;font-size:14px;color:#333;text-align:right;font-weight:600;">${total - subtotal > 0 ? formatCurrency(total - subtotal) : 'Free'}</td>
+          </tr>
           <tr>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#333;border-top:2px solid #333;">Total</td>
             <td style="padding:12px 0;font-size:18px;font-weight:700;color:#c03030;text-align:right;border-top:2px solid #333;">${formatCurrency(total)}</td>

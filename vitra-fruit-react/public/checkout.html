@@ -596,10 +596,6 @@
               <span class="totals-label">Subtotal</span>
               <span data-checkout-subtotal>R0.00 (incl. VAT)</span>
             </div>
-            <div class="totals-line discount-row" data-checkout-discount-row style="display: none;">
-              <span class="totals-label" style="font-style: italic; color: var(--text-muted);">Discount (10%)</span>
-              <span data-checkout-discount style="color: #27ae60; font-weight: 700;">-R0.00</span>
-            </div>
             <div class="totals-line total-grand">
               <span class="totals-label">Total</span>
               <span data-checkout-total>R0.00</span>
@@ -643,14 +639,14 @@
                   <input type="checkbox" id="consentCheckbox" style="margin-top: 3px; cursor: pointer; width: 16px; height: 16px; accent-color: #f1b25a;" required />
                   <label for="consentCheckbox" style="cursor: pointer; line-height: 1.4; color: var(--text-muted);">
                     I agree to the <a href="/terms.html" style="color: #1c2550; font-weight: 600; text-decoration: underline;" target="_blank">Terms and Conditions</a>, 
-                    and understand my data will be used to process my order according to the Privacy Policy.
+                    and understand my data will be used to process my order according to the <a href="/privacy.html" style="color: #1c2550; font-weight: 600; text-decoration: underline;" target="_blank">Privacy Policy</a>.
                   </label>
                 </div>
                 <button type="submit" class="place-order" id="payfastBtn" disabled>Pay with PayFast</button>
              </form>
 
              <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 25px; line-height: 1.5; display: none;">
-               Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy.
+               Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="/privacy.html" target="_blank">privacy policy</a>.
              </p>
           </div>
         </aside>
@@ -668,6 +664,7 @@
             <li><a href="/contact.html">Contact Us</a></li>
             <li><a href="/shipping.html">Shipping Costs</a></li>
             <li><a href="/terms.html">Terms and Conditions</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
           </ul>
           <a
             class="footer-social-link"
@@ -824,7 +821,9 @@
       const isConsentChecked = consentCheckbox?.checked;
       
       if (payfastBtn) {
-        payfastBtn.disabled = !(isFormValid && isConsentChecked);
+        // cart.js locks the button (aria-disabled) for an empty or over-limit cart
+        const lockedByCart = payfastBtn.getAttribute('aria-disabled') === 'true';
+        payfastBtn.disabled = lockedByCart || !(isFormValid && isConsentChecked);
       }
     }
 

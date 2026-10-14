@@ -388,7 +388,7 @@
   "@type": "Product",
   "name": "Orange Citrus Powder",
   "description": "Natural orange powder made from premium dehydrated oranges.",
-  "image": "https://vitrafruits.co.za/images/OrangeVeg.webp",
+  "image": "https://www.vitrafruits.co.za/images/OrangePowder.webp",
   "brand": {
     "@type": "Brand",
     "name": "VitraFruits"
@@ -399,7 +399,7 @@
     "lowPrice": 120,
     "highPrice": 120,
     "availability": "https://schema.org/InStock",
-    "url": "https://vitrafruits.co.za/orange-powder.html"
+    "url": "https://www.vitrafruits.co.za/orange-powder.html"
   }
 }
 </script>
@@ -547,7 +547,7 @@
           <div class="actions">
             <div class="qty-picker">
               <button class="qty-btn" type="button" onclick="this.nextElementSibling.stepDown()">-</button>
-              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="100">
+              <input class="qty-input" id="quantityInput" type="number" value="1" min="1" max="10">
               <button class="qty-btn" type="button" onclick="this.previousElementSibling.stepUp()">+</button>
             </div>
             <button class="btn-cart" type="button" id="addToCartBtn" data-price="140.00">
@@ -569,6 +569,7 @@
             <li><a href="/contact.html">Contact Us</a></li>
             <li><a href="/shipping.html">Shipping Costs</a></li>
             <li><a href="/terms.html">Terms and Conditions</a></li>
+            <li><a href="/privacy.html">Privacy Policy</a></li>
           </ul>
           <a class="footer-social-link" href="https://www.instagram.com/vitrafruits/" target="_blank" rel="noreferrer" aria-label="VitraFruits Instagram">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -663,7 +664,29 @@
         updateCartDisplay();
       }
 
+      // Online orders are capped at 10 packs; bigger orders go by email.
       function addItemToCart(item) {
+        const inCart = loadCart().reduce((sum, it) => sum + (it.quantity || 0), 0);
+        if (inCart + item.quantity > 10) {
+          const left = Math.max(0, 10 - inCart);
+          const note = document.querySelector('.cart-toast-text');
+          const box = document.getElementById('cartToast');
+          if (note) {
+            note.textContent = left > 0
+              ? `You can add ${left} more. For orders over 10 items, email orderinfo@vitrafruits.co.za`
+              : 'For orders over 10 items, please email orderinfo@vitrafruits.co.za';
+          }
+          if (box) {
+            box.classList.add('is-visible');
+            setTimeout(() => box.classList.remove('is-visible'), 6000);
+          }
+          return false;
+        }
+        addItemToCartUnchecked(item);
+        return true;
+      }
+
+      function addItemToCartUnchecked(item) {
         const cart = loadCart();
         const existing = cart.find((it) => it.id === item.id);
         if (existing) {
@@ -676,13 +699,13 @@
 
       addToCartBtn?.addEventListener('click', () => {
         const qty = Math.max(1, parseInt(qtyInput?.value || '1', 10));
-        addItemToCart({
+        if (!addItemToCart({
           id: 'dehydrated-orange-powders',
           name: 'Dehydrated Orange Powders',
           price: 140.0,
           image: '/images/OrangePowder.png',
           quantity: qty
-        });
+        })) return;
 
         if (toastText) {
           toastText.textContent = 'Dehydrated Orange Powders added to cart';

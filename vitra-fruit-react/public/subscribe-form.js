@@ -4,6 +4,7 @@
 
   const btn = form.querySelector('.promo-signup-btn');
   const emailInput = form.querySelector('#promoEmail');
+  const honeypot = form.querySelector('input[name="company"]');
 
   function setStatus(msg, isError) {
     let el = form.querySelector('.promo-status');
@@ -22,6 +23,7 @@
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     const email = (emailInput ? emailInput.value : '').trim();
+    const company = honeypot ? honeypot.value : '';
     if (!email) return;
 
     if (btn) { btn.disabled = true; btn.textContent = 'Subscribing…'; }
@@ -30,12 +32,12 @@
       const res = await fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, company }),
       });
       const data = await res.json();
 
       if (res.ok && data.success) {
-        setStatus('You\'re subscribed! Welcome to the VitraFruits family.', false);
+        setStatus('Almost there! Check your inbox and click the link to confirm your subscription.', false);
         form.reset();
       } else {
         setStatus(data.error || 'Something went wrong. Please try again.', true);
