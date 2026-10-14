@@ -123,6 +123,10 @@ function check(label, ok) {
   ], total: 1360 } }, tooMany);
   check('orders over 10 items are sent to email', tooMany.statusCode === 400 && /orderinfo@vitrafruits\.co\.za/.test(tooMany.body.error));
 
+  const oneLine = mockRes();
+  await createOrder({ ...orderReq, body: { ...orderReq.body, items: [{ name: 'Fruit Strips', quantity: 11 }], total: 880 } }, oneLine);
+  check('11 of one product is also sent to email', oneLine.statusCode === 400 && /orderinfo@/.test(oneLine.body.error));
+
   const ten = mockRes();
   await createOrder({ ...orderReq, body: { ...orderReq.body, items: [
     { name: 'Dehydrated Lime Slices', size: '100g', quantity: 5 },

@@ -43,6 +43,7 @@ const SHIPPING_COST = 190;
 const FREE_SHIPPING_THRESHOLD = 850; // matches cart.js — free delivery at/above this subtotal
 const MAX_QTY = 10; // matches cart.js DEFAULT_MAX_QTY
 const MAX_ORDER_ITEMS = 10; // matches cart.js; bigger orders go through email
+const ORDER_LIMIT_ERROR = `Online orders are limited to ${MAX_ORDER_ITEMS} items. For larger orders, please email orderinfo@vitrafruits.co.za`;
 const MAX_LINES = 50;
 
 function lookupPrice(name, size) {
@@ -66,8 +67,11 @@ function priceOrder(items) {
   let subtotal = 0;
   for (const item of items) {
     const quantity = Number(item && item.quantity);
-    if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QTY) {
+    if (!Number.isInteger(quantity) || quantity < 1) {
       return { error: 'One of the quantities in your cart is invalid.' };
+    }
+    if (quantity > MAX_QTY) {
+      return { error: ORDER_LIMIT_ERROR };
     }
     const unitPrice = lookupPrice(item.name, item.size);
     if (unitPrice === null) {
@@ -84,7 +88,7 @@ function priceOrder(items) {
 
   const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
   if (itemCount > MAX_ORDER_ITEMS) {
-    return { error: `Online orders are limited to ${MAX_ORDER_ITEMS} items. For larger orders, please email orderinfo@vitrafruits.co.za` };
+    return { error: ORDER_LIMIT_ERROR };
   }
 
   const shipping = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
