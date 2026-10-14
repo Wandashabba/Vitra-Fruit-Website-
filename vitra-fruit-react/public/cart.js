@@ -124,7 +124,7 @@
       const normalizedSize = size || '100g';
       const limeSliceSizes = {
         '100g': 160,
-        '1kg': 580, // matches the lime-slices product page and the other citrus 1kg prices
+        '1kg': 1100, // matches the lime-slices product page
       };
       next.size = normalizedSize;
       next.price = limeSliceSizes[normalizedSize] || 160;

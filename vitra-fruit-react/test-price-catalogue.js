@@ -19,7 +19,7 @@ const scenarios = [
   { label: 'Banana Chips 200g', item: { name: 'Dehydrated Banana Chips', size: '200g', price: 180, quantity: 1 } },
   { label: 'Mango Strips 200g', item: { name: 'Dehydrated Mango Strips', size: '200g', price: 160, quantity: 1 } },
   { label: 'Hibiscus Flowers 1kg', item: { name: 'Hibiscus Flowers', size: '1kg', price: 980, quantity: 1 } },
-  { label: 'Lime Slices 1kg', item: { name: 'Dehydrated Lime Slices', size: '1kg', price: 580, quantity: 1 } },
+  { label: 'Lime Slices 1kg', item: { name: 'Dehydrated Lime Slices', size: '1kg', price: 1100, quantity: 1 } },
   { label: 'Beetroot Powders 500g', item: { name: 'Beetroot Powders', size: '500g', price: 380, quantity: 1 } },
   { label: 'Lemon Powders (citrus, default)', item: { name: 'Dehydrated Lemon Powders', size: '', price: 140, quantity: 1 } },
 ];

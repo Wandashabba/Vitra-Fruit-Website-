@@ -12,7 +12,7 @@ const PRODUCT_PRICES = {
   'dehydrated grapefruit wheels': { default: 200 },
   // Citrus slices — price by size
   'dehydrated lemon slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
-  'dehydrated lime slices': { '100g': 160, '1kg': 580 },
+  'dehydrated lime slices': { '100g': 160, '1kg': 1100 },
   'dehydrated orange slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
   'dehydrated grapefruit slices': { '100g': 120, '150g': 120, '200g': 200, '1kg': 580 },
   // Apple / Pear
