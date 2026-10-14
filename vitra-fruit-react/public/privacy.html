@@ -78,23 +78,15 @@
       font-size: 1.2rem;
       color: #1f2850;
       margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
-    .policy-section h2 .section-num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ffd9a6, var(--gold));
-      color: #24162f;
-      font-size: 0.78rem;
-      font-weight: 800;
-      flex-shrink: 0;
+    .policy-section a,
+    .policy-hero a {
+      color: var(--gold);
+      font-weight: 600;
+      text-decoration: none;
     }
+    .policy-section a:hover,
+    .policy-hero a:hover { text-decoration: underline; }
     .policy-section p,
     .policy-section li {
       color: var(--text-muted);
@@ -344,98 +336,57 @@
 
       <div class="policy-hero">
         <h1>Privacy Policy</h1>
-        <p>What we collect when you shop with us, why, and how to reach us about it.</p>
+        <p>How we handle your personal information under the Protection of Personal Information Act (POPIA).</p>
+        <p>Last updated 14 October 2026</p>
       </div>
 
-      <!-- 1. Who we are -->
       <section class="policy-section">
-        <h2><span class="section-num">1</span> Who We Are</h2>
-        <p>VitraFruits is a South African business based in Cape Town. We are the "responsible party" for the personal information described in this policy under the <strong>Protection of Personal Information Act 4 of 2013 (POPIA)</strong>.</p>
-        <p>For any privacy question or request, email <a href="mailto:orderinfo@vitrafruits.co.za">orderinfo@vitrafruits.co.za</a> with the subject "Privacy". Our Information Officer will respond.</p>
-        <p><em>Last updated: 14 October 2026</em></p>
+        <h2>Who we are</h2>
+        <p>VitraFruits is based in Cape Town, South Africa, and is responsible for the information described here. For any privacy question or request, email <a href="mailto:orderinfo@vitrafruits.co.za">orderinfo@vitrafruits.co.za</a> with "Privacy" in the subject line.</p>
       </section>
 
-      <!-- 2. What we collect -->
       <section class="policy-section">
-        <h2><span class="section-num">2</span> What We Collect</h2>
-        <ul>
-          <li><strong>When you place an order:</strong> your name, email address, phone number, and billing and delivery address, plus the items you ordered.</li>
-          <li><strong>When you pay:</strong> payment is handled entirely by PayFast. We receive confirmation that you paid and the amount, but we never see or store your card or bank details.</li>
-          <li><strong>When you subscribe to our newsletter:</strong> your email address.</li>
-          <li><strong>When you use the contact form:</strong> your name, email address and your message.</li>
-          <li><strong>When you chat with our website assistant:</strong> the messages you type.</li>
-          <li><strong>When you browse:</strong> Google Analytics records how the site is used, such as pages visited, device and browser type, and approximate location. Your cart is saved in your own browser so it is still there when you come back; it is not sent to us until you check out.</li>
-        </ul>
+        <h2>What we collect</h2>
+        <p>When you order, we collect your name, email, phone number, address and what you bought. PayFast handles your payment; we only learn that you paid, never your card details.</p>
+        <p>If you join our newsletter we keep your email address. If you use the contact form or chat on the site, we receive what you write.</p>
+        <p>Google Analytics tells us which pages are visited and roughly where visitors are. Your cart is saved in your own browser until you check out.</p>
       </section>
 
-      <!-- 3. Why we use it -->
       <section class="policy-section">
-        <h2><span class="section-num">3</span> Why We Use It</h2>
-        <ul>
-          <li>To process, deliver and support your order, including order and payment confirmation emails.</li>
-          <li>To reply to your questions and requests.</li>
-          <li>To send our newsletter, only if you subscribed and confirmed by email. Every newsletter has an unsubscribe link.</li>
-          <li>To understand how the site is used so we can improve it.</li>
-          <li>To keep records we are required to keep by law, such as tax records.</li>
-        </ul>
-        <p>We do not sell or rent your personal information to anyone.</p>
+        <h2>How we use it</h2>
+        <p>We use your information to process and deliver your order, answer your messages, send the newsletter if you signed up and confirmed, improve the site, and keep the records the law requires. Every newsletter has an unsubscribe link. We don't sell or rent your information.</p>
       </section>
 
-      <!-- 4. Who we share it with -->
       <section class="policy-section">
-        <h2><span class="section-num">4</span> Who We Share It With</h2>
-        <p>We share only what each service needs to do its job:</p>
-        <ul>
-          <li><strong>PayFast</strong> processes your payment.</li>
-          <li><strong>Our courier</strong> receives your name, phone number and delivery address to deliver your order.</li>
-          <li><strong>Our email provider</strong> sends order emails on our behalf.</li>
-          <li><strong>Mailchimp</strong> manages the newsletter list.</li>
-          <li><strong>FormSubmit</strong> forwards contact-form messages to our inbox.</li>
-          <li><strong>Groq</strong> generates the website assistant's replies from your chat messages.</li>
-          <li><strong>Google Analytics</strong> measures site usage.</li>
-          <li><strong>Vercel</strong> hosts the website.</li>
-        </ul>
-        <p>Some of these providers store information outside South Africa. Where that happens, we use providers that are bound by data-protection terms giving a level of protection comparable to POPIA.</p>
+        <h2>Who we share it with</h2>
+        <p>Only what each service needs: PayFast for payments, our courier for delivery, our email provider for order emails, Mailchimp for the newsletter, FormSubmit for the contact form, Groq for the chat replies, Google Analytics for site statistics and Vercel, which hosts the site.</p>
+        <p>Some of these services store data outside South Africa. We only use providers whose data-protection terms offer protection comparable to POPIA.</p>
       </section>
 
-      <!-- 5. How long we keep it -->
       <section class="policy-section">
-        <h2><span class="section-num">5</span> How Long We Keep It</h2>
-        <p>We keep order records for as long as we need them to fulfil and support your order, and afterwards for as long as the law requires (South African tax law generally requires records to be kept for five years). Newsletter details are kept until you unsubscribe. Other information is deleted when it is no longer needed.</p>
+        <h2>How long we keep it</h2>
+        <p>We keep order records for as long as we need them and as long as the law requires. South African tax law generally requires five years. Newsletter details are kept until you unsubscribe. Anything else is deleted when we no longer need it.</p>
       </section>
 
-      <!-- 6. Security -->
       <section class="policy-section">
-        <h2><span class="section-num">6</span> Keeping It Safe</h2>
-        <p>The site uses encrypted (HTTPS) connections, payments go through PayFast's secure payment pages, and access to order information is limited to the people who need it to run the shop. If a security breach affects your information, we will tell you and the Information Regulator as POPIA requires.</p>
+        <h2>Keeping it safe</h2>
+        <p>The site uses encrypted connections, payments go through PayFast, and only the people who run the shop can see orders. If a breach ever affects your information, we'll tell you and the Information Regulator.</p>
       </section>
 
-      <!-- 7. Your rights -->
       <section class="policy-section">
-        <h2><span class="section-num">7</span> Your Rights</h2>
-        <p>Under POPIA you can:</p>
-        <ul>
-          <li>ask what personal information we hold about you and get a copy of it;</li>
-          <li>ask us to correct or delete it;</li>
-          <li>object to us using it, including for marketing at any time;</li>
-          <li>unsubscribe from the newsletter using the link in any newsletter email.</li>
-        </ul>
-        <p>Email <a href="mailto:orderinfo@vitrafruits.co.za">orderinfo@vitrafruits.co.za</a> and we will respond within a reasonable time. If you are unhappy with how we handled your information, you may complain to the <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer">Information Regulator (South Africa)</a>.</p>
+        <h2>Your rights</h2>
+        <p>You can ask to see the information we hold about you, have it corrected or deleted, or tell us to stop using it for marketing. Email <a href="mailto:orderinfo@vitrafruits.co.za">orderinfo@vitrafruits.co.za</a>. If you're unhappy with how we've handled your information, you can complain to the <a href="https://inforegulator.org.za" target="_blank" rel="noopener noreferrer">Information Regulator</a>.</p>
       </section>
 
-      <!-- 8. Changes -->
       <section class="policy-section">
-        <h2><span class="section-num">8</span> Changes to This Policy</h2>
-        <p>If we change this policy, we will update it on this page and change the date at the top.</p>
+        <h2>Changes</h2>
+        <p>If we change this policy, we'll update this page and the date at the top.</p>
       </section>
 
-      <!-- Contact -->
       <div class="contact-card">
-        <h2>Questions About Your Information?</h2>
-        <p>Email us Monday to Friday, 8am – 5pm SAST, and we'll get back to you.</p>
-        <a href="mailto:orderinfo@vitrafruits.co.za" class="btn-gold">Email Us</a>
-        &nbsp;&nbsp;
-        <a href="contact.html" class="btn-gold" style="background:rgba(255,255,255,0.15);color:#fff;box-shadow:none;margin-top:10px;display:inline-block;">Contact Page</a>
+        <h2>Need help?</h2>
+        <p>Email us Monday to Friday, 8am to 5pm, and we'll get back to you within 1–2 business days.</p>
+        <a href="mailto:orderinfo@vitrafruits.co.za" class="btn-gold">Email us</a>
       </div>
 
     </div>
