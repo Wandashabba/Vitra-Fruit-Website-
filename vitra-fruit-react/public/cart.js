@@ -1,12 +1,10 @@
 (function () {
   const STORAGE_KEY = 'vitra_cart';
   const VAT_KEY = 'vitra_vat_rate';
-  const HAS_ORDERED_KEY = 'vitra_has_ordered';
   const COUNT_SELECTOR = '[data-cart-count]';
   const BAG_COUNT_SELECTOR = '[data-cart-bag-count]';
   const DEFAULT_MAX_QTY = 100;
-  const FIRST_ORDER_DISCOUNT = 0.10; // 10%
-  const memoryStore = { cart: [], vatRate: 0.15, hasOrdered: false };
+  const memoryStore = { cart: [], vatRate: 0.15 };
   const canUseStorage = (function () {
     try {
       const testKey = '__vitra_storage_test__';
@@ -285,25 +283,6 @@
     }
   }
 
-  function isFirstTimeUser() {
-    if (!canUseStorage) {
-      return !memoryStore.hasOrdered;
-    }
-    return localStorage.getItem(HAS_ORDERED_KEY) !== 'true';
-  }
-
-  function markAsReturningUser() {
-    if (!canUseStorage) {
-      memoryStore.hasOrdered = true;
-      return;
-    }
-    try {
-      localStorage.setItem(HAS_ORDERED_KEY, 'true');
-    } catch (err) {
-      memoryStore.hasOrdered = true;
-    }
-  }
-
   function parsePrice(value) {
     const num = parseFloat(String(value).replace(/[^0-9.]/g, ''));
     return Number.isFinite(num) ? num : 0;
@@ -418,12 +397,8 @@
     let vatRate = 0.15;
     // VAT rate locked at 0.15
 
-    const discountEl = document.querySelector('[data-cart-discount]');
-    const discountRow = document.querySelector('[data-cart-discount-row]');
-
     function render() {
       const cart = loadCart();
-      const firstTime = isFirstTimeUser();
       tableBody.innerHTML = '';
 
       if (!cart.length) {
@@ -433,7 +408,6 @@
         if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
         if (totalEl) totalEl.textContent = formatPrice(0) + ` (includes ${formatPrice(0)} VAT)`;
         if (vatEl) vatEl.textContent = '';
-        if (discountRow) discountRow.style.display = 'none';
         updateCount(cart);
         return;
       }
@@ -480,21 +454,16 @@
         subtotal += item.price * item.quantity;
       });
 
-      let discountAmount = 0;
-      if (firstTime && subtotal > 0) {
-        discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
-      }
-      const subtotalAfterDiscount = subtotal - discountAmount;
-      const shipping = subtotalAfterDiscount >= 850 ? 0 : 150;
-      const grandTotal = subtotalAfterDiscount + shipping;
+      const shipping = subtotal >= 850 ? 0 : 150;
+      const grandTotal = subtotal + shipping;
 
       const vat = subtotal - subtotal / (1 + vatRate);
       
       let shippingNote = '';
-      if (subtotalAfterDiscount >= 850) {
+      if (subtotal >= 850) {
         shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">Free Shipping Unlocked!</div>';
       } else {
-        const needed = 850 - subtotalAfterDiscount;
+        const needed = 850 - subtotal;
         shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Shipping!</div>`;
       }
 
@@ -508,14 +477,6 @@
             ${shippingNote}
           </div>
         `;
-      }
-      if (discountRow) {
-        if (firstTime && discountAmount > 0) {
-          discountRow.style.display = 'flex';
-          if (discountEl) discountEl.textContent = `-${formatPrice(discountAmount)}`;
-        } else {
-          discountRow.style.display = 'none';
-        }
       }
       if (totalEl) totalEl.textContent = `${formatPrice(grandTotal)}`;
       if (vatEl) vatEl.textContent = '';
@@ -598,17 +559,11 @@
 
     const subtotalEl = document.querySelector('[data-checkout-subtotal]');
     const totalEl = document.querySelector('[data-checkout-total]');
-    const discountEl = document.querySelector('[data-checkout-discount]');
-    const discountRow = document.querySelector('[data-checkout-discount-row]');
     const cart = loadCart();
     const vatRate = loadVatRate();
-    const firstTime = isFirstTimeUser();
     const payfastForm = document.getElementById('payfastForm');
     const payfastNote = document.querySelector('[data-checkout-note]');
     const payfastButton = payfastForm ? payfastForm.querySelector('.place-order') : null;
-    const billingFirstName = document.getElementById('billingFirstName');
-    const billingLastName = document.getElementById('billingLastName');
-    const billingEmail = document.getElementById('billingEmail');
 
     itemsWrap.innerHTML = '';
 
@@ -622,7 +577,6 @@
       }
       if (subtotalEl) subtotalEl.textContent = formatPrice(0) + ' (incl. VAT)';
       if (totalEl) totalEl.textContent = formatPrice(0);
-      if (discountRow) discountRow.style.display = 'none';
       return;
     }
 
@@ -662,22 +616,17 @@
       subtotal += item.price * item.quantity;
     });
 
-    let discountAmount = 0;
-    if (firstTime && subtotal > 0) {
-      discountAmount = Math.round(subtotal * FIRST_ORDER_DISCOUNT * 100) / 100;
-    }
-    const subtotalAfterDiscount = subtotal - discountAmount;
-    const shipping = subtotalAfterDiscount >= 850 ? 0 : 150; // Standard shipping or Free over R850
-    const grandTotal = subtotalAfterDiscount + shipping;
+    const shipping = subtotal >= 850 ? 0 : 150; // Standard shipping or Free over R850
+    const grandTotal = subtotal + shipping;
 
     const vat = subtotal - subtotal / (1 + vatRate);
     
     // Add free shipping progress indicator
     let shippingNote = '';
-    if (subtotalAfterDiscount >= 850) {
+    if (subtotal >= 850) {
       shippingNote = '<div style="font-size: 0.8rem; color: #27ae60; font-weight: 700;">Free Shipping Unlocked!</div>';
     } else {
-      const needed = 850 - subtotalAfterDiscount;
+      const needed = 850 - subtotal;
       shippingNote = `<div style="font-size: 0.8rem; color: #c09828; font-weight: 600;">Add R${needed.toFixed(2)} more for Free Shipping!</div>`;
     }
 
@@ -711,53 +660,6 @@
         }
       };
 
-      const description = cart
-        .map((item) => {
-          const sizeLabel = item.size ? ` ${item.size}` : '';
-          const qtyLabel = item.quantity > 1 ? ` x${item.quantity}` : '';
-          return `${item.name || 'Product'}${sizeLabel}${qtyLabel}`;
-        })
-        .join(', ')
-        + (firstTime ? ' [10% First Order Discount Applied]' : '');
-
-      const { returnBase, apiBases } = getCheckoutEndpoints();
-      setField('amount', grandTotal.toFixed(2));
-      setField('item_name', 'Vitra Fruit Products');
-      setField('item_description', description);
-      setField('return_url', returnBase + '/checkout.html?status=success');
-      setField('cancel_url', returnBase + '/checkout.html?status=cancel');
-      setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
-      setField('m_payment_id', `VITRA-${Date.now()}`);
-      setField('name_first', billingFirstName ? billingFirstName.value.trim() : '');
-      setField('name_last', billingLastName ? billingLastName.value.trim() : '');
-      setField('email_address', billingEmail ? billingEmail.value.trim() : '');
-
-      const bFirst = billingFirstName ? billingFirstName.value.trim() : '';
-      const bLast = billingLastName ? billingLastName.value.trim() : '';
-      const bEmail = billingEmail ? billingEmail.value.trim() : '';
-      const bPhone = document.getElementById('billingPhone')?.value.trim() || '';
-      const bStreet = document.getElementById('billingStreet')?.value.trim() || '';
-      const bTown = document.getElementById('billingTown')?.value.trim() || '';
-      const bProv = document.getElementById('billingProvince')?.value.trim() || '';
-      const bPost = document.getElementById('billingPostcode')?.value.trim() || '';
-
-      const compactBilling = JSON.stringify({ f: bFirst, l: bLast, e: bEmail, p: bPhone, s: bStreet, t: bTown, pr: bProv, z: bPost });
-      const compactItems = JSON.stringify(cart.map(i => ({ n: i.name, q: i.quantity, p: i.price })));
-      
-      const chunkString = (str, len) => {
-        const size = Math.ceil(str.length / len);
-        const r = Array(size);
-        let offset = 0;
-        for (let i = 0; i < size; i++) {
-          r[i] = str.substring(offset, offset + len);
-          offset += len;
-        }
-        return r;
-      };
-      
-      const payloadStr = JSON.stringify({ b: JSON.parse(compactBilling), i: JSON.parse(compactItems), sub: subtotal, sh: shipping, d: discountAmount });
-      const chunks = chunkString(payloadStr, 250);
-      
       const addHidden = (name, val) => {
         let el = payfastForm.querySelector(`[name="${name}"]`);
         if (!el) {
@@ -769,11 +671,11 @@
         el.value = val;
       };
 
-      if(chunks[0]) addHidden('custom_str1', chunks[0]);
-      if(chunks[1]) addHidden('custom_str2', chunks[1]);
-      if(chunks[2]) addHidden('custom_str3', chunks[2]);
-      if(chunks[3]) addHidden('custom_str4', chunks[3]);
-      if(chunks[4]) addHidden('custom_str5', chunks[4]);
+      const { returnBase, apiBases } = getCheckoutEndpoints();
+      setField('amount', grandTotal.toFixed(2));
+      setField('return_url', returnBase + '/checkout.html?status=success');
+      setField('cancel_url', returnBase + '/checkout.html?status=cancel');
+      setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
 
       if (!payfastForm.dataset.listenerAttached) {
         payfastForm.addEventListener('submit', async function (event) {
@@ -839,49 +741,26 @@
               deliveryMethod: deliveryMethod,
               items: cart,
               subtotal: subtotal,
-              discount: discountAmount,
               shippingCost: shipping,
               total: grandTotal
             };
 
             const { data } = await createOrderRequest(orderPayload, apiBases);
             
-            // Update PayFast fields before redirecting
-            setField('m_payment_id', data.orderId);
+            // The server prices the order and returns the PayFast fields
+            // (amount, order id and the signed order summary in custom_str1-5).
+            Object.entries(data.payfast || {}).forEach(([name, value]) => addHidden(name, value));
             setField('name_first', bFirst);
             setField('name_last', bLast);
             setField('email_address', bEmail);
-            setField('amount', grandTotal.toFixed(2));
             // Pinned to the canonical host: PayFast's server-to-server callback
             // must not depend on the customer's browsing origin (the apex domain
             // 307-redirects /api/*, and PayFast may not follow redirects).
             setField('notify_url', 'https://www.vitrafruits.co.za/api/payfast-notify');
 
-            // Rebuild the PayFast custom payload from the freshly-read form
-            // values — the page-load build ran before the customer had typed
-            // their address, which left custom_str1-5 with empty billing data.
-            const payloadB = {
-              f: bData.firstName || '', l: bData.lastName || '',
-              e: bData.email || '', p: bData.phone || '',
-              s: (sData && sData.street) || bData.street || '',
-              t: (sData && sData.town) || bData.town || '',
-              pr: bData.province || '',
-              z: (sData && sData.postcode) || bData.postcode || ''
-            };
-            const freshPayloadStr = JSON.stringify({
-              b: payloadB,
-              i: cart.map(i => ({ n: i.name, q: i.quantity, p: i.price })),
-              sub: subtotal, sh: shipping, d: discountAmount
-            });
-            const freshChunks = chunkString(freshPayloadStr, 250);
-            addHidden('custom_str1', freshChunks[0] || '');
-            addHidden('custom_str2', freshChunks[1] || '');
-            addHidden('custom_str3', freshChunks[2] || '');
-            addHidden('custom_str4', freshChunks[3] || '');
-            addHidden('custom_str5', freshChunks[4] || '');
-
-            // Mark user as returning to prevent duplicate discounts
-            markAsReturningUser();
+            if (!data.payfast || !data.payfast.custom_str5) {
+              throw new Error('Order could not be prepared for payment.');
+            }
 
             // Actually submit to PayFast
             HTMLFormElement.prototype.submit.call(payfastForm);

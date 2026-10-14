@@ -29,7 +29,7 @@ const favouriteProducts = [
   },
   {
     name: 'Grapefruit Slices',
-    note: 'Floral and vibrant',
+    note: 'Floral and tangy',
     price: 'R120 - R580',
     href: 'grapefruit-slices.html',
     imageSrc: '/images/Grapefruit.png',
@@ -48,8 +48,8 @@ const favouriteProducts = [
 ];
 
 const welcomeOfferLead = 'Enjoy';
-const welcomeOfferHighlight = '10% off';
-const welcomeOfferTail = 'your first purchase';
+const welcomeOfferHighlight = 'free shipping';
+const welcomeOfferTail = 'on orders over R850';
 
 function Products() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -180,7 +180,7 @@ function Products() {
           </div>
         </div>
       </section>
-      <section className="welcome-strip" aria-label="Welcome offer">
+      <section className="welcome-strip" aria-label="Free shipping offer">
         <div className="welcome-strip-viewport">
           <ul className="welcome-strip-track">
             {welcomeOfferItems.map((_, index) => (

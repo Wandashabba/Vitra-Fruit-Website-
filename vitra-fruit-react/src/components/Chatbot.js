@@ -113,7 +113,14 @@ export default function Chatbot() {
         body: JSON.stringify({ messages: updatedMessages.map(({ role, content }) => ({ role, content })) }),
       });
 
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      if (!response.ok) {
+        const err = new Error(`HTTP ${response.status}`);
+        if (response.status === 429) {
+          const body = await response.json().catch(() => ({}));
+          err.userMessage = body.error;
+        }
+        throw err;
+      }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
@@ -148,7 +155,10 @@ export default function Chatbot() {
       setHasError(true);
       setMessages((prev) => {
         const next = [...prev];
-        next[next.length - 1] = { role: 'assistant', content: "I'm having trouble right now. Please try again or reach out via WhatsApp." };
+        next[next.length - 1] = {
+          role: 'assistant',
+          content: (err && err.userMessage) || "I'm having trouble right now. Please try again or reach out via WhatsApp.",
+        };
         return next;
       });
     } finally {

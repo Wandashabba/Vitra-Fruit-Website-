@@ -8,7 +8,7 @@ import {
 
 /* ── Config ── */
 const heroTitle = 'All natural dehydrated fruits';
-const heroSubtitle = 'Crafted for cocktails, baking, snacking & indulging';
+const heroSubtitle = 'For cocktails, baking and snacking';
 const heroTitleWords = heroTitle.split(' ');
 
 const TOTAL_FRAMES = 192;

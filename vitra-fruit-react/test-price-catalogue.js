@@ -9,6 +9,7 @@ process.env.SMTP_PORT = '587';
 process.env.SMTP_USER = 'orderinfo@vitrafruits.co.za';
 process.env.SMTP_PASS = 'not-a-real-password';
 process.env.ORDER_EMAIL_TO = 'orderinfo@vitrafruits.co.za';
+process.env.ORDER_SIGNING_SECRET = 'test-signing-secret';
 process.env.PUBLIC_SITE_URL = 'https://www.vitrafruits.co.za';
 
 const handler = require('./api/create-order.js');
@@ -39,7 +40,6 @@ function makeReq(item) {
       deliveryMethod: 'delivery',
       items: [item],
       subtotal,
-      discount: 0,
       total: subtotal + shipping,
     },
   };

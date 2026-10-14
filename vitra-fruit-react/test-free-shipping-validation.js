@@ -1,5 +1,5 @@
 // Verifies the server-side price validation accepts a free-shipping basket
-// (subtotal after discount >= R850 → shipping 0, matching cart.js). With an
+// (subtotal >= R850 → shipping 0, matching cart.js). With an
 // unreachable SMTP host the expected outcome is 502 (email blocked), NOT 400
 // (price validation rejection).
 // Run: node test-free-shipping-validation.js
@@ -8,11 +8,12 @@ process.env.SMTP_PORT = '587';
 process.env.SMTP_USER = 'orderinfo@vitrafruits.co.za';
 process.env.SMTP_PASS = 'not-a-real-password';
 process.env.ORDER_EMAIL_TO = 'orderinfo@vitrafruits.co.za';
+process.env.ORDER_SIGNING_SECRET = 'test-signing-secret';
 process.env.PUBLIC_SITE_URL = 'https://www.vitrafruits.co.za';
 
 const handler = require('./api/create-order.js');
 
-// 2 x Dehydrated Lemon Slices 1kg @ R580 = R1160, -10% (R116) = R1044 >= R850 → free shipping
+// 2 x Dehydrated Lemon Slices 1kg @ R580 = R1160 >= R850 → free shipping
 const req = {
   method: 'POST',
   headers: { origin: 'https://www.vitrafruits.co.za', host: 'www.vitrafruits.co.za' },
@@ -26,8 +27,7 @@ const req = {
     deliveryMethod: 'delivery',
     items: [{ name: 'Dehydrated Lemon Slices', size: '1kg', price: 580, quantity: 2 }],
     subtotal: 1160,
-    discount: 116,
-    total: 1044,
+    total: 1160,
   },
 };
 
